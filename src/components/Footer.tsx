@@ -18,10 +18,10 @@ const Footer: React.FC = () => {
               seus valores e compromisso com os clientes]
             </p>
             <div className="social-icons">
-              <a href="#" className="social-link" aria-label="Instagram"><Instagram /></a>
-              <a href="#" className="social-link" aria-label="Facebook"><Facebook /></a>
-              <a href="#" className="social-link" aria-label="LinkedIn"><Linkedin /></a>
-              <a href="#" className="social-link" aria-label="WhatsApp"><MessageCircleCode /></a>
+              <a href="https://instagram.com" className="social-link" aria-label="Instagram" target="_blank" rel="noopener noreferrer"><Instagram /></a>
+              <a href="https://facebook.com" className="social-link" aria-label="Facebook" target="_blank" rel="noopener noreferrer"><Facebook /></a>
+              <a href="https://linkedin.com" className="social-link" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer"><Linkedin /></a>
+              <a href="https://wa.me/" className="social-link" aria-label="WhatsApp" target="_blank" rel="noopener noreferrer"><MessageCircleCode /></a>
             </div>
           </div>
 
@@ -63,8 +63,8 @@ const Footer: React.FC = () => {
           <div className="footer-bottom-content">
             <p>&copy; {currentYear} Rede Alecrim. Todos os direitos reservados.</p>
             <div className="footer-bottom-links">
-              <a href="#">Política de Privacidade</a>
-              <a href="#">Termos de Uso</a>
+              <a href="/privacy" target="_blank" rel="noopener noreferrer">Política de Privacidade</a>
+              <a href="/terms" target="_blank" rel="noopener noreferrer">Termos de Uso</a>
             </div>
           </div>
         </div>

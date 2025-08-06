@@ -75,10 +75,10 @@ const Contact: React.FC = () => {
             <div className="social-links">
               <h4>Redes Sociais</h4>
               <div className="social-icons">
-                <a href="#" className="social-link" aria-label="Instagram">📱</a>
-                <a href="#" className="social-link" aria-label="Facebook">📘</a>
-                <a href="#" className="social-link" aria-label="LinkedIn">💼</a>
-                <a href="#" className="social-link" aria-label="WhatsApp">💬</a>
+                <a href="https://instagram.com" className="social-link" aria-label="Instagram" target="_blank" rel="noopener noreferrer">📱</a>
+                <a href="https://facebook.com" className="social-link" aria-label="Facebook" target="_blank" rel="noopener noreferrer">📘</a>
+                <a href="https://linkedin.com" className="social-link" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer">💼</a>
+                <a href="https://wa.me/" className="social-link" aria-label="WhatsApp" target="_blank" rel="noopener noreferrer">💬</a>
               </div>
             </div>
           </div>
