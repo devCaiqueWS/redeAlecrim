@@ -1,6 +1,45 @@
-# Getting Started with Create React App
+# Rede Alecrim - Site Institucional
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Site institucional da Rede Alecrim, uma landing page moderna desenvolvida em React com TypeScript.
+
+## Sobre o Projeto
+
+Landing page institucional com design moderno e paleta verde, apresentando:
+
+- **Home**: Seção principal com chamada para ação
+- **Sobre**: História e valores da empresa
+- **Lojas**: Catálogo de lojas organizadas por categoria (Boti, QDB, VD)
+- **Galeria**: Showcase de projetos realizados
+- **Contato**: Formulário e informações de contato
+
+## Tecnologias Utilizadas
+
+- React 19.1.1
+- TypeScript
+- CSS3 com design responsivo
+- Lucide React (ícones)
+
+## Como Executar
+
+npm install
+npm start
+```
+
+O site estará disponível em `https://redealecrim.netlify.app`
+
+## Build para Produção
+
+```bash
+npm run build
+```
+
+O site estará disponível em `https://redealecrim.netlify.app`
+
+## Build para Produção
+
+```bash
+npm run build
+```
 
 ## Available Scripts
 
@@ -9,7 +48,7 @@ In the project directory, you can run:
 ### `npm start`
 
 Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Open [https://redealecrim.netlify.app](https://redealecrim.netlify.app) to view it in the browser.
 
 The page will reload if you make edits.\
 You will also see any lint errors in the console.
