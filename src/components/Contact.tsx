@@ -28,23 +28,23 @@ const Contact: React.FC = () => {
     <section id="contact" className="contact section">
       <div className="container">
         <div className="section-header fade-in">
-          <h2>[ENTRE EM CONTATO]</h2>
+          <h2>Entre em Contato</h2>
           <p>
-            [Escreva um convite para os visitantes entrarem em contato, 
-            destacando que vocês estão prontos para atender e ajudar]
+            Estamos prontos para atendê-lo! Entre em contato conosco para dúvidas, 
+            informações sobre nossos produtos ou para agendar uma consultoria personalizada.
           </p>
         </div>
 
         <div className="contact-content">
           <div className="contact-info fade-in">
-            <h3>[FALE CONOSCO]</h3>
-            <p>[Mensagem convidativa para entrar em contato]</p>
+            <h3>Fale Conosco</h3>
+            <p>Estamos sempre dispostos a ajudar você a encontrar os melhores produtos!</p>
             
             <div className="contact-item">
               <div className="contact-icon">📍</div>
               <div>
                 <h4>Endereço</h4>
-                <p>[SEU ENDEREÇO COMPLETO AQUI]</p>
+                <p>Rua das Flores, 123 - Centro<br />São Paulo, SP - CEP: 01234-567</p>
               </div>
             </div>
 
@@ -52,7 +52,7 @@ const Contact: React.FC = () => {
               <div className="contact-icon">📞</div>
               <div>
                 <h4>Telefone</h4>
-                <p>[SEU TELEFONE AQUI]</p>
+                <p>(11) 1234-5678<br />WhatsApp: (11) 91234-5678</p>
               </div>
             </div>
 
@@ -60,7 +60,7 @@ const Contact: React.FC = () => {
               <div className="contact-icon">📧</div>
               <div>
                 <h4>E-mail</h4>
-                <p>[SEU EMAIL AQUI]</p>
+                <p>contato@redealecrim.com.br</p>
               </div>
             </div>
 
@@ -68,7 +68,7 @@ const Contact: React.FC = () => {
               <div className="contact-icon">🕒</div>
               <div>
                 <h4>Horário de Funcionamento</h4>
-                <p>[SEU HORÁRIO DE FUNCIONAMENTO]</p>
+                <p>Segunda a Sexta: 8h às 18h<br />Sábado: 8h às 16h</p>
               </div>
             </div>
 
@@ -147,7 +147,7 @@ const Contact: React.FC = () => {
               </div>
 
               <button type="submit" className="btn btn-primary form-btn">
-                [ENVIAR MENSAGEM]
+                Enviar Mensagem
               </button>
             </form>
           </div>

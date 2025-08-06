@@ -27,10 +27,16 @@
   background: linear-gradient(135deg, var(--light-gray), rgba(139, 195, 74, 0.05));
   border-radius: 15px;
   border: 1px solid rgba(139, 195, 74, 0.2);
+  overflow: hidden;
 }
 
 .stat-item {
   text-align: center;
+  min-height: 120px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .stat-number {
@@ -38,16 +44,19 @@
   font-weight: 700;
   color: var(--primary-green);
   margin-bottom: 10px;
-  background: linear-gradient(135deg, var(--primary-green), var(--light-green));
-  -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  background-clip: text;
+  min-height: 4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
 }
 
 .stat-label {
   font-size: 1rem;
   color: var(--dark-gray);
   font-weight: 500;
+  margin: 0;
 }
 
 .about-values {
