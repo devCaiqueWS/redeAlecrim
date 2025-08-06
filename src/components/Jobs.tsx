@@ -158,11 +158,6 @@ const Jobs: React.FC = () => {
     });
   };
 
-  const closeModals = () => {
-    setShowApplication(false);
-    setSelectedJob(null);
-  };
-
   const handleBackToJobs = () => {
     setShowApplication(false);
     setSelectedJob(null);
