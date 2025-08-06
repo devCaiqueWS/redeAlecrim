@@ -57,10 +57,10 @@ const Footer: React.FC = () => {
             <div className={`link-column ${linksAnimated > 2 ? 'animate-fade-in-up delay-500' : ''}`}>
               <h4 className="gradient-text">Contato</h4>
               <ul>
-                <li className="contact-item">📍 São Paulo, SP</li>
-                <li className="contact-item">📞 (11) 1234-5678</li>
-                <li className="contact-item">📧 contato@redealecrim.com.br</li>
-                <li className="contact-item">🕒 Seg-Sex: 8h-18h | Sáb: 8h-16h</li>
+                <li className="cont">📍 São Paulo, SP</li>
+                <li className="cont">📞 (11) 1234-5678</li>
+                <li className="cont">📧 rh@redealecrim.com.br</li>
+                <li className="cont">🕒 Seg-Sex: 8h-18h</li>
               </ul>
             </div>
           </div>
