@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Phone, Palette, FlaskConical, MapPin, Flame, PackageOpen, SoapDispenserDropletIcon } from 'lucide-react';
+import React, { useState, useRef } from 'react';
+import { Phone, FlaskConical, MapPin, Flame, PackageOpen, SoapDispenserDropletIcon, ChevronLeft, ChevronRight } from 'lucide-react';
 import './Stores.css';
 import { useScrollAnimation, useStaggerAnimation } from '../hooks/useAnimations';
 
@@ -7,6 +7,45 @@ const Stores: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [headerRef, headerVisible] = useScrollAnimation(0.1);
   const [storesRef, storesAnimated] = useStaggerAnimation(150);
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const brands = [
+    {
+      id: 1,
+      name: 'o Boticário',
+      image: '/images/brands/oboticario.png',
+      logo: '/images/brands/logo-boti.webp',
+      alt: 'o Boticário'
+    },
+    {
+      id: 2,
+      name: 'Eudora', 
+      image: '/images/brands/eudora.jpeg',
+      logo: '/images/brands/eudora_logo.webp',
+      alt: 'Eudora'
+    },
+    {
+      id: 3,
+      name: 'Oui',
+      image: '/images/brands/oui.png',
+      logo: '/images/brands/logo_oui.webp',
+      alt: 'Oui'
+    },
+    {
+      id: 4,
+      name: 'Quem disse, Berenice?',
+      image: '/images/brands/qdb.png',
+      logo: '/images/brands/logo-qdb.webp',
+      alt: 'Quem disse, Berenice?'
+    },
+    {
+      id: 5,
+      name: 'AuMigos',
+      image: '/images/brands/aumigos.png',
+      logo: '/images/brands/logo-au.webp',
+      alt: 'AuMigos'
+    }
+  ];
 
   const storeCategories = [
     {
@@ -27,7 +66,7 @@ const Stores: React.FC = () => {
         {
           id: 'AL03',
           name: 'Boti Portal',
-          nickname: 'Portal',
+          nickname: 'Portal Morumbi',
           address: 'Av. Prof. José Horácio Meirelles Teixeira, 1040 Lj 02',
           neighborhood: 'Vila Suzana',
           cep: '05630-130',
@@ -180,55 +219,11 @@ const Stores: React.FC = () => {
       ]
     },
     {
-      id: 'qdb',
-      title: 'Lojas QDB - Quem Disse Berenice',
-      icon: <Palette size={24} />,
-      description: 'As lojas QDB trazem o conceito inovador da marca Quem Disse, Berenice?, com produtos exclusivos de maquiagem e uma experiência única em beleza.',
-      stores: [
-        {
-          id: 'QDB_TS',
-          name: 'QDB Shopping Taboão',
-          nickname: 'QDB Taboão',
-          address: 'Rod. Regis Bittencourt, 1835 Km 271,5 Lj 142 Piso 1',
-          neighborhood: 'Cid. Intercap',
-          cep: '06768-200',
-          phone: '(11) 97669-8823'
-        },
-        {
-          id: 'QDB_BT',
-          name: 'QDB Shopping Butantã',
-          nickname: 'QDB Butantã',
-          address: 'Av. Dep. Jacob Salvador Zueibil, S/N Loja 81',
-          neighborhood: 'Butantã',
-          cep: '05512-300',
-          phone: '(11) 99235-6673'
-        },
-        {
-          id: 'QDB_VO',
-          name: 'QDB Shopping Vila Olímpia',
-          nickname: 'QDB V. Olímpia',
-          address: 'Rua Olimpiadas, 360 Loja 332',
-          neighborhood: 'Vila Olímpia',
-          cep: '04551-000',
-          phone: '(11) 99466-5918'
-        }
-      ]
-    },
-    {
       id: 'vd',
-      title: 'Venda Direta (VD)',
+      title: 'Espaço Revendedor',
       icon: <SoapDispenserDropletIcon size={24} />,
       description: 'Nossa operação de Venda Direta inclui o HUB de distribuição e Espaços Revendedores, oferecendo oportunidades de negócio e renda extra.',
       stores: [
-        {
-          id: 'HUB',
-          name: 'HUB - Centro de Distribuição',
-          nickname: 'HUB',
-          address: 'Av. João Paulo I, 1776 - GALPÃO B2',
-          neighborhood: 'Embu das Artes',
-          cep: '06817-000',
-          phone: '(11) 98232-8310'
-        },
         {
           id: 'ER',
           name: 'Espaço Revendedor',
@@ -252,8 +247,68 @@ const Stores: React.FC = () => {
 
   const totalStores = allStores.length;
 
+  // Funções para scroll lateral das marcas
+  const scrollLeft = () => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollBy({ left: -370, behavior: 'smooth' });
+    }
+  };
+
+  const scrollRight = () => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollBy({ left: 370, behavior: 'smooth' });
+    }
+  };
+
   return (
-    <section id="stores" className="stores section">
+    <>
+      {/* Seção de Marcas */}
+      <section className="brands-section">
+        <div className="container">
+          <div
+          ref={headerRef as React.RefObject<HTMLDivElement>}
+          className={`section-header ${headerVisible ? 'animate-fade-in-up' : ''}`}
+        >
+          <h2>Nossas Marcas</h2>
+        </div>
+          <div className="brands-carousel">
+            {/* Seta Esquerda */}
+            <button 
+              className="brand-nav brand-nav-prev"
+              onClick={scrollLeft}
+              aria-label="Rolar para esquerda"
+            >
+              <ChevronLeft size={24} />
+            </button>
+
+            <div className="brands-scroll" ref={scrollRef}>
+              {brands.map((brand, index) => (
+                <div key={brand.id} className="brand-card">
+                  <div className="brand-card-content">
+                    <div className="brand-card-image">
+                      <img src={brand.image} alt={brand.alt} />
+                    </div>
+                    <div className="brand-card-logo">
+                      <img src={brand.logo} alt={brand.name} />
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <button 
+              className="brand-nav brand-nav-next"
+              onClick={scrollRight}
+              aria-label="Rolar para direita"
+            >
+              <ChevronRight size={24} />
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* Seção de Lojas */}
+      <section id="stores" className="stores section">
       <div className="container">
         <div
           ref={headerRef as React.RefObject<HTMLDivElement>}
@@ -271,16 +326,11 @@ const Stores: React.FC = () => {
           <div className="stat-card modern-card hover-lift">
             <div className="stat-icon animate-pulse"><FlaskConical size={48}/></div>
             <div className="stat-number gradient-text">{storeCategories[0].stores.length}</div>
-            <div className="stat-label">Lojas oBoticário</div>
-          </div>
-          <div className="stat-card modern-card hover-lift">
-            <div className="stat-icon animate-pulse"><Palette size={48} /></div>
-            <div className="stat-number gradient-text">{storeCategories[1].stores.length}</div>
-            <div className="stat-label">Lojas QDB</div>
+            <div className="stat-label">Lojas o Boticário</div>
           </div>
           <div className="stat-card modern-card hover-lift">
             <div className="stat-icon animate-pulse"><PackageOpen size={48} /></div>
-            <div className="stat-number gradient-text">{storeCategories[2].stores.length}</div>
+            <div className="stat-number gradient-text">{storeCategories[1].stores.length}</div>
             <div className="stat-label">Pontos VD</div>
           </div>
           <div className="stat-card modern-card hover-lift">
@@ -440,6 +490,7 @@ const Stores: React.FC = () => {
         </div>
       </div>
     </section>
+    </>
   );
 };
 

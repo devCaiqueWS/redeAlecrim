@@ -9,6 +9,7 @@ import Contact from './components/Contact';
 import Footer from './components/Footer';
 import Jobs from './components/Jobs';
 import JobApplication from './components/JobApplication';
+import WhatsAppPopup from './components/WhatsAppPopup';
 
 function App() {
   const [currentView, setCurrentView] = useState('home');
@@ -127,6 +128,7 @@ function App() {
       <Gallery />
       <Contact />
       <Footer />
+      <WhatsAppPopup />
     </div>
   );
 }

@@ -1,3 +1,254 @@
+/* Brands Section - Layout horizontal com scroll */
+.brands-section {
+  padding: 80px 0;
+  background: #f8f9fa;
+  position: relative;
+  overflow: hidden;
+}
+
+.brands-carousel {
+  position: relative;
+  width: 100%;
+  overflow: visible;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 0 60px;
+}
+
+/* Setas de navegação */
+.brand-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 50px;
+  height: 50px;
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 10;
+  color: #333;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.brand-nav:hover {
+  background: white;
+  transform: translateY(-50%) scale(1.1);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+  color: var(--primary-color);
+}
+
+.brand-nav-prev {
+  left: 0;
+}
+
+.brand-nav-next {
+  right: 0;
+}
+
+.brand-nav:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: translateY(-50%) scale(0.9);
+}
+
+.brand-nav:disabled:hover {
+  background: rgba(255, 255, 255, 0.95);
+  transform: translateY(-50%) scale(0.9);
+  color: #333;
+}
+
+.brands-scroll {
+  border-radius: 15px;
+  display: flex;
+  gap: 25px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding: 20px 10px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  flex: 1;
+}
+
+.brands-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.brand-card {
+  flex: 0 0 350px;
+  height: 400px;
+  position: relative;
+  border-radius: 24px;
+  overflow: hidden;
+  /* box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15); */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.brand-card:hover {
+  transform: translateY(-8px);
+  /* box-shadow: 0 30px 80px rgba(0, 0, 0, 0.2); */
+}
+
+.brand-card-content {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 24px;
+}
+
+.brand-card-image {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.brand-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s ease;
+}
+
+.brand-card:hover .brand-card-image img {
+  transform: scale(1.05);
+}
+
+.brand-card-logo {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 30px 20px 25px;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.brand-card-logo img {
+  max-width: 180px;
+  max-height: 90px;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+}
+
+/* Responsive - Brands Section */
+@media (max-width: 1024px) {
+  .brand-card {
+    flex: 0 0 320px;
+    height: 380px;
+  }
+  
+  .brand-card-title {
+    font-size: 1.6rem;
+  }
+  
+  .brand-card-btn {
+    padding: 12px 24px;
+    font-size: 0.95rem;
+  }
+
+  .brand-nav {
+    width: 45px;
+    height: 45px;
+  }
+
+  .brand-nav-prev {
+    left: 0;
+  }
+
+  .brand-nav-next {
+    right: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .brands-section {
+    padding: 60px 0;
+  }
+  
+  .brand-card {
+    flex: 0 0 280px;
+    height: 350px;
+    border-radius: 20px;
+  }
+  
+  .brand-card-content {
+    border-radius: 20px;
+  }
+  
+  .brands-scroll {
+    gap: 15px;
+    padding: 15px 0;
+  }
+
+  .brand-nav {
+    width: 40px;
+    height: 40px;
+  }
+
+  .brand-nav-prev {
+    left: 0;
+  }
+
+  .brand-nav-next {
+    right: 0;
+  }
+
+  .brands-carousel {
+    gap: 15px;
+    padding: 0 50px;
+  }
+}
+
+@media (max-width: 480px) {
+  .brand-card {
+    flex: 0 0 250px;
+    height: 320px;
+    border-radius: 16px;
+  }
+  
+  .brand-card-content {
+    border-radius: 16px;
+  }
+  
+  .brands-scroll {
+    gap: 12px;
+    padding: 12px 0;
+  }
+
+  .brand-nav {
+    width: 35px;
+    height: 35px;
+  }
+
+  .brand-nav-prev {
+    left: 0;
+  }
+
+  .brand-nav-next {
+    right: 0;
+  }
+
+  .brands-carousel {
+    gap: 10px;
+    padding: 0 40px;
+  }
+}
+  
+  .brands-scroll::-webkit-scrollbar {
+    height: 6px;
+  }
+
+
 /* Stores Section */
 .stores {
   padding: 100px 0;

@@ -68,6 +68,7 @@ const Hero: React.FC = () => {
                     src={image.src}
                     alt={image.alt}
                     className="store-slide-image"
+                    onClick={() => window.location.href = '#stores'}
                   />
                   <div className="slide-overlay">
                     <h4>{image.alt}</h4>
