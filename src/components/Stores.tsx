@@ -341,7 +341,6 @@ const Stores: React.FC = () => {
                     >
                       <div className="store-header">
                         <h4>{store.nickname}</h4>
-                        <span className="store-id">{store.id}</span>
                       </div>
                       <div className="store-info">
                         <div className="store-address">
