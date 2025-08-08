@@ -1,6 +1,6 @@
 import React from 'react';
 import './Footer.css';
-import { Instagram, Facebook, Linkedin, MessageCircleCode } from 'lucide-react';
+import { Instagram, Facebook, Linkedin, MessageCircleCode, MapPin, Phone, Mail, Clock } from 'lucide-react';
 import { useScrollAnimation, useStaggerAnimation } from '../hooks/useAnimations';
 
 const Footer: React.FC = () => {
@@ -14,7 +14,7 @@ const Footer: React.FC = () => {
         <div className="footer-content">
           <div className={`footer-brand ${footerVisible ? 'animate-fade-in-up' : ''}`}>
             <div className="logo">
-              <span className="logo-text gradient-text-animated">Rede Alecrim</span>
+              <span className="logo-text">Rede Alecrim</span>
             </div>
             <p className={`${footerVisible ? 'animate-fade-in-up delay-200' : ''}`}>
               Transformando beleza em oportunidades. A Rede Alecrim é sua 
@@ -34,7 +34,7 @@ const Footer: React.FC = () => {
             className="footer-links"
           >
             <div className={`link-column ${linksAnimated > 0 ? 'animate-fade-in-up delay-300' : ''}`}>
-              <h4 className="gradient-text">Navegação</h4>
+              <h4>Navegação</h4>
               <ul>
                 <li><a href="/" className="footer-link">Início</a></li>
                 <li><a href="/#about" className="footer-link">Sobre</a></li>
@@ -46,21 +46,21 @@ const Footer: React.FC = () => {
             </div>
 
             <div className={`link-column ${linksAnimated > 1 ? 'animate-fade-in-up delay-400' : ''}`}>
-              <h4 className="gradient-text">Nossas Lojas</h4>
+              <h4>Nossas Lojas</h4>
               <ul>
-                <li><a href="#stores" className="footer-link">Lojas Boti</a></li>
+                <li><a href="#stores" className="footer-link">Lojas oBoticário</a></li>
                 <li><a href="#stores" className="footer-link">Lojas QDB</a></li>
                 <li><a href="#stores" className="footer-link">Venda Direta (VD)</a></li>
               </ul>
             </div>
 
             <div className={`link-column ${linksAnimated > 2 ? 'animate-fade-in-up delay-500' : ''}`}>
-              <h4 className="gradient-text">Contato</h4>
+              <h4>Contato</h4>
               <ul>
-                <li className="cont">📍 São Paulo, SP</li>
-                <li className="cont">📞 (11) 1234-5678</li>
-                <li className="cont">📧 rh@redealecrim.com.br</li>
-                <li className="cont">🕒 Seg-Sex: 8h-18h</li>
+                <li className="cont"><MapPin size={16} /> São Paulo, SP</li>
+                <li className="cont"><Phone size={16} /> (11) 1234-5678</li>
+                <li className="cont"><Mail size={16} /> rh@redealecrim.com.br</li>
+                <li className="cont"><Clock size={16} /> Seg-Sex: 8h-18h</li>
               </ul>
             </div>
           </div>

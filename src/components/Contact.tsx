@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Phone, Mail, Clock } from 'lucide-react';
 import './Contact.css';
 
 const Contact: React.FC = () => {
@@ -39,25 +40,21 @@ const Contact: React.FC = () => {
           <div className="contact-info fade-in">
             <h3>Fale Conosco</h3>
             <p>Estamos sempre dispostos a ajudar você a encontrar os melhores produtos!</p>
-            
-            <div className="contact-item">
-              <div className="contact-icon">📍</div>
-              <div>
-                <h4>Endereço</h4>
-                <p>Rua das Flores, 123 - Centro<br />São Paulo, SP - CEP: 01234-567</p>
-              </div>
-            </div>
 
             <div className="contact-item">
-              <div className="contact-icon">📞</div>
+              <div className="contact-icon">
+                <Phone size={24} />
+              </div>
               <div>
                 <h4>Telefone</h4>
-                <p>(11) 1234-5678<br />WhatsApp: (11) 91234-5678</p>
+                <p>(11) 1234-5678<br />(11) 91234-5678</p>
               </div>
             </div>
 
             <div className="contact-item">
-              <div className="contact-icon">📧</div>
+              <div className="contact-icon">
+                <Mail size={24} />
+              </div>
               <div>
                 <h4>E-mail</h4>
                 <p>contato@redealecrim.com.br</p>
@@ -65,20 +62,12 @@ const Contact: React.FC = () => {
             </div>
 
             <div className="contact-item">
-              <div className="contact-icon">🕒</div>
+              <div className="contact-icon">
+                <Clock size={24} />
+              </div>
               <div>
                 <h4>Horário de Funcionamento</h4>
-                <p>Segunda a Sexta: 8h às 18h<br />Sábado: 8h às 16h</p>
-              </div>
-            </div>
-
-            <div className="social-links">
-              <h4>Redes Sociais</h4>
-              <div className="social-icons">
-                <a href="https://instagram.com" className="social-link" aria-label="Instagram" target="_blank" rel="noopener noreferrer">📱</a>
-                <a href="https://facebook.com" className="social-link" aria-label="Facebook" target="_blank" rel="noopener noreferrer">📘</a>
-                <a href="https://linkedin.com" className="social-link" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer">💼</a>
-                <a href="https://wa.me/" className="social-link" aria-label="WhatsApp" target="_blank" rel="noopener noreferrer">💬</a>
+                <p>Segunda a Sexta: 7h às 17h</p>
               </div>
             </div>
           </div>
@@ -138,7 +127,7 @@ const Contact: React.FC = () => {
               <div className="form-group">
                 <textarea
                   name="message"
-                  rows={5}
+                  rows={14}
                   placeholder="Sua Mensagem *"
                   value={formData.message}
                   onChange={handleChange}

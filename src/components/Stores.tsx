@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Phone, Palette, FlaskConical, MapPin, Flame, PackageOpen, SoapDispenserDropletIcon } from 'lucide-react';
 import './Stores.css';
 import { useScrollAnimation, useStaggerAnimation } from '../hooks/useAnimations';
 
@@ -10,9 +11,9 @@ const Stores: React.FC = () => {
   const storeCategories = [
     {
       id: 'boti',
-      title: 'Lojas Boti',
-      icon: '🌸',
-      description: 'Nossas lojas Boti oferecem uma ampla variedade de produtos de beleza e cosméticos, com atendimento especializado e as melhores marcas do mercado.',
+      title: 'Lojas oBoticário',
+      icon: <FlaskConical size={42} />,
+      description: 'Nossas lojas oBoticário oferecem uma ampla variedade de produtos de beleza e cosméticos, com atendimento especializado e as melhores marcas do mercado.',
       stores: [
         {
           id: 'AL02',
@@ -53,7 +54,7 @@ const Stores: React.FC = () => {
         {
           id: 'AL06',
           name: 'Boti Shopping Taboão',
-          nickname: 'Shop. Taboão',
+          nickname: 'Shopping Taboão',
           address: 'Rod. Regis Bittencourt, 1835 Km 271,5 Lj 187/188',
           neighborhood: 'Cid. Intercap',
           cep: '06768-200',
@@ -71,7 +72,7 @@ const Stores: React.FC = () => {
         {
           id: 'AL08',
           name: 'Boti Kaçula',
-          nickname: 'Kaçula',
+          nickname: 'Kaçula Supermercado',
           address: 'Rua José Milani, 244 - Lj 08-09',
           neighborhood: 'Jd. Irapuá',
           cep: '06766-420',
@@ -80,7 +81,7 @@ const Stores: React.FC = () => {
         {
           id: 'AL09',
           name: 'Boti Shopping Butantã',
-          nickname: 'Shop. Butantã',
+          nickname: 'Shopping Butantã',
           address: 'Av. Prof. Francisco Morato, 2718 Lj 84',
           neighborhood: 'Butantã',
           cep: '05512-300',
@@ -89,7 +90,7 @@ const Stores: React.FC = () => {
         {
           id: 'AL10',
           name: 'Boti Shopping Taboão II',
-          nickname: 'Shop. Taboão II',
+          nickname: 'Shopping Taboão II',
           address: 'Rod. Regis Bittencourt, 1835 Km 271,5 Q1',
           neighborhood: 'Cid. Intercap',
           cep: '06768-200',
@@ -116,7 +117,7 @@ const Stores: React.FC = () => {
         {
           id: 'AL13',
           name: 'Boti Shopping Vila Olimpia',
-          nickname: 'Shop. V. Olimpia',
+          nickname: 'Shopping V. Olimpia',
           address: 'Rua Olimpiadas, 360 Loja 333',
           neighborhood: 'Vl. Olímpia',
           cep: '04551-000',
@@ -125,7 +126,7 @@ const Stores: React.FC = () => {
         {
           id: 'AL14',
           name: 'Boti Atacadão',
-          nickname: 'Atacadão',
+          nickname: 'Atacadão Taboão',
           address: 'Rua do Tesouro, 680 -LOJA 06',
           neighborhood: 'Pq. Santos Dumont',
           cep: '06754-180',
@@ -159,15 +160,6 @@ const Stores: React.FC = () => {
           phone: '(11) 98335-5867'
         },
         {
-          id: 'AL18',
-          name: 'Boti TQT',
-          nickname: 'TQT',
-          address: 'Est. Kizaemon Takeuti, 3261',
-          neighborhood: 'Pirajussara',
-          cep: '06775-000',
-          phone: '(11) 98460-8853'
-        },
-        {
           id: 'AL19',
           name: 'Boti Jardim Miriam',
           nickname: 'Jd. Miriam',
@@ -179,7 +171,7 @@ const Stores: React.FC = () => {
         {
           id: 'AL20',
           name: 'Boti Metrô SP/Morumbi',
-          nickname: 'Metrô SP/ Morumbi',
+          nickname: 'Metrô SP/Morumbi',
           address: 'Av. Dep. Jacob Salvador Zueibil, 56',
           neighborhood: 'Butantã',
           cep: '05512-390',
@@ -190,12 +182,12 @@ const Stores: React.FC = () => {
     {
       id: 'qdb',
       title: 'Lojas QDB - Quem Disse Berenice',
-      icon: '💄',
+      icon: <Palette size={42} />,
       description: 'As lojas QDB trazem o conceito inovador da marca Quem Disse, Berenice?, com produtos exclusivos de maquiagem e uma experiência única em beleza.',
       stores: [
         {
           id: 'QDB_TS',
-          name: 'QDB Taboão',
+          name: 'QDB Shopping Taboão',
           nickname: 'QDB Taboão',
           address: 'Rod. Regis Bittencourt, 1835 Km 271,5 Lj 142 Piso 1',
           neighborhood: 'Cid. Intercap',
@@ -204,7 +196,7 @@ const Stores: React.FC = () => {
         },
         {
           id: 'QDB_BT',
-          name: 'QDB Butantã',
+          name: 'QDB Shopping Butantã',
           nickname: 'QDB Butantã',
           address: 'Av. Dep. Jacob Salvador Zueibil, S/N Loja 81',
           neighborhood: 'Butantã',
@@ -213,10 +205,10 @@ const Stores: React.FC = () => {
         },
         {
           id: 'QDB_VO',
-          name: 'QDB Vila Olimpia',
-          nickname: 'QDB V. Olimpia',
+          name: 'QDB Shopping Vila Olímpia',
+          nickname: 'QDB V. Olímpia',
           address: 'Rua Olimpiadas, 360 Loja 332',
-          neighborhood: 'Vila Olimpia',
+          neighborhood: 'Vila Olímpia',
           cep: '04551-000',
           phone: '(11) 99466-5918'
         }
@@ -225,7 +217,7 @@ const Stores: React.FC = () => {
     {
       id: 'vd',
       title: 'Venda Direta (VD)',
-      icon: '🏠',
+      icon: <SoapDispenserDropletIcon size={42} />,
       description: 'Nossa operação de Venda Direta inclui o HUB de distribuição e Espaços Revendedores, oferecendo oportunidades de negócio e renda extra.',
       stores: [
         {
@@ -263,11 +255,11 @@ const Stores: React.FC = () => {
   return (
     <section id="stores" className="stores section">
       <div className="container">
-        <div 
+        <div
           ref={headerRef as React.RefObject<HTMLDivElement>}
           className={`section-header ${headerVisible ? 'animate-fade-in-up' : ''}`}
         >
-          <h2 className="gradient-text-animated">Nossas Lojas</h2>
+          <h2>Nossas Lojas</h2>
           <p className={`${headerVisible ? 'animate-fade-in-up delay-200' : ''}`}>
             Conheça nossa rede com {totalStores} pontos de venda espalhados por São Paulo, 
             oferecendo produtos de qualidade e atendimento especializado em beleza e cosméticos.
@@ -277,22 +269,22 @@ const Stores: React.FC = () => {
         {/* Estatísticas das Lojas */}
         <div className={`stores-stats ${headerVisible ? 'stagger-animation' : ''}`}>
           <div className="stat-card modern-card hover-lift">
-            <div className="stat-icon animate-pulse">🏪</div>
+            <div className="stat-icon animate-pulse"><FlaskConical size={24}/></div>
             <div className="stat-number gradient-text">{storeCategories[0].stores.length}</div>
-            <div className="stat-label">Lojas Boti</div>
+            <div className="stat-label">Lojas oBoticário</div>
           </div>
           <div className="stat-card modern-card hover-lift">
-            <div className="stat-icon animate-pulse">💄</div>
+            <div className="stat-icon animate-pulse"><Palette size={24} /></div>
             <div className="stat-number gradient-text">{storeCategories[1].stores.length}</div>
             <div className="stat-label">Lojas QDB</div>
           </div>
           <div className="stat-card modern-card hover-lift">
-            <div className="stat-icon animate-pulse">🏠</div>
+            <div className="stat-icon animate-pulse"><PackageOpen /></div>
             <div className="stat-number gradient-text">{storeCategories[2].stores.length}</div>
             <div className="stat-label">Pontos VD</div>
           </div>
           <div className="stat-card modern-card hover-lift">
-            <div className="stat-icon animate-pulse">📍</div>
+            <div className="stat-icon animate-pulse"><MapPin size={24} /></div>
             <div className="stat-number gradient-text">{totalStores}</div>
             <div className="stat-label">Total de Lojas</div>
           </div>
@@ -304,7 +296,7 @@ const Stores: React.FC = () => {
             onClick={() => setSelectedCategory('all')}
             className={`filter-btn ${selectedCategory === 'all' ? 'active' : ''} hover-lift`}
           >
-            <span className="filter-icon">🔥</span>
+            <span className="filter-icon"><Flame size={42} /></span>
             Todas as Lojas
           </button>
           {storeCategories.map((category, index) => (
@@ -335,7 +327,7 @@ const Stores: React.FC = () => {
                 <div className="category-header">
                   <div className="category-icon animate-float">{category.icon}</div>
                   <div className="category-info">
-                    <h3 className="gradient-text">{category.title}</h3>
+                    <h3>{category.title}</h3>
                     <p>{category.description}</p>
                     <span className="store-count">{category.stores.length} lojas</span>
                   </div>
@@ -353,14 +345,14 @@ const Stores: React.FC = () => {
                       </div>
                       <div className="store-info">
                         <div className="store-address">
-                          <span className="address-icon">📍</span>
+                          <span className="address-icon"><MapPin size={16} /></span>
                           <div className="address-text">
                             <p>{store.address}</p>
                             <p>{store.neighborhood} - CEP: {store.cep}</p>
                           </div>
                         </div>
                         <div className="store-phone">
-                          <span className="phone-icon">📞</span>
+                          <span className="phone-icon"><Phone size={16} /></span>
                           <a href={`tel:${store.phone}`} className="phone-link">
                             {store.phone}
                           </a>
@@ -404,14 +396,14 @@ const Stores: React.FC = () => {
                 </div>
                 <div className="store-info">
                   <div className="store-address">
-                    <span className="address-icon">📍</span>
+                    <span className="address-icon"><MapPin size={16} /></span>
                     <div className="address-text">
                       <p>{store.address}</p>
                       <p>{store.neighborhood} - CEP: {store.cep}</p>
                     </div>
                   </div>
                   <div className="store-phone">
-                    <span className="phone-icon">📞</span>
+                    <span className="phone-icon"><Phone size={16} /></span>
                     <a href={`tel:${store.phone}`} className="phone-link">
                       {store.phone}
                     </a>
@@ -433,7 +425,7 @@ const Stores: React.FC = () => {
         </div>
 
         <div className={`stores-cta ${headerVisible ? 'animate-fade-in-up delay-800' : ''}`}>
-          <h3 className="gradient-text">Quer fazer parte da nossa rede?</h3>
+          <h3>Quer fazer parte da nossa rede?</h3>
           <p>
             Conheça nossas oportunidades de franquia e venda direta. 
             Junte-se à Rede Alecrim e comece seu próprio negócio na área de beleza!

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Phone, Flower2, Palette, ShoppingBag, Home, MapPin } from 'lucide-react';
 import './Stores.css';
 
 const Stores: React.FC = () => {
@@ -6,7 +7,7 @@ const Stores: React.FC = () => {
     {
       id: 'boti',
       title: 'Lojas Boti',
-      icon: '🌸',
+      icon: <Flower2 size={32} />,
       description: '[Descrição sobre as lojas Boti - escreva aqui sobre este segmento]',
       stores: [
         {
@@ -32,7 +33,7 @@ const Stores: React.FC = () => {
     {
       id: 'qdb',
       title: 'Lojas QDB',
-      icon: '💄',
+      icon: <Palette size={32} />,
       description: '[Descrição sobre as lojas QDB - escreva aqui sobre este segmento]',
       stores: [
         {
@@ -52,7 +53,7 @@ const Stores: React.FC = () => {
     {
       id: 'vd',
       title: 'Venda Direta (VD)',
-      icon: '🏠',
+      icon: <Home size={32} />,
       description: '[Descrição sobre a Venda Direta - escreva aqui sobre este segmento]',
       stores: [
         {
@@ -102,11 +103,11 @@ const Stores: React.FC = () => {
                     </div>
                     <div className="store-details">
                       <div className="store-address">
-                        <span className="detail-icon">📍</span>
+                        <span className="detail-icon"><MapPin size={16} /></span>
                         <p>{store.address}</p>
                       </div>
                       <div className="store-phone">
-                        <span className="detail-icon">📞</span>
+                        <span className="detail-icon"><Phone size={16} /></span>
                         <p>{store.phone}</p>
                       </div>
                     </div>

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Palette, UserCheck, GraduationCap, Star, Flame, Sparkles, SoapDispenserDroplet } from 'lucide-react';
 import './Gallery.css';
 import { useScrollAnimation, useStaggerAnimation } from '../hooks/useAnimations';
 
@@ -13,53 +14,53 @@ const Gallery: React.FC = () => {
       title: 'Maquiagem Profissional',
       category: 'makeup',
       description: 'Serviços de maquiagem para eventos especiais',
-      icon: '💄'
+      icon: <Palette size={24} />
     },
     {
       id: 2,
       title: 'Produtos Premium',
       category: 'products',
       description: 'Linha exclusiva de cosméticos de alta qualidade',
-      icon: '✨'
+      icon: <Sparkles size={24} />
     },
     {
       id: 3,
       title: 'Atendimento Personalizado',
       category: 'service',
       description: 'Consultoria especializada em beleza',
-      icon: '👩‍🎨'
+      icon: <UserCheck size={24} />
     },
     {
       id: 4,
       title: 'Workshops de Beleza',
       category: 'events',
       description: 'Cursos e workshops para clientes',
-      icon: '🎓'
+      icon: <GraduationCap size={24} />
     },
     {
       id: 5,
       title: 'Tendências da Moda',
       category: 'trends',
       description: 'Últimas tendências em maquiagem e beleza',
-      icon: '🌟'
+      icon: <Star size={24} />
     },
     {
       id: 6,
       title: 'Cuidados com a Pele',
       category: 'skincare',
       description: 'Produtos e tratamentos para todos os tipos de pele',
-      icon: '🧴'
+      icon: <SoapDispenserDroplet size={24} />
     }
   ];
 
   const categories = [
-    { id: 'all', name: 'Todos', icon: '🔥' },
-    { id: 'makeup', name: 'Maquiagem', icon: '💄' },
-    { id: 'products', name: 'Produtos', icon: '✨' },
-    { id: 'service', name: 'Serviços', icon: '👩‍🎨' },
-    { id: 'events', name: 'Eventos', icon: '🎓' },
-    { id: 'trends', name: 'Tendências', icon: '🌟' },
-    { id: 'skincare', name: 'Skincare', icon: '🧴' }
+    { id: 'all', name: 'Todos', icon: <Flame size={16} /> },
+    { id: 'makeup', name: 'Maquiagem', icon: <Palette size={16} /> },
+    { id: 'products', name: 'Produtos', icon: <Sparkles size={16} /> },
+    { id: 'service', name: 'Serviços', icon: <UserCheck size={16} /> },
+    { id: 'events', name: 'Eventos', icon: <GraduationCap size={16} /> },
+    { id: 'trends', name: 'Tendências', icon: <Star size={16} /> },
+    { id: 'skincare', name: 'Skincare', icon: <SoapDispenserDroplet size={16} /> }
   ];
 
   const filteredItems = selectedCategory === 'all' 
@@ -73,7 +74,7 @@ const Gallery: React.FC = () => {
           ref={headerRef as React.RefObject<HTMLDivElement>}
           className={`section-header ${headerVisible ? 'animate-fade-in-up' : ''}`}
         >
-          <h2 className="gradient-text-animated">Nossa Galeria</h2>
+          <h2>Nossa Galeria</h2>
           <p className={`${headerVisible ? 'animate-fade-in-up delay-200' : ''}`}>
             Conheça alguns dos nossos trabalhos e serviços especiais. 
             Cada projeto é realizado com muito cuidado e dedicação 
@@ -128,7 +129,7 @@ const Gallery: React.FC = () => {
         </div>
 
         <div className={`gallery-cta ${headerVisible ? 'animate-fade-in-up delay-800' : ''}`}>
-          <h3 className="gradient-text">Quer saber mais sobre nossos serviços?</h3>
+          <h3>Quer saber mais sobre nossos serviços?</h3>
           <p>Entre em contato conosco e descubra como podemos ajudar você a realçar sua beleza natural.</p>
           <a href="#contact" className="btn btn-outline hover-glow">
             Fale Conosco

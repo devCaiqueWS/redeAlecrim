@@ -71,9 +71,11 @@
 }
 
 .stat-icon {
-  font-size: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin-bottom: 15px;
-  display: block;
+  color: var(--primary-green);
 }
 
 .stat-number {
@@ -267,10 +269,12 @@
   margin-bottom: 15px;
 }
 
-.address-icon, .phone-icon {
-  font-size: 1.1rem;
+.address-icon, .phone-icon, .filter-icon {
+  display: inline-flex;
+  align-items: center;
   margin-top: 2px;
   opacity: 0.8;
+  color: var(--primary-green);
 }
 
 .address-text p {

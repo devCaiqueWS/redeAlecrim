@@ -16,7 +16,7 @@ const Hero: React.FC = () => {
         <div className="hero-content">
           <h1 
             ref={titleRef as React.RefObject<HTMLHeadingElement>}
-            className="hero-title animate-fade-in-up gradient-text-animated"
+            className="hero-title animate-fade-in-up"
           >
             {displayTitle}
           </h1>
@@ -33,12 +33,12 @@ const Hero: React.FC = () => {
           </div>
         </div>
         <div className="hero-image animate-fade-in-right delay-300">
-          <div className="image-placeholder animate-float">
-            <div className="placeholder-content">
-              <div className="beauty-icon">💄</div>
-              <h3>Rede Alecrim</h3>
-              <p>Beleza & Qualidade</p>
-            </div>
+          <div className="hero-image-container">
+            <img 
+              src="/images/hero-beauty.svg" 
+              alt="Rede Alecrim - Produtos de Beleza e Cosméticos" 
+              className="hero-main-image"
+            />
           </div>
         </div>
       </div>

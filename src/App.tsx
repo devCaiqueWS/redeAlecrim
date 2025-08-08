@@ -47,14 +47,20 @@ function App() {
           'general': 'Banco de Talentos'
         };
         
+        const jobTitle = jobTitles[jobId] || 'Vaga Não Encontrada';
         setJobData({
           id: jobId,
-          title: jobTitles[jobId] || 'Vaga Não Encontrada'
+          title: jobTitle
         });
+        
+        // Atualizar título da página
+        document.title = `${jobTitle} - Rede Alecrim`;
       } else if (hash === '#jobs') {
         setCurrentView('jobs');
+        document.title = 'Trabalhe Conosco - Rede Alecrim';
       } else {
         setCurrentView('home');
+        document.title = 'Rede Alecrim - Site Institucional';
       }
     };
 

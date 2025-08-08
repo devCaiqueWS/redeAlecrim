@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Briefcase, Star, BarChart3, Home, Settings, MapPin, DollarSign } from 'lucide-react';
 import './Jobs.css';
 import { useScrollAnimation, useStaggerAnimation, useCountAnimation } from '../hooks/useAnimations';
 import JobApplication from './JobApplication';
@@ -36,7 +37,7 @@ interface Job {
 interface JobCategory {
   id: string;
   title: string;
-  icon: string;
+  icon: React.ReactElement;
   jobs: Job[];
 }
 
@@ -80,11 +81,11 @@ const Jobs: React.FC = () => {
 
   // Agrupa as vagas por categoria
   const agruparVagasPorCategoria = (vagas: VagaJSON[]): JobCategory[] => {
-    const categorias: { [key: string]: { title: string; icon: string } } = {
-      vendas: { title: 'Vendas', icon: '💼' },
-      administrativo: { title: 'Administrativo', icon: '📊' },
-      vendadireta: { title: 'Venda Direta', icon: '🏠' },
-      operacional: { title: 'Operacional', icon: '⚙️' }
+    const categorias: { [key: string]: { title: string; icon: React.ReactElement } } = {
+      vendas: { title: 'Vendas', icon: <Briefcase size={24} /> },
+      administrativo: { title: 'Administrativo', icon: <BarChart3 size={24} /> },
+      vendadireta: { title: 'Venda Direta', icon: <Home size={24} /> },
+      operacional: { title: 'Operacional', icon: <Settings size={24} /> }
     };
 
     const vagasAgrupadas: { [key: string]: VagaJSON[] } = {};
@@ -100,7 +101,7 @@ const Jobs: React.FC = () => {
     return Object.keys(vagasAgrupadas).map(categoriaId => ({
       id: categoriaId,
       title: categorias[categoriaId]?.title || 'Outras',
-      icon: categorias[categoriaId]?.icon || '💼',
+      icon: categorias[categoriaId]?.icon || <Briefcase size={24} />,
       jobs: converterVagasParaJobs(vagasAgrupadas[categoriaId])
     }));
   };
@@ -306,7 +307,7 @@ Atenciosamente.`;
             ref={featuredRef as React.RefObject<HTMLDivElement>}
             className={`featured-jobs ${featuredVisible ? 'animate-fade-in-up delay-300' : ''}`}
           >
-            <h3 className="gradient-text">🌟 Vagas em Destaque</h3>
+            <h3><Star size={20} style={{display: 'inline', marginRight: '8px'}} /> Vagas em Destaque</h3>
             <div className="featured-jobs-grid">
               {featuredJobs.map((job, index) => (
                 <div 
@@ -317,10 +318,10 @@ Atenciosamente.`;
                   <div className="job-badge animate-bounce-in">DESTAQUE</div>
                   <h4>{job.title}</h4>
                   <div className="job-info">
-                    <span className="location">📍 {job.location}</span>
+                    <span className="location"><MapPin size={16} /> {job.location}</span>
                     <span className="type">{job.type}</span>
                   </div>
-                  <div className="salary">💰 {job.salary}</div>
+                  <div className="salary"><DollarSign size={16} /> {job.salary}</div>
                   <p className="job-description">{job.description}</p>
                   <div className="job-details">
                     <div className="requirements">
@@ -377,12 +378,12 @@ Atenciosamente.`;
                     <div className="job-header">
                       <h4>{job.title}</h4>
                       <div className="job-meta">
-                        <span className="job-location">📍 {job.location}</span>
+                        <span className="job-location"><MapPin size={16} /> {job.location}</span>
                         <span className="job-type">{job.type}</span>
                       </div>
                     </div>
                     
-                    <div className="salary">💰 {job.salary}</div>
+                    <div className="salary"><DollarSign size={16} /> {job.salary}</div>
                     <p className="job-description">{job.description}</p>
                     
                     <div className="job-details">
