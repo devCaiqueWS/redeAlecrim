@@ -164,6 +164,84 @@
   box-shadow: 0 20px 40px rgba(9, 77, 76, 0.3);
 }
 
+.history-slider {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.history-slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+}
+
+.history-slide.active {
+  opacity: 1;
+}
+
+.history-slide-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.history-slide-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(rgba(34, 156, 153, 0.8), transparent);
+  color: white;
+  padding: 30px;
+  transform: translateY(-100%);
+  transition: transform 0.3s ease;
+}
+
+.history-slide.active .history-slide-overlay {
+  transform: translateY(0);
+}
+
+.history-slide-overlay h4 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0;
+  text-align: center;
+  color: white;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.history-slider-indicators {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  z-index: 10;
+}
+
+.history-indicator {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.6);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.history-indicator.active {
+  background: #229c99;
+  transform: scale(1.3);
+}
+
 .about-image-container::before {
   content: '';
   position: absolute;
@@ -175,18 +253,6 @@
   border-radius: 25px;
   z-index: -1;
   opacity: 0.2;
-}
-
-.team-main-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-  transition: transform 0.3s ease;
-}
-
-.team-main-image:hover {
-  transform: scale(1.05);
 }
 
 .about-image .image-placeholder {
@@ -250,6 +316,23 @@
   .about-image .image-placeholder {
     height: 400px;
     min-height: 400px;
+  }
+
+  .history-slide-overlay {
+    padding: 20px;
+  }
+
+  .history-slide-overlay h4 {
+    font-size: 1.2rem;
+  }
+
+  .history-slider-indicators {
+    bottom: 15px;
+  }
+
+  .history-indicator {
+    width: 10px;
+    height: 10px;
   }
 
   .stat-number {

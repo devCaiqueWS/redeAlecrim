@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Leaf, Handshake, Lightbulb } from 'lucide-react';
 import './About.css';
 import { useScrollAnimation, useStaggerAnimation } from '../hooks/useAnimations';
@@ -8,6 +8,21 @@ const About: React.FC = () => {
   const [contentRef, contentVisible] = useScrollAnimation(0.2);
   const [statsRef, statsVisible] = useScrollAnimation(0.1);
   const [valuesRef, valuesAnimated] = useStaggerAnimation(200);
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  const historyImages = [
+    { src: '/images/history/placeholder1.jpeg', alt: 'Nossa História - Início da Rede Alecrim' },
+    { src: '/images/history/placeholder2.jpeg', alt: 'Crescimento e Expansão da Rede' },
+    { src: '/images/history/placeholder3.jpeg', alt: 'Rede Alecrim Hoje - Compromisso com a Beleza' }
+  ];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % historyImages.length);
+    }, 4000); // Troca de slide a cada 4 segundos
+
+    return () => clearInterval(interval);
+  }, [historyImages.length]);
 
   return (
     <section id="about" className="about section">
@@ -40,11 +55,32 @@ const About: React.FC = () => {
             
             <div className="about-image">
               <div className="about-image-container modern-card">
-                <img 
-                  src="/images/team-photo.svg" 
-                  alt="Nossa Equipe - Rede Alecrim especializada em beleza" 
-                  className="team-main-image"
-                />
+                <div className="history-slider">
+                  {historyImages.map((image, index) => (
+                    <div
+                      key={index}
+                      className={`history-slide ${index === currentSlide ? 'active' : ''}`}
+                    >
+                      <img
+                        src={image.src}
+                        alt={image.alt}
+                        className="history-slide-image"
+                      />
+                      <div className="history-slide-overlay">
+                        <h4>Nossa Jornada</h4>
+                      </div>
+                    </div>
+                  ))}
+                  <div className="history-slider-indicators">
+                    {historyImages.map((_, index) => (
+                      <button
+                        key={index}
+                        className={`history-indicator ${index === currentSlide ? 'active' : ''}`}
+                        onClick={() => setCurrentSlide(index)}
+                      />
+                    ))}
+                  </div>
+                </div>
               </div>
             </div>
           </div>

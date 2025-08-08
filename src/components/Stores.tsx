@@ -269,22 +269,22 @@ const Stores: React.FC = () => {
         {/* Estatísticas das Lojas */}
         <div className={`stores-stats ${headerVisible ? 'stagger-animation' : ''}`}>
           <div className="stat-card modern-card hover-lift">
-            <div className="stat-icon animate-pulse"><FlaskConical size={24}/></div>
+            <div className="stat-icon animate-pulse"><FlaskConical size={48}/></div>
             <div className="stat-number gradient-text">{storeCategories[0].stores.length}</div>
             <div className="stat-label">Lojas oBoticário</div>
           </div>
           <div className="stat-card modern-card hover-lift">
-            <div className="stat-icon animate-pulse"><Palette size={24} /></div>
+            <div className="stat-icon animate-pulse"><Palette size={48} /></div>
             <div className="stat-number gradient-text">{storeCategories[1].stores.length}</div>
             <div className="stat-label">Lojas QDB</div>
           </div>
           <div className="stat-card modern-card hover-lift">
-            <div className="stat-icon animate-pulse"><PackageOpen /></div>
+            <div className="stat-icon animate-pulse"><PackageOpen size={48} /></div>
             <div className="stat-number gradient-text">{storeCategories[2].stores.length}</div>
             <div className="stat-label">Pontos VD</div>
           </div>
           <div className="stat-card modern-card hover-lift">
-            <div className="stat-icon animate-pulse"><MapPin size={24} /></div>
+            <div className="stat-icon animate-pulse"><MapPin size={48} /></div>
             <div className="stat-number gradient-text">{totalStores}</div>
             <div className="stat-label">Total de Lojas</div>
           </div>

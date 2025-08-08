@@ -40,6 +40,7 @@
 }
 
 .hero-title {
+  font-family: 'Playfair Display', 'Georgia', serif;
   font-size: clamp(3rem, 8vw, 5rem);
   font-weight: 700;
   line-height: 1.1;
@@ -47,6 +48,25 @@
   opacity: 0;
   transform: translateY(60px);
   animation: fadeInUp 1.2s ease-out 0.3s forwards;
+}
+
+.hero-logo {
+  margin-bottom: 10px;
+}
+
+
+
+.hero-title-logo {
+  max-width: 100%;
+  height: auto;
+  width: 490px;
+  filter: drop-shadow(0 4px 15px rgba(0, 0, 0, 0.1));
+  transition: all 0.3s ease;
+}
+
+.hero-title-logo:hover {
+  transform: scale(1.02);
+  filter: drop-shadow(0 6px 20px rgba(34, 156, 153, 0.2));
 }
 
 .hero-subtitle {
@@ -84,8 +104,8 @@
 }
 
 .hero-image-container {
-  width: 450px;
-  height: 350px;
+  width: 550px;
+  height: 420px;
   border-radius: 30px;
   overflow: hidden;
   position: relative;
@@ -98,16 +118,82 @@
     inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
-.hero-main-image {
+.stores-slider {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 0.8s ease-in-out;
+}
+
+.slide.active {
+  opacity: 1;
+}
+
+.store-slide-image {
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: center;
+}
+
+.slide-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(rgba(34, 156, 153, 0.8), transparent);
+  color: white;
+  padding: 25px;
+  transform: translateY(-100%);
   transition: transform 0.3s ease;
 }
 
-.hero-main-image:hover {
-  transform: scale(1.05);
+.slide.active .slide-overlay {
+  transform: translateY(0);
+}
+
+.slide-overlay h4 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin: 0;
+  text-align: center;
+  color: white;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.slider-indicators {
+  position: absolute;
+  bottom: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  z-index: 10;
+}
+
+.indicator {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.indicator.active {
+  background: #229c99;
+  transform: scale(1.2);
 }
 
 .image-placeholder {
@@ -223,7 +309,13 @@
   }
 
   .hero-title {
+    font-family: 'Playfair Display', 'Georgia', serif;
     font-size: 2.5rem;
+  }
+
+  .hero-title-logo {
+    width: 280px;
+    max-width: 90vw;
   }
 
   .hero-subtitle {
@@ -242,7 +334,24 @@
   .hero-image-container,
   .image-placeholder {
     width: 100%;
-    max-width: 400px;
-    height: 300px;
+    max-width: 450px;
+    height: 350px;
+  }
+
+  .slide-overlay {
+    padding: 20px;
+  }
+
+  .slide-overlay h4 {
+    font-size: 1.1rem;
+  }
+
+  .slider-indicators {
+    bottom: 10px;
+  }
+
+  .indicator {
+    width: 8px;
+    height: 8px;
   }
 }

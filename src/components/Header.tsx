@@ -23,7 +23,7 @@ const Header: React.FC = () => {
       <div className="container">
         <div className="nav-brand animate-fade-in-left">
           <div className="logo">
-            <img src="/lgLogin.png" alt="Rede Alecrim" />
+            <img src="/images/ciano.svg" alt="Rede Alecrim" />
           </div>
         </div>
         
