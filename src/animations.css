@@ -172,7 +172,7 @@
     border-color: transparent;
   }
   51%, 100% {
-    border-color: #7cb342;
+    border-color: #229c99;
   }
 }
 
@@ -237,7 +237,7 @@
 }
 
 .animate-gradient {
-  background: linear-gradient(-45deg, #7cb342, #4a7c59, #8bc34a, #2d5016);
+  background: linear-gradient(-45deg, #229c99, #094d4c, #2ebab5, #063938);
   background-size: 400% 400%;
   animation: gradientShift 3s ease infinite;
 }
@@ -292,7 +292,7 @@
 }
 
 .hover-glow:hover {
-  box-shadow: 0 0 20px rgba(124, 179, 66, 0.4);
+  box-shadow: 0 0 20px rgba(34, 156, 153, 0.4);
 }
 
 .hover-glow::before {
@@ -371,21 +371,21 @@
 /* Typewriter effect */
 .typewriter {
   overflow: hidden;
-  border-right: 2px solid #7cb342;
+  border-right: 2px solid #229c99;
   white-space: nowrap;
   animation: typewriter 3s steps(40, end), blinkCursor 0.5s step-end infinite alternate;
 }
 
 /* Gradient text effect */
 .gradient-text {
-  background: linear-gradient(135deg, #7cb342, #4a7c59);
+  background: linear-gradient(135deg, #229c99, #094d4c);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .gradient-text-animated {
-  background: linear-gradient(-45deg, #7cb342, #4a7c59, #8bc34a, #2d5016);
+  background: linear-gradient(-45deg, #229c99, #094d4c, #2ebab5, #063938);
   background-size: 400% 400%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -406,7 +406,7 @@
 .modern-card:hover {
   transform: translateY(-10px);
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-  border-color: rgba(124, 179, 66, 0.3);
+  border-color: rgba(34, 156, 153, 0.3);
 }
 
 /* Glass morphism effect */
@@ -420,19 +420,19 @@
 /* Neon glow effect */
 .neon-glow {
   text-shadow: 
-    0 0 5px #7cb342,
-    0 0 10px #7cb342,
-    0 0 15px #7cb342,
-    0 0 20px #7cb342;
+    0 0 5px #229c99,
+    0 0 10px #229c99,
+    0 0 15px #229c99,
+    0 0 20px #229c99;
   transition: all 0.3s ease;
 }
 
 .neon-glow:hover {
   text-shadow: 
-    0 0 10px #7cb342,
-    0 0 20px #7cb342,
-    0 0 30px #7cb342,
-    0 0 40px #7cb342;
+    0 0 10px #229c99,
+    0 0 20px #229c99,
+    0 0 30px #229c99,
+    0 0 40px #229c99;
 }
 
 /* Staggered animations */

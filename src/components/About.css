@@ -161,7 +161,7 @@
   overflow: hidden;
   position: relative;
   background: linear-gradient(135deg, var(--secondary-green), var(--accent-green));
-  box-shadow: 0 20px 40px rgba(74, 124, 89, 0.3);
+  box-shadow: 0 20px 40px rgba(9, 77, 76, 0.3);
 }
 
 .about-image-container::before {
@@ -202,7 +202,7 @@
   font-size: 1.2rem;
   font-weight: 600;
   position: relative;
-  box-shadow: 0 20px 40px rgba(74, 124, 89, 0.3);
+  box-shadow: 0 20px 40px rgba(9, 77, 76, 0.3);
 }
 
 .about-image .image-placeholder::before {

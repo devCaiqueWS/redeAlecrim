@@ -194,14 +194,14 @@ Os arquivos otimizados serão gerados na pasta `build/`.
 ### **Paleta de Cores**
 ```css
 :root {
-  --primary-green: #7cb342;
-  --secondary-green: #4a7c59;
-  --dark-green: #2d5016;
-  --light-green: #8bc34a;
-  --accent-green: rgba(124, 179, 66, 0.1);
+  --primary-teal: #229c99;
+  --secondary-teal: #094d4c;
+  --dark-teal: #063938;
+  --light-teal: #2ebab5;
+  --accent-teal: rgba(34, 156, 153, 0.1);
   
-  --background: #f8f9fa;
-  --text-primary: #2c5530;
+  --background: #ffffff;
+  --text-primary: #094d4c;
   --text-secondary: #6c757d;
   --white: #ffffff;
 }

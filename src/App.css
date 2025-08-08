@@ -25,16 +25,23 @@ body {
   position: relative;
 }
 
-/* Color palette - Verde Alecrim */
+/* Color palette - Teal Alecrim */
 :root {
-  --primary-green: #2d5016;
-  --secondary-green: #4a7c59;
-  --light-green: #7cb342;
-  --accent-green: #8bc34a;
-  --dark-green: #1b2f0a;
+  --primary-teal: #229c99;
+  --secondary-teal: #094d4c;
+  --light-teal: #2ebab5;
+  --accent-teal: #40e0d0;
+  --dark-teal: #063938;
   --white: #ffffff;
-  --light-gray: #f8f9fa;
+  --light-gray: #ffffff;
   --dark-gray: #6c757d;
+  
+  /* Legacy support - map old green variables to new teal */
+  --primary-green: var(--primary-teal);
+  --secondary-green: var(--secondary-teal);
+  --light-green: var(--light-teal);
+  --accent-green: var(--accent-teal);
+  --dark-green: var(--dark-teal);
 }
 
 /* Common styles */
@@ -98,14 +105,14 @@ body {
   background: transparent;
   color: var(--primary-green);
   border: 2px solid var(--primary-green);
-  box-shadow: 0 4px 15px rgba(45, 80, 22, 0.2);
+  box-shadow: 0 4px 15px rgba(9, 77, 76, 0.2);
 }
 
 .btn-outline:hover {
   background: var(--primary-green);
   color: var(--white);
   transform: translateY(-3px) scale(1.02);
-  box-shadow: 0 8px 25px rgba(45, 80, 22, 0.3);
+  box-shadow: 0 8px 25px rgba(9, 77, 76, 0.3);
 }
 
 /* Typography */

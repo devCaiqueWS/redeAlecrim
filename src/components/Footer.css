@@ -107,7 +107,7 @@
 .footer-brand .social-link:hover {
   background: var(--light-green);
   transform: translateY(-5px) scale(1.1);
-  box-shadow: 0 8px 25px rgba(124, 179, 66, 0.3);
+  box-shadow: 0 8px 25px rgba(34, 156, 153, 0.3);
 }
 
 .footer-links {

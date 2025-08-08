@@ -12,7 +12,7 @@ const Stores: React.FC = () => {
     {
       id: 'boti',
       title: 'Lojas oBoticário',
-      icon: <FlaskConical size={42} />,
+      icon: <FlaskConical size={24} />,
       description: 'Nossas lojas oBoticário oferecem uma ampla variedade de produtos de beleza e cosméticos, com atendimento especializado e as melhores marcas do mercado.',
       stores: [
         {
@@ -182,7 +182,7 @@ const Stores: React.FC = () => {
     {
       id: 'qdb',
       title: 'Lojas QDB - Quem Disse Berenice',
-      icon: <Palette size={42} />,
+      icon: <Palette size={24} />,
       description: 'As lojas QDB trazem o conceito inovador da marca Quem Disse, Berenice?, com produtos exclusivos de maquiagem e uma experiência única em beleza.',
       stores: [
         {
@@ -217,7 +217,7 @@ const Stores: React.FC = () => {
     {
       id: 'vd',
       title: 'Venda Direta (VD)',
-      icon: <SoapDispenserDropletIcon size={42} />,
+      icon: <SoapDispenserDropletIcon size={24} />,
       description: 'Nossa operação de Venda Direta inclui o HUB de distribuição e Espaços Revendedores, oferecendo oportunidades de negócio e renda extra.',
       stores: [
         {
@@ -296,7 +296,7 @@ const Stores: React.FC = () => {
             onClick={() => setSelectedCategory('all')}
             className={`filter-btn ${selectedCategory === 'all' ? 'active' : ''} hover-lift`}
           >
-            <span className="filter-icon"><Flame size={42} /></span>
+            <span className="filter-icon"><Flame size={24} /></span>
             Todas as Lojas
           </button>
           {storeCategories.map((category, index) => (
