@@ -92,7 +92,7 @@ const Jobs: React.FC = () => {
     const carregarVagas = async () => {
       try {
         console.log('🔄 Iniciando carregamento das vagas...');
-        const response = await fetch('/vagas.json');
+        const response = await fetch('http://localhost:3001/vagas');
         const data: VagaJSON[] = await response.json();
         console.log('📦 Dados carregados:', data);
         console.log('📊 Quantidade de vagas carregadas:', data.length);
