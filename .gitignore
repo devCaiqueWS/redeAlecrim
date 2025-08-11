@@ -23,3 +23,9 @@ yarn-debug.log*
 yarn-error.log*
 
 /src/generated/prisma
+
+# Backend - projeto separado
+/backend
+
+# Environment variables
+.env
