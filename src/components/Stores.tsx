@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { Phone, FlaskConical, MapPin, Flame, PackageOpen, SoapDispenserDropletIcon, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Phone, FlaskConical, MapPin, Flame, PackageOpen, Droplets, ChevronLeft, ChevronRight } from 'lucide-react';
 import './Stores.css';
 import { useScrollAnimation, useStaggerAnimation } from '../hooks/useAnimations';
 
@@ -19,7 +19,7 @@ const Stores: React.FC = () => {
     },
     {
       id: 2,
-      name: 'Eudora', 
+      name: 'Eudora',
       image: '/images/brands/eudora.jpeg',
       logo: '/images/brands/eudora_logo.webp',
       alt: 'Eudora'
@@ -221,7 +221,7 @@ const Stores: React.FC = () => {
     {
       id: 'vd',
       title: 'Espaço Revendedor',
-      icon: <SoapDispenserDropletIcon size={24} />,
+      icon: <Droplets size={24} />,
       description: 'Nossa operação de Venda Direta inclui o HUB de distribuição e Espaços Revendedores, oferecendo oportunidades de negócio e renda extra.',
       stores: [
         {
@@ -237,12 +237,12 @@ const Stores: React.FC = () => {
     }
   ];
 
-  const allStores = storeCategories.flatMap(category => 
+  const allStores = storeCategories.flatMap(category =>
     category.stores.map(store => ({ ...store, category: category.id }))
   );
 
-  const filteredStores = selectedCategory === 'all' 
-    ? allStores 
+  const filteredStores = selectedCategory === 'all'
+    ? allStores
     : storeCategories.find(cat => cat.id === selectedCategory)?.stores || [];
 
   const totalStores = allStores.length;
@@ -266,14 +266,14 @@ const Stores: React.FC = () => {
       <section className="brands-section">
         <div className="container">
           <div
-          ref={headerRef as React.RefObject<HTMLDivElement>}
-          className={`section-header ${headerVisible ? 'animate-fade-in-up' : ''}`}
-        >
-          <h2>Nossas Marcas</h2>
-        </div>
+            ref={headerRef as React.RefObject<HTMLDivElement>}
+            className={`section-header ${headerVisible ? 'animate-fade-in-up' : ''}`}
+          >
+            <h2>Nossas Marcas</h2>
+          </div>
           <div className="brands-carousel">
             {/* Seta Esquerda */}
-            <button 
+            <button
               className="brand-nav brand-nav-prev"
               onClick={scrollLeft}
               aria-label="Rolar para esquerda"
@@ -296,7 +296,7 @@ const Stores: React.FC = () => {
               ))}
             </div>
 
-            <button 
+            <button
               className="brand-nav brand-nav-next"
               onClick={scrollRight}
               aria-label="Rolar para direita"
@@ -309,187 +309,190 @@ const Stores: React.FC = () => {
 
       {/* Seção de Lojas */}
       <section id="stores" className="stores section">
-      <div className="container">
-        <div
-          ref={headerRef as React.RefObject<HTMLDivElement>}
-          className={`section-header ${headerVisible ? 'animate-fade-in-up' : ''}`}
-        >
-          <h2>Nossas Lojas</h2>
-          <p className={`${headerVisible ? 'animate-fade-in-up delay-200' : ''}`}>
-            Conheça nossa rede com {totalStores} pontos de venda espalhados por São Paulo, 
-            oferecendo produtos de qualidade e atendimento especializado em beleza e cosméticos.
-          </p>
-        </div>
-
-        {/* Estatísticas das Lojas */}
-        <div className={`stores-stats ${headerVisible ? 'stagger-animation' : ''}`}>
-          <div className="stat-card modern-card hover-lift">
-            <div className="stat-icon animate-pulse"><FlaskConical size={48}/></div>
-            <div className="stat-number gradient-text">{storeCategories[0].stores.length}</div>
-            <div className="stat-label">Lojas o Boticário</div>
-          </div>
-          <div className="stat-card modern-card hover-lift">
-            <div className="stat-icon animate-pulse"><PackageOpen size={48} /></div>
-            <div className="stat-number gradient-text">{storeCategories[1].stores.length}</div>
-            <div className="stat-label">Pontos VD</div>
-          </div>
-          <div className="stat-card modern-card hover-lift">
-            <div className="stat-icon animate-pulse"><MapPin size={48} /></div>
-            <div className="stat-number gradient-text">{totalStores}</div>
-            <div className="stat-label">Total de Lojas</div>
-          </div>
-        </div>
-
-        {/* Filtros de Categoria */}
-        <div className={`store-filters ${headerVisible ? 'animate-fade-in-up delay-400' : ''}`}>
-          <button
-            onClick={() => setSelectedCategory('all')}
-            className={`filter-btn ${selectedCategory === 'all' ? 'active' : ''} hover-lift`}
+        <div className="container">
+          <div
+            ref={headerRef as React.RefObject<HTMLDivElement>}
+            className={`section-header ${headerVisible ? 'animate-fade-in-up' : ''}`}
           >
-            <span className="filter-icon"><Flame size={24} /></span>
-            Todas as Lojas
-          </button>
-          {storeCategories.map((category, index) => (
-            <button
-              key={category.id}
-              onClick={() => setSelectedCategory(category.id)}
-              className={`filter-btn ${selectedCategory === category.id ? 'active' : ''} hover-lift`}
-              style={{ animationDelay: `${0.5 + index * 0.1}s` }}
-            >
-              <span className="filter-icon">{category.icon}</span>
-              {category.title}
-            </button>
-          ))}
-        </div>
+            <h2>Nossas Lojas</h2>
+            <p className={`${headerVisible ? 'animate-fade-in-up delay-200' : ''}`}>
+              Conheça nossa rede com {totalStores} pontos de venda espalhados por São Paulo,
+              oferecendo produtos de qualidade e atendimento especializado em beleza e cosméticos.
+            </p>
+          </div>
 
-        {/* Grid de Lojas */}
-        <div 
-          ref={storesRef as React.RefObject<HTMLDivElement>}
-          className="stores-grid"
-        >
-          {selectedCategory === 'all' ? (
-            storeCategories.map((category, categoryIndex) => (
-              <div 
-                key={category.id} 
-                className={`category-section ${storesAnimated > categoryIndex ? 'animate-fade-in-up' : ''}`}
-                style={{ animationDelay: `${categoryIndex * 0.2}s` }}
+          {/* Estatísticas das Lojas */}
+          <div className={`stores-stats ${headerVisible ? 'stagger-animation' : ''}`}>
+            <div className="stat-card modern-card hover-lift">
+              <div className="stat-icon"><FlaskConical size={48} /></div>
+              <div className="stat-number gradient-text">{storeCategories[0].stores.length}</div>
+              <div className="stat-label">Lojas o Boticário</div>
+            </div>
+            <div className="stat-card modern-card hover-lift">
+              <div className="stat-icon"><PackageOpen size={48} /></div>
+              <div className="stat-number gradient-text">{storeCategories[1].stores.length}</div>
+              <div className="stat-label">Pontos VD</div>
+            </div>
+            <div className="stat-card modern-card hover-lift">
+              <div className="stat-icon"><MapPin size={48} /></div>
+              <div className="stat-number gradient-text">{totalStores}</div>
+              <div className="stat-label">Total de Lojas</div>
+            </div>
+          </div>
+
+          {/* Filtros de Categoria */}
+          <div className={`store-filters ${headerVisible ? 'animate-fade-in-up delay-400' : ''}`}>
+            <button
+              onClick={() => setSelectedCategory('all')}
+              className={`filter-btn ${selectedCategory === 'all' ? 'active' : ''} hover-lift`}
+            >
+              <span className="filter-icon"><Flame size={24} /></span>
+              Todas as Lojas
+            </button>
+            {storeCategories.map((category, index) => (
+              <button
+                key={category.id}
+                onClick={() => setSelectedCategory(category.id)}
+                className={`filter-btn ${selectedCategory === category.id ? 'active' : ''} hover-lift`}
+                style={{ animationDelay: `${0.5 + index * 0.1}s` }}
               >
-                <div className="category-header">
-                  <div className="category-icon animate-float">{category.icon}</div>
-                  <div className="category-info">
-                    <h3>{category.title}</h3>
-                    <p>{category.description}</p>
-                    <span className="store-count">{category.stores.length} lojas</span>
+                <span className="filter-icon">{category.icon}</span>
+                {category.title}
+              </button>
+            ))}
+          </div>
+
+          {/* Grid de Lojas */}
+          <div
+            ref={storesRef as React.RefObject<HTMLDivElement>}
+            className="stores-grid"
+          >
+            {selectedCategory === 'all' ? (
+              storeCategories.map((category, categoryIndex) => (
+                <div
+                  key={category.id}
+                  className={`category-section ${storesAnimated > categoryIndex ? 'animate-fade-in-up' : ''}`}
+                  style={{ animationDelay: `${categoryIndex * 0.2}s` }}
+                >
+                  <div className="category-header">
+                    <div className="category-icon animate-float">{category.icon}</div>
+                    <div className="category-info">
+                      <h3>{category.title}</h3>
+                      <p>{category.description}</p>
+                      <span className="store-count">{category.stores.length} lojas</span>
+                    </div>
                   </div>
-                </div>
-                <div className="category-stores">
-                  {category.stores.slice(0, 6).map((store, storeIndex) => (
-                    <div 
-                      key={store.id} 
-                      className={`store-card modern-card hover-lift ${storesAnimated > categoryIndex ? 'animate-scale-in' : ''}`}
-                      style={{ animationDelay: `${(categoryIndex * 0.2) + (storeIndex * 0.1)}s` }}
-                    >
-                      <div className="store-header">
-                        <h4>{store.nickname}</h4>
-                      </div>
-                      <div className="store-info">
-                        <div className="store-address">
-                          <span className="address-icon"><MapPin size={16} /></span>
-                          <div className="address-text">
-                            <p>{store.address}</p>
-                            <p>{store.neighborhood} - CEP: {store.cep}</p>
+                  <div className="category-stores">
+                    {category.stores.slice(0, 6).map((store, storeIndex) => (
+                      <div
+                        key={store.id}
+                        className={`store-card modern-card hover-lift ${storesAnimated > categoryIndex ? 'animate-scale-in' : ''}`}
+                        style={{ animationDelay: `${(categoryIndex * 0.2) + (storeIndex * 0.1)}s` }}
+                      >
+                        <div className="store-header">
+                          <h4>{store.nickname}</h4>
+                        </div>
+                        <div className="store-info">
+                          <div className="store-address">
+                            <span className="address-icon"><MapPin size={16} /></span>
+                            <div className="address-text">
+                              <p>{store.address}</p>
+                              <p>{store.neighborhood} - CEP: {store.cep}</p>
+                            </div>
+                          </div>
+                          <div className="store-phone">
+                            <span className="phone-icon"><Phone size={16} /></span>
+                            <a href={`tel:${store.phone}`} className="phone-link">
+                              {store.phone}
+                            </a>
                           </div>
                         </div>
-                        <div className="store-phone">
-                          <span className="phone-icon"><Phone size={16} /></span>
-                          <a href={`tel:${store.phone}`} className="phone-link">
-                            {store.phone}
+                        <div className="store-actions">
+                          <a
+                            href={`https://maps.google.com/?q=${encodeURIComponent(store.address + ', ' + store.neighborhood)}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="btn btn-outline btn-sm hover-glow"
+                          >
+                            Ver no Mapa
                           </a>
                         </div>
                       </div>
-                      <div className="store-actions">
-                        <a 
-                          href={`https://maps.google.com/?q=${encodeURIComponent(store.address + ', ' + store.neighborhood)}`} 
-                          target="_blank" 
-                          rel="noopener noreferrer"
-                          className="btn btn-outline btn-sm hover-glow"
+                    ))}
+                    {category.stores.length > 6 && (
+                      <div className="show-more-card">
+                        <button
+                          onClick={() => setSelectedCategory(category.id)}
+                          className="btn btn-primary hover-glow"
                         >
-                          Ver no Mapa
-                        </a>
+                          Ver todas as {category.stores.length} lojas
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ))
+            ) : (
+              filteredStores.map((store, index) => (
+                <div
+                  key={store.id}
+                  className={`store-card modern-card hover-lift ${storesAnimated > index ? 'animate-scale-in' : ''}`}
+                  style={{ animationDelay: `${index * 0.1}s` }}
+                >
+                  <div className="store-header">
+                    <h4>{store.nickname}</h4>
+                    <span className="store-id">{store.id}</span>
+                  </div>
+                  <div className="store-info">
+                    <div className="store-address">
+                      <span className="address-icon"><MapPin size={16} /></span>
+                      <div className="address-text">
+                        <p>{store.address}</p>
+                        <p>{store.neighborhood} - CEP: {store.cep}</p>
                       </div>
                     </div>
-                  ))}
-                  {category.stores.length > 6 && (
-                    <div className="show-more-card">
-                      <button 
-                        onClick={() => setSelectedCategory(category.id)}
-                        className="btn btn-primary hover-glow"
-                      >
-                        Ver todas as {category.stores.length} lojas
-                      </button>
-                    </div>
-                  )}
-                </div>
-              </div>
-            ))
-          ) : (
-            filteredStores.map((store, index) => (
-              <div 
-                key={store.id} 
-                className={`store-card modern-card hover-lift ${storesAnimated > index ? 'animate-scale-in' : ''}`}
-                style={{ animationDelay: `${index * 0.1}s` }}
-              >
-                <div className="store-header">
-                  <h4>{store.nickname}</h4>
-                  <span className="store-id">{store.id}</span>
-                </div>
-                <div className="store-info">
-                  <div className="store-address">
-                    <span className="address-icon"><MapPin size={16} /></span>
-                    <div className="address-text">
-                      <p>{store.address}</p>
-                      <p>{store.neighborhood} - CEP: {store.cep}</p>
+                    <div className="store-phone">
+                      <span className="phone-icon"><Phone size={16} /></span>
+                      <a href={`tel:${store.phone}`} className="phone-link">
+                        {store.phone}
+                      </a>
                     </div>
                   </div>
-                  <div className="store-phone">
-                    <span className="phone-icon"><Phone size={16} /></span>
-                    <a href={`tel:${store.phone}`} className="phone-link">
-                      {store.phone}
+                  <div className="store-actions">
+                    <a
+                      href={`https://maps.google.com/?q=${encodeURIComponent(store.address + ', ' + store.neighborhood)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn btn-outline btn-sm hover-glow"
+                    >
+                      Ver no Mapa
                     </a>
                   </div>
                 </div>
-                <div className="store-actions">
-                  <a 
-                    href={`https://maps.google.com/?q=${encodeURIComponent(store.address + ', ' + store.neighborhood)}`} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="btn btn-outline btn-sm hover-glow"
-                  >
-                    Ver no Mapa
-                  </a>
-                </div>
-              </div>
-            ))
-          )}
-        </div>
+              ))
+            )}
+          </div>
 
-        <div className={`stores-cta ${headerVisible ? 'animate-fade-in-up delay-800' : ''}`}>
-          <h3>Quer fazer parte da nossa rede?</h3>
-          <p>
-            Conheça nossas oportunidades de franquia e venda direta. 
-            Junte-se à Rede Alecrim e comece seu próprio negócio na área de beleza!
-          </p>
-          <div className="cta-buttons">
-            <a href="#jobs" className="btn btn-primary hover-glow">
-              Trabalhe Conosco
-            </a>
-            <a href="#contact" className="btn btn-outline hover-glow">
-              Seja um Revendedor
-            </a>
+          <div className={`stores-cta ${headerVisible ? 'animate-fade-in-up delay-800' : ''}`}>
+            <h3>Junte-se à Rede Alecrim!</h3>
+            <p>
+              Seja parte do nosso time ou empreenda com a gente!
+            </p>
+            <p>
+              deseja se candidatar a vagas de emprego na nossa equipe de vendas?  Envie seu currículo e venha trabalhar conosco!
+              Para quem quer empreender e lucrar. Comece seu próprio negócio agora. Seja um Revendedor!
+            </p>
+            <div className="cta-buttons">
+                <a href="#jobs" className="btn btn-primary hover-glow">
+                  Trabalhe Conosco
+                </a>
+                <a href="#contact" className="btn btn-outline hover-glow">
+                  Seja um Revendedor
+                </a>
+              </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
     </>
   );
 };

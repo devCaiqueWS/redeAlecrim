@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Palette, UserCheck, GraduationCap, Star, Flame, Sparkles, SoapDispenserDroplet } from 'lucide-react';
+import { Palette, UserCheck, GraduationCap, Star, Flame, Sparkles, Droplets } from 'lucide-react';
 import './Gallery.css';
 import { useScrollAnimation, useStaggerAnimation } from '../hooks/useAnimations';
 
@@ -49,7 +49,7 @@ const Gallery: React.FC = () => {
       title: 'Cuidados com a Pele',
       category: 'skincare',
       description: 'Produtos e tratamentos para todos os tipos de pele',
-      icon: <SoapDispenserDroplet size={24} />
+      icon: <Droplets size={24} />
     }
   ];
 
@@ -60,7 +60,7 @@ const Gallery: React.FC = () => {
     { id: 'service', name: 'Serviços', icon: <UserCheck size={16} /> },
     { id: 'events', name: 'Eventos', icon: <GraduationCap size={16} /> },
     { id: 'trends', name: 'Tendências', icon: <Star size={16} /> },
-    { id: 'skincare', name: 'Skincare', icon: <SoapDispenserDroplet size={16} /> }
+    { id: 'skincare', name: 'Skincare', icon: <Droplets size={16} /> }
   ];
 
   const filteredItems = selectedCategory === 'all' 
@@ -110,7 +110,7 @@ const Gallery: React.FC = () => {
               <div className="gallery-image">
                 <div className="image-placeholder">
                   <div className="placeholder-content">
-                    <div className="item-icon animate-pulse">{item.icon}</div>
+                    <div className="item-icon">{item.icon}</div>
                     <h4>{item.title}</h4>
                   </div>
                 </div>

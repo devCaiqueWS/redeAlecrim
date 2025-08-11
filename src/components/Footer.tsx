@@ -1,6 +1,6 @@
 import React from 'react';
 import './Footer.css';
-import { Instagram, Facebook, Linkedin, MessageCircleCode, MapPin, Phone, Mail, Clock } from 'lucide-react';
+import { Instagram, Facebook, Linkedin, MessageCircle, MapPin, Phone, Mail, Clock } from 'lucide-react';
 import { useScrollAnimation, useStaggerAnimation } from '../hooks/useAnimations';
 
 const Footer: React.FC = () => {
@@ -25,7 +25,7 @@ const Footer: React.FC = () => {
               <a href="https://instagram.com" className="social-link hover-lift animate-bounce-in delay-500" aria-label="Instagram" target="_blank" rel="noopener noreferrer"><Instagram /></a>
               <a href="https://facebook.com" className="social-link hover-lift animate-bounce-in delay-600" aria-label="Facebook" target="_blank" rel="noopener noreferrer"><Facebook /></a>
               <a href="https://linkedin.com" className="social-link hover-lift animate-bounce-in delay-700" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer"><Linkedin /></a>
-              <a href="https://wa.me/" className="social-link hover-lift animate-bounce-in delay-800" aria-label="WhatsApp" target="_blank" rel="noopener noreferrer"><MessageCircleCode /></a>
+              <a href="https://wa.me/" className="social-link hover-lift animate-bounce-in delay-800" aria-label="WhatsApp" target="_blank" rel="noopener noreferrer"><MessageCircle /></a>
             </div>
           </div>
 
