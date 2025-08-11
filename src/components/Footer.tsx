@@ -19,7 +19,7 @@ const Footer: React.FC = () => {
             <p className={`${footerVisible ? 'animate-fade-in-up delay-200' : ''}`}>
               Transformando beleza em oportunidades. A Rede Alecrim é sua 
               parceira de confiança no mundo dos cosméticos, oferecendo 
-              produtos de qualidade e atendimento especializado há mais de 15 anos.
+              produtos de qualidade e atendimento especializado há mais de 45 anos.
             </p>
             <div className={`social-icons ${footerVisible ? 'animate-fade-in-up delay-400' : ''}`}>
               <a href="https://instagram.com" className="social-link hover-lift animate-bounce-in delay-500" aria-label="Instagram" target="_blank" rel="noopener noreferrer"><Instagram /></a>
@@ -48,7 +48,7 @@ const Footer: React.FC = () => {
             <div className={`link-column ${linksAnimated > 1 ? 'animate-fade-in-up delay-400' : ''}`}>
               <h4>Nossas Lojas</h4>
               <ul>
-                <li><a href="#stores" className="footer-link">Lojas oBoticário</a></li>
+                <li><a href="#stores" className="footer-link">Lojas O Boticário</a></li>
                 <li><a href="#stores" className="footer-link">Lojas QDB</a></li>
                 <li><a href="#stores" className="footer-link">Venda Direta (VD)</a></li>
               </ul>

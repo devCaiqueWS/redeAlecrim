@@ -2,8 +2,41 @@
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/your-badge-id/deploy-status)](https://redealecrim.netlify.app)
 [![React](https://img.shields.io/badge/React-19.1.1-61DAFB?style=flat&logo=react)](https://reactjs.org/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-4.9.5-3178C6?style=flat&logo=typescript)](https://www.typescriptlang.org/)
-[![License](https://img.shields.io/badge/License-Private-red)](LICENSE)
+[![TypeScript](https://img.shields.io/badge/TypeScript-4.9.5-3178C6?style=flat&logo=typescript)](https://www.typescri#### **Performance Issues**
+
+**❌ Erro de dependências TypeScript**
+```bash
+# Reinstale os types
+npm install @types/react @types/react-dom
+```
+
+**❌ Erro de CSS não carregando**  
+```bash
+# Verifique imports de CSS nos componentes
+# Limpe cache do build
+npm run build
+```
+
+**❌ Problemas de performance**
+```bash
+# Analise o bundle
+npm install -g webpack-bundle-analyzer  
+npm run build
+npx webpack-bundle-analyzer build/static/js/*.js
+```
+
+**❌ Problemas com EmailJS**
+```bash
+# Verificar configurações
+console.log("EmailJS Service:", process.env.REACT_APP_EMAILJS_SERVICE_ID);
+console.log("EmailJS Template:", process.env.REACT_APP_EMAILJS_TEMPLATE_ID);
+
+# Testar conectividade
+emailjs.send("service_test", "template_test", {}).then(
+  (result) => console.log("OK:", result),
+  (error) => console.log("Error:", error)
+);
+```ense](https://img.shields.io/badge/License-Private-red)](LICENSE)
 
 Site institucional moderno e responsivo da Rede Alecrim, desenvolvido com React e TypeScript. O projeto apresenta um design clean com paleta verde institucional, focando na experiência do usuário e performance.
 
@@ -57,8 +90,11 @@ O site institucional da Rede Alecrim é uma landing page completa que apresenta 
 ### 🛠️ **Componentes de Apoio**
 - **Header**: Navegação responsiva com menu hamburger
 - **Footer**: Informações institucionais e links úteis
-- **JobApplication**: Formulário completo de candidatura
+- **JobApplication**: Formulário completo de candidatura com EmailJS
+- **Jobs**: Sistema de envio de currículos com EmailJS
+- **WhatsAppPopup**: Popup de contato via WhatsApp
 - **Animações**: Sistema de animações customizadas
+- **Modal System**: Componentes isolados com createPortal
 
 ## 🚀 Tecnologias Utilizadas
 
@@ -75,6 +111,7 @@ O site institucional da Rede Alecrim é uma landing page completa que apresenta 
 - **Lucide React 0.536.0** - Ícones modernos e otimizados
 - **React Scripts 5.0.1** - Configuração e build tools
 - **Web Vitals 2.1.4** - Métricas de performance
+- **@emailjs/browser** - Sistema de email profissional
 
 ### **Desenvolvimento e Testes**
 - **@testing-library/react 16.3.0** - Testes de componentes
@@ -148,6 +185,58 @@ npm start
 Abra [http://localhost:3000](http://localhost:3000) no seu navegador.
 
 ### **Build para Produção**
+
+```bash
+# Gerar build otimizado
+npm run build
+
+# Arquivos serão gerados na pasta build/
+```
+
+## ⚙️ Configurações do Sistema de Email
+
+### **EmailJS Configuration**
+
+O sistema utiliza **EmailJS** para envio de emails profissionais sem necessidade de backend. 
+
+#### **Configuração de Produção**
+```javascript
+// Configuração no arquivo de componente
+emailjs.init("iwakafYjT8tuM6Tyv"); // Public Key
+```
+
+#### **Serviços e Templates**
+- **Service ID**: `service_dkcbwgh` (Gmail Integration)
+- **Template Jobs**: `template_zn162dm` (Para Jobs.tsx)  
+- **Template JobApplication**: `template_0zrs24h` (Para JobApplication.tsx)
+- **Destinatário**: `suporte.bi@redealecrim.com.br`
+
+#### **Sistema de Validação de Arquivos**
+- **Limite de Tamanho**: 50KB por arquivo
+- **Formatos Aceitos**:
+  - Currículos: PDF, DOC, DOCX
+  - Fotos: JPG, PNG
+- **Encoding**: Base64 para anexos
+- **Feedback**: Orientações automáticas para compressão
+
+#### **Templates de Email**
+Os templates incluem design profissional com:
+- Logo e identidade visual da Rede Alecrim
+- Formatação responsiva
+- Campos dinâmicos para todos os dados do formulário
+- Anexos automáticos (currículos e fotos)
+
+#### **Sistema de Debug**
+- Logs detalhados em desenvolvimento
+- Tratamento específico de erros EmailJS
+- Mensagens educativas para o usuário
+- Validação em tempo real
+
+### **Troubleshooting EmailJS**
+- Verificar credenciais de produção
+- Templates devem usar sintaxe `{{variavel}}` (sem condicionais)
+- Limite de 50KB rigorosamente aplicado
+- Validar service_id e template_id no dashboard EmailJS
 ```bash
 npm run build
 ```
@@ -179,8 +268,10 @@ Os arquivos otimizados serão gerados na pasta `build/`.
 - Categorização automática por área
 - Vagas em destaque
 - Sistema de expansão de cards
-- Formulário de candidatura integrado
-- Banco de talentos via email
+- Formulário de candidatura integrado com EmailJS
+- Sistema de envio de currículos profissional
+- Validação de arquivos em tempo real
+- Banco de talentos via email automatizado
 
 ### **Otimizações de Performance**
 - Componentes React otimizados
@@ -194,14 +285,14 @@ Os arquivos otimizados serão gerados na pasta `build/`.
 ### **Paleta de Cores**
 ```css
 :root {
-  --primary-green: #7cb342;
-  --secondary-green: #4a7c59;
-  --dark-green: #2d5016;
-  --light-green: #8bc34a;
-  --accent-green: rgba(124, 179, 66, 0.1);
+  --primary-teal: #229c99;
+  --secondary-teal: #094d4c;
+  --dark-teal: #063938;
+  --light-teal: #2ebab5;
+  --accent-teal: rgba(34, 156, 153, 0.1);
   
-  --background: #f8f9fa;
-  --text-primary: #2c5530;
+  --background: #ffffff;
+  --text-primary: #094d4c;
   --text-secondary: #6c757d;
   --white: #ffffff;
 }
@@ -256,10 +347,15 @@ O site é totalmente responsivo e otimizado para:
 }
 ```
 
-### **Sistema de Email (Candidaturas)**
-- Integração via `mailto:` links
-- Formulários pré-preenchidos
-- Dados estruturados para RH
+### **Sistema de Email (EmailJS)**
+- Sistema profissional sem dependência de backend
+- Dois templates personalizados (Jobs + JobApplication)
+- Validação rigorosa de arquivos (50KB)
+- Encoding Base64 para anexos
+- Tratamento de erros específico
+- Logs de debug em desenvolvimento
+- Feedback educativo para usuários
+- Integração com Gmail via EmailJS
 
 ### **Deploy Automático**
 - **Netlify**: Deploy contínuo via Git
@@ -305,6 +401,14 @@ npm run build      # Build otimizado para produção
 ## 🐛 Troubleshooting
 
 ### **Problemas Comuns**
+
+#### **Sistema de Email**
+- **"Template corrupted"**: Verificar sintaxe dos templates (usar apenas `{{variavel}}`)
+- **"Arquivo muito grande"**: Limite de 50KB - orientar compressão
+- **"Falha no envio"**: Verificar credenciais EmailJS e conexão
+- **Debug mode**: Ativar logs detalhados em desenvolvimento
+
+#### **Performance Issues**
 
 **❌ Erro: "Module not found"**
 ```bash
@@ -369,6 +473,15 @@ Para dúvidas, sugestões ou suporte técnico:
 - **WhatsApp**: +55 (xx) xxxxx-xxxx
 
 ## 📋 Roadmap
+
+### **Funcionalidades Recém-Implementadas** ✅
+- [x] **Sistema EmailJS Completo**: Envio profissional sem backend
+- [x] **Dois Templates Personalizados**: Jobs e JobApplication
+- [x] **Validação de Arquivos**: 50KB com feedback educativo
+- [x] **Sistema de Debug**: Logs detalhados para desenvolvimento
+- [x] **Modal System**: createPortal para isolamento de componentes
+- [x] **Error Handling**: Tratamento específico para cada tipo de erro
+- [x] **File Compression Tips**: Orientações automáticas para usuários
 
 ### **Próximas Funcionalidades**
 - [ ] Sistema de blog/notícias
