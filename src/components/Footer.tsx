@@ -59,7 +59,7 @@ const Footer: React.FC = () => {
               <ul>
                 <li className="cont"><MapPin size={16} /> São Paulo, SP</li>
                 <li className="cont"><Phone size={16} /> (11) 1234-5678</li>
-                <li className="cont"><Mail size={16} /> rh@redealecrim.com.br</li>
+                <li className="cont"><Mail size={16} /> contato@redealecrim.com.br</li>
                 <li className="cont"><Clock size={16} /> Seg-Sex: 8h-18h</li>
               </ul>
             </div>
