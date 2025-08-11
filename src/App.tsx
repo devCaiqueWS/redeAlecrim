@@ -9,6 +9,7 @@ import Contact from './components/Contact';
 import Footer from './components/Footer';
 import Jobs from './components/Jobs';
 import JobApplication from './components/JobApplication';
+import Colaboradores from './components/Colaboradores';
 import WhatsAppPopup from './components/WhatsAppPopup';
 
 function App() {
@@ -59,6 +60,9 @@ function App() {
       } else if (hash === '#jobs') {
         setCurrentView('jobs');
         document.title = 'Trabalhe Conosco - Rede Alecrim';
+      } else if (hash === '#colaboradores') {
+        setCurrentView('colaboradores');
+        document.title = 'Área dos Colaboradores - Rede Alecrim';
       } else {
         setCurrentView('home');
         document.title = 'Rede Alecrim - Site Institucional';
@@ -104,6 +108,16 @@ function App() {
       <div className="App">
         <Header />
         <Jobs />
+        <Footer />
+      </div>
+    );
+  }
+
+  if (currentView === 'colaboradores') {
+    return (
+      <div className="App">
+        <Header />
+        <Colaboradores />
         <Footer />
       </div>
     );
