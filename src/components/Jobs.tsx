@@ -5,6 +5,7 @@ import './Jobs.css';
 import { useScrollAnimation, useStaggerAnimation, useCountAnimation } from '../hooks/useAnimations';
 import JobApplication from './JobApplication';
 import emailjs from '@emailjs/browser';
+import { API_BASE_URL } from '../config/api';
 
 // Interface para as vagas vindas do JSON
 interface VagaJSON {
@@ -92,7 +93,7 @@ const Jobs: React.FC = () => {
     const carregarVagas = async () => {
       try {
         console.log('🔄 Iniciando carregamento das vagas...');
-        const response = await fetch('http://localhost:3001/vagas');
+        const response = await fetch(`${API_BASE_URL}/vagas`);
         const data: VagaJSON[] = await response.json();
         console.log('📦 Dados carregados:', data);
         console.log('📊 Quantidade de vagas carregadas:', data.length);

@@ -160,6 +160,6 @@ app.delete('/colaboradores/:id', async (req, res) => {
   }
 });
 
-app.listen(3001, () => {
-  console.log('API rodando em http://localhost:3001');
+app.listen(process.env.PORT || 3001, () => {
+  console.log(`API rodando em http://localhost:${process.env.PORT || 3001}`);
 });

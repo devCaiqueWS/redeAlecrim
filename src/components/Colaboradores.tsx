@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './Colaboradores.css';
+import { API_BASE_URL } from '../config/api';
 
 const Colaboradores: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -17,7 +18,7 @@ const Colaboradores: React.FC = () => {
     setError('');
     
     try {
-      const response = await fetch('http://localhost:3001/colaboradores/login', {
+      const response = await fetch(`${API_BASE_URL}/colaboradores/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
