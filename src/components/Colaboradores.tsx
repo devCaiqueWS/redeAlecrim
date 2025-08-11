@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './Colaboradores.css';
+import { buildApiUrl } from '../config/api.js';
 
 const Colaboradores: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -17,7 +18,10 @@ const Colaboradores: React.FC = () => {
     setError('');
     
     try {
-      const response = await fetch('http://localhost:3001/colaboradores/login', {
+      const apiUrl = buildApiUrl('/colaboradores/login');
+      console.log('🔐 Fazendo login em:', apiUrl);
+      
+      const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
