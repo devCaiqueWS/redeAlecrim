@@ -48,6 +48,11 @@
   100% { transform: rotate(360deg); }
 }
 
+@keyframes fadeIn {
+  0% { opacity: 0; transform: translateY(-10px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
 .loading-state p {
   color: #666;
   font-size: 1.1rem;
@@ -307,6 +312,7 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
   gap: 30px;
+  align-items: start; /* Evita que cards se estendam para a mesma altura */
 }
 
 .job-card {
@@ -318,7 +324,9 @@
   transition: all 0.3s ease;
   display: flex;
   flex-direction: column;
-  height: 100%;
+  /* Removido height: 100% para permitir expansão natural */
+  position: relative;
+  overflow: hidden; /* Previne overflow durante animações */
 }
 
 .job-card:hover {
@@ -382,11 +390,43 @@
 }
 
 .job-requirements h5,
-.job-benefits h5 {
+.job-benefits h5,
+.job-requirements strong,
+.job-benefits strong {
   font-size: 1rem;
   color: #094d4c;
   margin-bottom: 10px;
   font-weight: 600;
+  display: block;
+}
+
+.benefits-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.benefit-tag {
+  background: rgba(34, 156, 153, 0.1);
+  color: #094d4c;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  border: 1px solid rgba(34, 156, 153, 0.2);
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.benefit-tag:hover {
+  background: rgba(34, 156, 153, 0.2);
+  transform: translateY(-1px);
+}
+
+.benefit-tag.more {
+  background: #f8f9fa;
+  color: #6c757d;
+  border-color: #dee2e6;
 }
 
 .job-requirements ul,
@@ -480,8 +520,10 @@
   background: linear-gradient(135deg, #ffffff 0%, rgba(34, 156, 153, 0.02) 100%);
   border: 2px solid rgba(34, 156, 153, 0.3);
   box-shadow: 0 12px 35px rgba(34, 156, 153, 0.15);
-  transform: scale(1.02);
+  transform: scale(1.01); /* Reduzido para evitar problemas de layout */
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 2; /* Garante que fica por cima dos outros cards */
+  margin-bottom: 20px; /* Espaço extra para não sobrepor outros cards */
 }
 
 .expanded-content {
@@ -489,6 +531,7 @@
   padding-top: 25px;
   border-top: 2px solid rgba(34, 156, 153, 0.1);
   animation: expandIn 0.4s ease-out;
+  overflow: hidden; /* Previne overflow */
 }
 
 @keyframes expandIn {
@@ -496,11 +539,15 @@
     opacity: 0;
     max-height: 0;
     transform: translateY(-10px);
+    padding-top: 0;
+    margin-top: 0;
   }
   100% {
     opacity: 1;
-    max-height: 500px;
+    max-height: 800px; /* Aumentado para acomodar mais conteúdo */
     transform: translateY(0);
+    padding-top: 25px;
+    margin-top: 25px;
   }
 }
 
@@ -654,6 +701,22 @@
   .job-card {
     padding: 20px 18px;
   }
+  
+  /* Cards expandidos em mobile */
+  .job-card.expanded {
+    transform: scale(1); /* Remove scale em mobile para evitar problemas */
+    margin: 10px 0; /* Reduz margem em mobile */
+  }
+  
+  .expanded-content {
+    padding-top: 15px;
+    margin-top: 15px;
+  }
+  
+  .expanded-content .job-section {
+    padding: 12px;
+    margin-bottom: 15px;
+  }
 
   .jobs-cta {
     padding: 30px 20px;
@@ -723,7 +786,7 @@
   }
 }
 
-/* Modal Styles */
+/* Modal Styles - Versão Única e Funcional */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -735,21 +798,148 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
+  z-index: 9999;
   padding: 20px;
-  animation: fadeIn 0.3s ease-out;
+  animation: fadeInModal 0.3s ease-out;
+}
+
+@keyframes fadeInModal {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .modal-content {
   background: white;
   border-radius: 20px;
-  max-width: 800px;
+  max-width: 600px;
   width: 100%;
   max-height: 90vh;
   overflow-y: auto;
   position: relative;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-  animation: slideInUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: slideInModal 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes slideInModal {
+  from {
+    transform: translateY(-50px) scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+.curriculum-modal {
+  padding: 0;
+}
+
+.modal-header {
+  padding: 30px 30px 20px 30px;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  background: white;
+  z-index: 10;
+}
+
+.modal-header h3 {
+  margin: 0;
+  color: #229c99;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.modal-close-btn {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: #999;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.modal-close-btn:hover {
+  background: #f0f0f0;
+  color: #333;
+}
+
+.curriculum-form {
+  padding: 20px 30px 30px 30px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  color: #333;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 12px 15px;
+  border: 2px solid #e9ecef;
+  border-radius: 10px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  font-family: inherit;
+  box-sizing: border-box;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #229c99;
+  box-shadow: 0 0 0 3px rgba(34, 156, 153, 0.1);
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.form-actions {
+  display: flex;
+  gap: 15px;
+  justify-content: flex-end;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
+}
+
+.modal-info {
+  padding: 0 30px 30px 30px;
+  font-size: 0.9rem;
+  color: #666;
+  background: #f8f9fa;
+  margin-top: 20px;
+}
+
+.modal-info p {
+  margin: 15px 0;
+  line-height: 1.5;
 }
 
 .modal-close {
@@ -975,3 +1165,5 @@
     font-size: 0.9rem;
   }
 }
+
+/* Responsive Design - Mobile */

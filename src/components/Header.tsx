@@ -39,6 +39,7 @@ const Header: React.FC = () => {
 
         <div className="header-actions animate-fade-in-right delay-700">
           <a href="#jobs" className="btn btn-primary hover-glow">Trabalhe Conosco</a>
+          <a href="#colaboradores" className="btn btn-outline hover-glow">Área dos Colaboradores</a>
         </div>
 
         <div className={`mobile-menu-toggle ${isMenuOpen ? 'active' : ''}`} onClick={toggleMenu}>

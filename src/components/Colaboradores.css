@@ -1,0 +1,242 @@
+.colaboradores-login {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  background: linear-gradient(135deg, #f8fdfc 0%, #e8f8f7 100%);
+  padding: 120px 0 60px;
+}
+
+.login-wrapper {
+  max-width: 500px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.login-header {
+  margin-bottom: 40px;
+}
+
+.login-header .section-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--primary-teal);
+  margin-bottom: 16px;
+}
+
+.login-header .section-subtitle {
+  font-size: 1.1rem;
+  color: var(--dark-gray);
+  line-height: 1.6;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.login-form-container {
+  background: white;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(34, 156, 153, 0.1);
+  border: 1px solid rgba(34, 156, 153, 0.1);
+}
+
+.login-form {
+  text-align: left;
+}
+
+.form-group {
+  margin-bottom: 24px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: var(--primary-teal);
+  font-size: 0.95rem;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid rgba(34, 156, 153, 0.2);
+  border-radius: 12px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background: #f8fdfc;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: var(--primary-teal);
+  background: white;
+  box-shadow: 0 0 0 3px rgba(34, 156, 153, 0.1);
+}
+
+.btn-login {
+  width: 100%;
+  padding: 14px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 24px;
+}
+
+.login-help {
+  text-align: center;
+  padding-top: 20px;
+  border-top: 1px solid rgba(34, 156, 153, 0.1);
+}
+
+.forgot-password {
+  color: var(--primary-teal);
+  text-decoration: none;
+  font-weight: 500;
+  display: block;
+  margin-bottom: 12px;
+  transition: color 0.3s ease;
+}
+
+.forgot-password:hover {
+  color: var(--secondary-teal);
+}
+
+.login-note {
+  font-size: 0.9rem;
+  color: var(--dark-gray);
+  margin: 0;
+}
+
+/* Dashboard Styles */
+.colaboradores-dashboard {
+  padding: 120px 0 60px;
+  background: linear-gradient(135deg, #f8fdfc 0%, #e8f8f7 100%);
+  min-height: 100vh;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.dashboard-header .section-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--primary-teal);
+  margin: 0;
+}
+
+.btn-logout {
+  padding: 10px 20px;
+  font-size: 0.95rem;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+  margin-top: 40px;
+}
+
+.dashboard-card {
+  background: white;
+  padding: 32px;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(34, 156, 153, 0.1);
+  border: 1px solid rgba(34, 156, 153, 0.05);
+  text-align: center;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.dashboard-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--primary-teal), var(--light-teal));
+}
+
+.dashboard-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(34, 156, 153, 0.15);
+}
+
+.card-icon {
+  font-size: 3rem;
+  margin-bottom: 20px;
+  display: block;
+}
+
+.dashboard-card h3 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--primary-teal);
+  margin-bottom: 12px;
+}
+
+.dashboard-card p {
+  color: var(--dark-gray);
+  margin-bottom: 24px;
+  line-height: 1.6;
+}
+
+.dashboard-card .btn-sm {
+  margin-top: auto;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .login-header .section-title,
+  .dashboard-header .section-title {
+    font-size: 2rem;
+  }
+
+  .login-form-container {
+    padding: 30px 20px;
+    margin: 0 20px;
+  }
+
+  .dashboard-header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .dashboard-card {
+    padding: 24px;
+  }
+
+  .colaboradores-login,
+  .colaboradores-dashboard {
+    padding: 100px 20px 40px;
+  }
+}
+
+@media (max-width: 480px) {
+  .login-header .section-title,
+  .dashboard-header .section-title {
+    font-size: 1.8rem;
+  }
+
+  .login-form-container {
+    padding: 24px 16px;
+  }
+
+  .dashboard-card {
+    padding: 20px;
+  }
+
+  .card-icon {
+    font-size: 2.5rem;
+  }
+}

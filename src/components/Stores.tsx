@@ -50,9 +50,9 @@ const Stores: React.FC = () => {
   const storeCategories = [
     {
       id: 'boti',
-      title: 'Lojas oBoticário',
+      title: 'Lojas O Boticário',
       icon: <FlaskConical size={24} />,
-      description: 'Nossas lojas oBoticário oferecem uma ampla variedade de produtos de beleza e cosméticos, com atendimento especializado e as melhores marcas do mercado.',
+      description: 'Nossas lojas O Boticário oferecem uma ampla variedade de produtos de beleza e cosméticos, com atendimento especializado e as melhores marcas do mercado.',
       stores: [
         {
           id: 'AL02',

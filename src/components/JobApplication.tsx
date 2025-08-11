@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import emailjs from '@emailjs/browser';
 import './JobApplication.css';
 
 interface JobApplicationProps {
@@ -7,6 +8,58 @@ interface JobApplicationProps {
 }
 
 const JobApplication: React.FC<JobApplicationProps> = ({ jobId = 'general', jobTitle = 'Banco de Talentos' }) => {
+  // Inicializar EmailJS com credenciais de produção
+  React.useEffect(() => {
+    emailjs.init('iwakafYjT8tuM6Tyv'); // Public Key
+    console.log('🚀 [EmailJS] JobApplication inicializado - Template: template_0zrs24h');
+  }, []);
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const testJobApplicationTemplate = async () => {
+    
+    try {
+      const testParams = {
+        to_email: 'suporte.bi@redealecrim.com.br',
+        job_title: 'Operador de Caixa - TESTE',
+        job_id: 'teste-template-001',
+        candidate_name: 'João Silva Teste',
+        candidate_email: 'joao.teste@email.com',
+        candidate_phone: '(11) 99999-9999',
+        candidate_cpf: '123.456.789-00',
+        birth_date: '15/03/1990',
+        address: 'Rua Teste, 123',
+        city: 'São Paulo',
+        state: 'SP',
+        education: 'Ensino Médio Completo',
+        experience: 'Experiência em atendimento ao cliente',
+        availability: 'Integral',
+        salary_expectation: 'R$ 1.500,00',
+        message: 'Teste do novo template EmailJS para JobApplication',
+        resume_name: 'curriculo-teste.pdf',
+        resume_size: '2.1MB',
+        resume_base64: 'VGVzdGUgZGUgY3VycmN1bG8=',
+        photo_name: 'foto-teste.jpg',
+        photo_size: '1.2MB',
+        photo_base64: 'VGVzdGUgZGUgZm90bw==',
+        has_photo: 'SIM',
+        data_envio: new Date().toLocaleString('pt-BR'),
+        subject: 'TESTE - Nova Candidatura JobApplication'
+      };
+
+      const response = await emailjs.send(
+        'service_dkcbwgh',
+        'template_0zrs24h',
+        testParams
+      );
+
+      console.log('✅ [TESTE] Template JobApplication funcionando:', response);
+      alert('✅ Teste do template JobApplication realizado com sucesso!');
+      
+    } catch (error) {
+      console.error('❌ [TESTE] Erro no template JobApplication:', error);
+      alert('❌ Erro no teste do template. Veja o console.');
+    }
+  };
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -29,6 +82,8 @@ const JobApplication: React.FC<JobApplicationProps> = ({ jobId = 'general', jobT
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitMessage, setSubmitMessage] = useState('');
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData({
@@ -40,47 +95,258 @@ const JobApplication: React.FC<JobApplicationProps> = ({ jobId = 'general', jobT
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      // Validar tipo de arquivo
+      const allowedTypes = {
+        resume: ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'],
+        photo: ['image/jpeg', 'image/jpg', 'image/png']
+      };
+      
+      const fieldName = e.target.name as keyof typeof allowedTypes;
+      if (allowedTypes[fieldName] && !allowedTypes[fieldName].includes(file.type)) {
+        if (fieldName === 'resume') {
+          alert('Por favor, selecione um arquivo PDF, DOC ou DOCX para o currículo.');
+        } else {
+          alert('Por favor, selecione uma imagem JPG ou PNG para a foto.');
+        }
+        e.target.value = '';
+        return;
+      }
+
+      // Verificar tamanho (máximo 50KB)
+      const maxSize = 50 * 1024; // 50KB
+      if (file.size > maxSize) {
+        if (fieldName === 'resume') {
+          alert(`Currículo muito grande (${(file.size / 1024).toFixed(1)}KB).
+
+LIMITE: 50KB máximo
+
+DICAS para reduzir o tamanho:
+• Use sites como SmallPDF ou ILovePDF
+• Salve o PDF com menor qualidade  
+• Remova imagens desnecessárias
+• Ou entre em contato pelo WhatsApp
+
+Por favor, selecione um arquivo menor.`);
+        } else {
+          alert(`Foto muito grande (${(file.size / 1024).toFixed(1)}KB).
+
+LIMITE: 50KB máximo
+
+DICAS para reduzir o tamanho:
+• Use compressores online como TinyPNG
+• Redimensione a imagem para menor resolução
+• Salve em qualidade menor (JPEG)
+• Ou entre em contato pelo WhatsApp
+
+Por favor, selecione um arquivo menor.`);
+        }
+        e.target.value = '';
+        return;
+      }
+
       setFiles({
         ...files,
         [e.target.name]: file
       });
+      
+      console.log('📎 Arquivo selecionado:', file.name, 'Tamanho:', (file.size / 1024).toFixed(2) + 'KB');
+    }
+  };
+
+  // Função para enviar candidatura via EmailJS
+  const sendJobApplication = async (resumeFile: File, photoFile?: File) => {
+    console.log('📧 [EmailJS] Iniciando envio de candidatura...');
+    
+    try {
+      // Verificar se arquivo ultrapassa 50KB
+      const maxFileSize = 50 * 1024; // 50KB
+      const isResumeTooBig = resumeFile.size > maxFileSize;
+      const isPhotoTooBig = photoFile && photoFile.size > maxFileSize;
+
+      if (isResumeTooBig) {
+        return {
+          success: false,
+          message: `Currículo muito grande (${(resumeFile.size / 1024).toFixed(1)}KB). 
+
+LIMITE: 50KB máximo para envio por email.
+
+SOLUÇÕES:
+• Comprima o arquivo usando SmallPDF
+• Entre em contato via WhatsApp  
+• Envie por email diretamente
+
+Por favor, tente com um arquivo menor.`
+        };
+      }
+
+      if (isPhotoTooBig) {
+        return {
+          success: false,
+          message: `Foto muito grande (${(photoFile!.size / 1024).toFixed(1)}KB). 
+
+LIMITE: 50KB máximo para envio por email.
+
+SOLUÇÕES:
+• Comprima a imagem usando TinyPNG
+• Redimensione para menor resolução
+• Entre em contato via WhatsApp
+
+Por favor, tente com um arquivo menor.`
+        };
+      }
+
+      console.log('✅ [EmailJS] Arquivos dentro do limite - processando...');
+
+      // Converter currículo para base64
+      const resumeBase64 = await new Promise<string>((resolve) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          const result = reader.result as string;
+          resolve(result.split(',')[1]); // Remove o prefixo data:mime;base64,
+        };
+        reader.readAsDataURL(resumeFile);
+      });
+
+      let photoBase64 = '';
+      if (photoFile) {
+        photoBase64 = await new Promise<string>((resolve) => {
+          const reader = new FileReader();
+          reader.onload = () => {
+            const result = reader.result as string;
+            resolve(result.split(',')[1]); // Remove o prefixo data:mime;base64,
+          };
+          reader.readAsDataURL(photoFile);
+        });
+      }
+
+        // Preparar dados do template
+        const templateParams = {
+          to_email: 'suporte.bi@redealecrim.com.br',
+          job_title: jobTitle,
+          job_id: jobId,
+          candidate_name: formData.name,
+          candidate_email: formData.email,
+          candidate_phone: formData.phone,
+          candidate_cpf: formData.cpf,
+          birth_date: formData.birthDate,
+          address: formData.address,
+          city: formData.city,
+          state: formData.state,
+          education: formData.education,
+          experience: formData.experience,
+          availability: formData.availability,
+          salary_expectation: formData.salary,
+          message: formData.message || 'Nenhuma observação adicional.',
+          resume_name: resumeFile.name,
+          resume_size: `${(resumeFile.size / 1024).toFixed(2)}KB`,
+          resume_base64: resumeBase64,
+          photo_name: photoFile?.name || 'Não enviada',
+          photo_size: photoFile ? `${(photoFile.size / 1024).toFixed(2)}KB` : 'N/A',
+          photo_base64: photoBase64 || '',
+          has_photo: photoFile ? 'SIM - Anexada' : 'NÃO - Opcional',
+          data_envio: new Date().toLocaleString('pt-BR'),
+          subject: `Nova Candidatura - ${formData.name} - ${jobTitle}`
+        };      console.log('📧 [EmailJS] Dados do template preparados:', {
+        candidate_name: templateParams.candidate_name,
+        job_title: templateParams.job_title,
+        resume_name: templateParams.resume_name,
+        resume_size: templateParams.resume_size,
+        has_photo: templateParams.has_photo
+      });
+
+      console.log('📤 [EmailJS] Enviando candidatura...');
+
+      const response = await emailjs.send(
+        'service_dkcbwgh',      // Service ID do Gmail
+        'template_0zrs24h',     // Template ID - Job Application
+        templateParams,         
+        'iwakafYjT8tuM6Tyv'    // Public Key
+      );
+
+      console.log('✅ [EmailJS] Candidatura enviada com sucesso:', response);
+
+      return {
+        success: true,
+        message: `Candidatura enviada com sucesso para ${jobTitle}! Recebemos seus documentos e informações. Nossa equipe de RH entrará em contato em breve.`
+      };
+
+    } catch (error) {
+      console.error('❌ [EmailJS] Erro no envio:', error);
+      
+      // Tratamento de erros específicos
+      if (error && typeof error === 'object' && 'status' in error) {
+        const emailError = error as { status: number; text: string };
+        if (emailError.status === 413) {
+          return {
+            success: false,
+            message: 'Arquivos muito grandes para envio. Por favor, comprima os arquivos e tente novamente.'
+          };
+        }
+      }
+
+      return {
+        success: false,
+        message: 'Erro no envio da candidatura. Tente novamente em alguns instantes.'
+      };
     }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Validar se currículo foi anexado
+    if (!files.resume) {
+      setSubmitStatus('error');
+      setSubmitMessage('Por favor, anexe seu currículo (arquivo PDF, DOC ou DOCX)');
+      return;
+    }
+
     setIsSubmitting(true);
+    setSubmitStatus('idle');
+    setSubmitMessage('');
 
     try {
-      // Simulação do envio do formulário
-      // Aqui você implementaria a integração com um serviço de email
-      console.log('Dados do formulário:', formData);
-      console.log('Arquivos:', files);
+      console.log('🚀 [JobApplication] Iniciando envio de candidatura...');
       
-      // Simular delay de envio
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      const result = await sendJobApplication(files.resume, files.photo || undefined);
       
-      alert(`Candidatura enviada com sucesso para ${jobTitle}! Entraremos em contato em breve.`);
+      if (result.success) {
+        setSubmitStatus('success');
+        setSubmitMessage(result.message);
+        
+        // Reset do formulário após sucesso
+        setFormData({
+          name: '',
+          email: '',
+          phone: '',
+          cpf: '',
+          birthDate: '',
+          address: '',
+          city: '',
+          state: '',
+          education: '',
+          experience: '',
+          availability: '',
+          salary: '',
+          message: ''
+        });
+        setFiles({ resume: null, photo: null });
+        
+        // Limpar inputs de arquivo
+        const resumeInput = document.getElementById('resume') as HTMLInputElement;
+        const photoInput = document.getElementById('photo') as HTMLInputElement;
+        if (resumeInput) resumeInput.value = '';
+        if (photoInput) photoInput.value = '';
+        
+      } else {
+        setSubmitStatus('error');
+        setSubmitMessage(result.message);
+      }
       
-      // Reset do formulário
-      setFormData({
-        name: '',
-        email: '',
-        phone: '',
-        cpf: '',
-        birthDate: '',
-        address: '',
-        city: '',
-        state: '',
-        education: '',
-        experience: '',
-        availability: '',
-        salary: '',
-        message: ''
-      });
-      setFiles({ resume: null, photo: null });
     } catch (error) {
-      alert('Erro ao enviar candidatura. Tente novamente.');
+      console.error('❌ Erro inesperado:', error);
+      setSubmitStatus('error');
+      setSubmitMessage('Erro inesperado no envio. Tente novamente.');
     } finally {
       setIsSubmitting(false);
     }
@@ -96,6 +362,13 @@ const JobApplication: React.FC<JobApplicationProps> = ({ jobId = 'general', jobT
         </div>
 
         <div className="application-form fade-in">
+          {/* Mensagem de feedback */}
+          {submitMessage && (
+            <div className={`submit-message ${submitStatus === 'success' ? 'success' : 'error'}`}>
+              {submitMessage}
+            </div>
+          )}
+          
           <form onSubmit={handleSubmit}>
             <div className="form-section">
               <h3>Dados Pessoais</h3>
