@@ -484,7 +484,7 @@ const Stores: React.FC = () => {
                 <a href="#jobs" className="btn btn-primary hover-glow">
                   Trabalhe Conosco
                 </a>
-                <a href="https://revenda.boticario.com.br" target='_blank' className="btn btn-outline hover-glow">
+                <a href="https://revenda.boticario.com.br" target='_blank' rel="noreferrer" className="btn btn-outline hover-glow">
                   Seja um Revendedor
                 </a>
               </div>
