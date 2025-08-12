@@ -6,6 +6,8 @@ import { useScrollAnimation, useStaggerAnimation, useCountAnimation } from '../h
 import JobApplication from './JobApplication';
 import emailjs from '@emailjs/browser';
 import { API_ENDPOINTS } from '../config/api.js';
+import { useToast } from '../hooks/useToast';
+import ToastContainer from './ToastContainer';
 
 // Interface para as vagas vindas do JSON
 interface VagaJSON {
@@ -45,6 +47,7 @@ interface JobCategory {
 }
 
 const Jobs: React.FC = () => {
+  const { toasts, showSuccess, showError, removeToast } = useToast();
   const [vagas, setVagas] = useState<VagaJSON[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedJob, setSelectedJob] = useState<VagaJSON | null>(null);
@@ -400,7 +403,7 @@ Atenciosamente.`;
       const hasValidExtension = allowedExtensions.some(ext => fileName.endsWith(ext));
       
       if (!allowedTypes.includes(file.type) && !hasValidExtension) {
-        alert('Por favor, selecione apenas arquivos PDF, DOC ou DOCX.');
+        showError('Por favor, selecione apenas arquivos PDF, DOC ou DOCX.');
         e.target.value = '';
         return;
       }
@@ -409,7 +412,7 @@ Atenciosamente.`;
       const maxSize = 50 * 1024; // 50KB
       
       if (file.size > maxSize) {
-        alert(`Arquivo muito grande (${(file.size / 1024).toFixed(1)}KB). 
+        showError(`Arquivo muito grande (${(file.size / 1024).toFixed(1)}KB). 
 
 LIMITE: 50KB máximo
 
@@ -453,11 +456,11 @@ Por favor, selecione um arquivo menor.`);
       );
 
       console.log('✅ [TESTE] Email de teste enviado com sucesso:', response);
-      alert('✅ Teste EmailJS realizado com sucesso! Verifique o email.');
+      showSuccess('✅ Teste EmailJS realizado com sucesso! Verifique o email.');
       
     } catch (error) {
       console.error('❌ [TESTE] Erro no teste EmailJS:', error);
-      alert('❌ Erro no teste EmailJS. Veja o console para detalhes.');
+      showError('❌ Erro no teste EmailJS. Veja o console para detalhes.');
     }
   };
 
@@ -802,6 +805,7 @@ Sistema Automatizado - Site Rede Alecrim
         <JobApplication 
           jobId={selectedJob.id} 
           jobTitle={selectedJob.titulo}
+          onBackToJobs={handleBackToJobs}
         />
       </div>
     );
@@ -809,6 +813,7 @@ Sistema Automatizado - Site Rede Alecrim
 
   return (
     <>
+      <ToastContainer toasts={toasts} onRemoveToast={removeToast} />
       {/* Modal de Cadastro de Currículo - Estilos Inline para Garantir Funcionamento */}
       {showCurriculumModal && createPortal(
         <div 

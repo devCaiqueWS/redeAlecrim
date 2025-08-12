@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
 import { Phone, Mail, Clock } from 'lucide-react';
 import './Contact.css';
+import { useToast } from '../hooks/useToast';
+import ToastContainer from './ToastContainer';
 
 const Contact: React.FC = () => {
+  const { toasts, showSuccess, removeToast } = useToast();
+  
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -20,13 +24,13 @@ const Contact: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Aqui você implementará a lógica de envio do formulário
-    console.log('Formulário enviado:', formData);
-    alert('Mensagem enviada com sucesso! Entraremos em contato em breve.');
+    showSuccess('Mensagem enviada com sucesso! Entraremos em contato em breve.');
   };
 
   return (
-    <section id="contact" className="contact section">
+    <>
+      <ToastContainer toasts={toasts} onRemoveToast={removeToast} />
+      <section id="contact" className="contact section">
       <div className="container">
         <div className="section-header fade-in">
           <h2>Entre em Contato</h2>
@@ -67,7 +71,7 @@ const Contact: React.FC = () => {
               </div>
               <div>
                 <h4>Horário de Funcionamento</h4>
-                <p>Segunda a Sexta: 7h às 17h</p>
+                <p>Segunda a Sexta: 7h30-16h50</p>
               </div>
             </div>
           </div>
@@ -143,6 +147,7 @@ const Contact: React.FC = () => {
         </div>
       </div>
     </section>
+    </>
   );
 };
 

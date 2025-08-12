@@ -1,13 +1,18 @@
 import React, { useState } from 'react';
 import emailjs from '@emailjs/browser';
 import './JobApplication.css';
+import { useToast } from '../hooks/useToast';
+import ToastContainer from './ToastContainer';
 
 interface JobApplicationProps {
   jobId?: string;
   jobTitle?: string;
+  onBackToJobs?: () => void;
 }
 
-const JobApplication: React.FC<JobApplicationProps> = ({ jobId = 'general', jobTitle = 'Banco de Talentos' }) => {
+const JobApplication: React.FC<JobApplicationProps> = ({ jobId = 'general', jobTitle = 'Banco de Talentos', onBackToJobs }) => {
+  const { toasts, showSuccess, showError, removeToast } = useToast();
+  
   // Inicializar EmailJS com credenciais de produção
   React.useEffect(() => {
     emailjs.init('iwakafYjT8tuM6Tyv'); // Public Key
@@ -53,11 +58,11 @@ const JobApplication: React.FC<JobApplicationProps> = ({ jobId = 'general', jobT
       );
 
       console.log('✅ [TESTE] Template JobApplication funcionando:', response);
-      alert('✅ Teste do template JobApplication realizado com sucesso!');
+      showSuccess('✅ Teste do template JobApplication realizado com sucesso!');
       
     } catch (error) {
       console.error('❌ [TESTE] Erro no template JobApplication:', error);
-      alert('❌ Erro no teste do template. Veja o console.');
+      showError('❌ Erro no teste do template. Veja o console.');
     }
   };
   const [formData, setFormData] = useState({
@@ -104,19 +109,18 @@ const JobApplication: React.FC<JobApplicationProps> = ({ jobId = 'general', jobT
       const fieldName = e.target.name as keyof typeof allowedTypes;
       if (allowedTypes[fieldName] && !allowedTypes[fieldName].includes(file.type)) {
         if (fieldName === 'resume') {
-          alert('Por favor, selecione um arquivo PDF, DOC ou DOCX para o currículo.');
+          showError('Por favor, selecione um arquivo PDF, DOC ou DOCX para o currículo.');
         } else {
-          alert('Por favor, selecione uma imagem JPG ou PNG para a foto.');
+          showError('Por favor, selecione uma imagem JPG ou PNG para a foto.');
         }
         e.target.value = '';
         return;
       }
 
-      // Verificar tamanho (máximo 50KB)
       const maxSize = 50 * 1024; // 50KB
       if (file.size > maxSize) {
         if (fieldName === 'resume') {
-          alert(`Currículo muito grande (${(file.size / 1024).toFixed(1)}KB).
+          showError(`Currículo muito grande (${(file.size / 1024).toFixed(1)}KB).
 
 LIMITE: 50KB máximo
 
@@ -128,7 +132,7 @@ DICAS para reduzir o tamanho:
 
 Por favor, selecione um arquivo menor.`);
         } else {
-          alert(`Foto muito grande (${(file.size / 1024).toFixed(1)}KB).
+          showError(`Foto muito grande (${(file.size / 1024).toFixed(1)}KB).
 
 LIMITE: 50KB máximo
 
@@ -353,7 +357,9 @@ Por favor, tente com um arquivo menor.`
   };
 
   return (
-    <section id={`apply-${jobId}`} className="job-application section">
+    <>
+      <ToastContainer toasts={toasts} onRemoveToast={removeToast} />
+      <section id={`apply-${jobId}`} className="job-application section">
       <div className="container">
         <div className="section-header fade-in">
           <h2>Candidatar-se</h2>
@@ -607,14 +613,25 @@ Por favor, tente com um arquivo menor.`
               >
                 {isSubmitting ? 'Enviando...' : 'Enviar Candidatura'}
               </button>
-              <a href="#jobs" className="btn btn-outline">
-                Voltar às Vagas
-              </a>
+              {onBackToJobs ? (
+                <button 
+                  type="button"
+                  className="btn btn-outline"
+                  onClick={onBackToJobs}
+                >
+                  Voltar às Vagas
+                </button>
+              ) : (
+                <a href="#jobs" className="btn btn-outline">
+                  Voltar às Vagas
+                </a>
+              )}
             </div>
           </form>
         </div>
       </div>
     </section>
+    </>
   );
 };
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import './Footer.css';
-import { Instagram, Facebook, Linkedin, MessageCircle, MapPin, Phone, Mail, Clock } from 'lucide-react';
+import { Instagram, Linkedin, MessageCircle, MapPin, Phone, Mail, Clock } from 'lucide-react';
 import { useScrollAnimation, useStaggerAnimation } from '../hooks/useAnimations';
 
 const Footer: React.FC = () => {
@@ -22,10 +22,9 @@ const Footer: React.FC = () => {
               produtos de qualidade e atendimento especializado há mais de 45 anos.
             </p>
             <div className={`social-icons ${footerVisible ? 'animate-fade-in-up delay-400' : ''}`}>
-              <a href="https://instagram.com" className="social-link hover-lift animate-bounce-in delay-500" aria-label="Instagram" target="_blank" rel="noopener noreferrer"><Instagram /></a>
-              <a href="https://facebook.com" className="social-link hover-lift animate-bounce-in delay-600" aria-label="Facebook" target="_blank" rel="noopener noreferrer"><Facebook /></a>
-              <a href="https://linkedin.com" className="social-link hover-lift animate-bounce-in delay-700" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer"><Linkedin /></a>
-              <a href="https://wa.me/" className="social-link hover-lift animate-bounce-in delay-800" aria-label="WhatsApp" target="_blank" rel="noopener noreferrer"><MessageCircle /></a>
+              <a href="https://www.instagram.com/redealecrim" title='Instagram' className="social-link hover-lift animate-bounce-in delay-500" aria-label="Instagram" target="_blank" rel="noopener noreferrer"><Instagram /></a>
+              <a href="https://www.linkedin.com/company/o-boticário-cp-alecrim" title='LinkedIn' className="social-link hover-lift animate-bounce-in delay-700" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer"><Linkedin /></a>
+              <a href="https://wa.me/5508007440010?text=Ol%C3%A1%2C%20vim%20pelo%20site%2C%20gostaria%20de%20falar%20com%20a%20loja%207768" title='WhatsApp' className="social-link hover-lift animate-bounce-in delay-800" aria-label="WhatsApp" target="_blank" rel="noopener noreferrer"><MessageCircle /></a>
             </div>
           </div>
 
@@ -50,7 +49,7 @@ const Footer: React.FC = () => {
               <ul>
                 <li><a href="#stores" className="footer-link">Lojas O Boticário</a></li>
                 <li><a href="#stores" className="footer-link">Lojas QDB</a></li>
-                <li><a href="#stores" className="footer-link">Venda Direta (VD)</a></li>
+                <li><a href="#stores" className="footer-link">Espaço Revendedor</a></li>
               </ul>
             </div>
 
@@ -60,7 +59,7 @@ const Footer: React.FC = () => {
                 <li className="cont"><MapPin size={16} /> São Paulo, SP</li>
                 <li className="cont"><Phone size={16} /> (11) 1234-5678</li>
                 <li className="cont"><Mail size={16} /> contato@redealecrim.com.br</li>
-                <li className="cont"><Clock size={16} /> Seg-Sex: 8h-18h</li>
+                <li className="cont"><Clock size={16} /> Seg-Sex: 7h30-16h50</li>
               </ul>
             </div>
           </div>
