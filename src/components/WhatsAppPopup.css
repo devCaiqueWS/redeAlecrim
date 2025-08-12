@@ -141,6 +141,23 @@
   box-shadow: 0 4px 16px rgba(37, 211, 102, 0.3);
 }
 
+/* Estilo para quando o texto está escondido */
+.whatsapp-popup-btn.text-hidden {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  padding: 0;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  transition: all 0.3s ease;
+  animation: pulse 2s infinite;
+}
+
+.whatsapp-popup-btn.text-hidden:hover {
+  transform: scale(1.1);
+}
+
 .whatsapp-float-btn {
   width: 56px;
   height: 56px;

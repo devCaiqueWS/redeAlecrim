@@ -35,6 +35,11 @@ const Header: React.FC = () => {
             <li className="animate-fade-in-down delay-400"><a href="/#gallery" onClick={() => setIsMenuOpen(false)} className="nav-link">Galeria</a></li>
             <li className="animate-fade-in-down delay-500"><a href="/#contact" onClick={() => setIsMenuOpen(false)} className="nav-link">Contato</a></li>
           </ul>
+          
+          <div className="mobile-actions">
+            <a href="#jobs" onClick={() => setIsMenuOpen(false)} className="btn btn-primary mobile-btn">Trabalhe Conosco</a>
+            <a href="#colaboradores" onClick={() => setIsMenuOpen(false)} className="btn btn-outline mobile-btn">Área dos Colaboradores</a>
+          </div>
         </nav>
 
         <div className="header-actions animate-fade-in-right delay-700">

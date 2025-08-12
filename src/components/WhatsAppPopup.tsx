@@ -4,14 +4,23 @@ import './WhatsAppPopup.css';
 
 const WhatsAppPopup: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const [showText, setShowText] = useState(true);
 
   useEffect(() => {
     // Mostrar o popup após 3 segundos
-    const timer = setTimeout(() => {
+    const showTimer = setTimeout(() => {
       setIsVisible(true);
     }, 3000);
 
-    return () => clearTimeout(timer);
+    // Esconder o texto após 15 segundos de permanência na página
+    const hideTextTimer = setTimeout(() => {
+      setShowText(false);
+    }, 15000);
+
+    return () => {
+      clearTimeout(showTimer);
+      clearTimeout(hideTextTimer);
+    };
   }, []);
 
   const handleWhatsAppClick = () => {
@@ -24,15 +33,17 @@ const WhatsAppPopup: React.FC = () => {
   return (
     <div className="whatsapp-popup">
       <button 
-        className="whatsapp-popup-btn"
+        className={`whatsapp-popup-btn ${!showText ? 'text-hidden' : ''}`}
         onClick={handleWhatsAppClick}
         aria-label="Comprar pelo WhatsApp"
       >
         <MessageCircle size={24} />
-        <span>
-          Compre pelo whatsapp<br />
-          e receba ainda hoje
-        </span>
+        {showText && (
+          <span>
+            Compre pelo whatsapp<br />
+            e receba ainda hoje
+          </span>
+        )}
       </button>
     </div>
   );

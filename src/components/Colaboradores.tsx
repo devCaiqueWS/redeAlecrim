@@ -76,9 +76,6 @@ const Colaboradores: React.FC = () => {
           <div className="login-wrapper">
             <div className="login-header">
               <h1 className="section-title">Área dos Colaboradores</h1>
-              <p className="section-subtitle">
-                Faça login para acessar informações exclusivas, benefícios e recursos internos.
-              </p>
             </div>
 
             <div className="login-form-container">
@@ -148,9 +145,7 @@ const Colaboradores: React.FC = () => {
             </div>
 
             <div className="login-help">
-              <p>Problemas para acessar? Entre em contato com o suporte:</p>
-              <p><strong>E-mail:</strong> suporte.bi@redealecrim.com.br</p>
-              <p><strong>WhatsApp:</strong> (11) 99999-9999</p>
+              <p>Problemas para acessar? Entre em contato com o suporte!</p>
             </div>
           </div>
         </div>

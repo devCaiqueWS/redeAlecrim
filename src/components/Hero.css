@@ -302,44 +302,77 @@
 
 /* Mobile styles */
 @media (max-width: 768px) {
+  .hero {
+    padding: 120px 0 60px;
+    min-height: 70vh;
+  }
+
   .hero .container {
     grid-template-columns: 1fr;
-    gap: 50px;
+    gap: 40px;
     text-align: center;
+    padding: 0 15px;
   }
 
   .hero-title {
     font-family: 'Playfair Display', 'Georgia', serif;
-    font-size: 2.5rem;
+    font-size: 2.2rem;
+    line-height: 1.2;
   }
 
   .hero-title-logo {
-    width: 280px;
-    max-width: 90vw;
+    width: 300px;
+    max-width: 85vw;
   }
 
   .hero-subtitle {
-    font-size: 1.1rem;
+    font-size: 1rem;
+    margin-bottom: 30px;
+    padding: 0 10px;
   }
 
   .hero-actions {
     justify-content: center;
+    gap: 15px;
+    flex-direction: column;
+    align-items: center;
   }
 
   .hero-btn {
-    padding: 12px 25px;
+    padding: 14px 30px;
+    font-size: 1rem;
+    width: 100%;
+    max-width: 280px;
+  }
+
+  .hero-image-container {
+    width: 100%;
+    max-width: 380px;
+    height: 280px;
+    margin: 0 auto;
+  }
+
+  .image-placeholder {
+    width: 100%;
+    max-width: 380px;
+    height: 280px;
+    margin: 0 auto;
+  }
+
+  .placeholder-content h3 {
+    font-size: 1.6rem;
+  }
+
+  .placeholder-content p {
     font-size: 1rem;
   }
 
-  .hero-image-container,
-  .image-placeholder {
-    width: 100%;
-    max-width: 450px;
-    height: 350px;
+  .beauty-icon {
+    font-size: 3rem;
   }
 
   .slide-overlay {
-    padding: 20px;
+    padding: 15px;
   }
 
   .slide-overlay h4 {
@@ -353,5 +386,63 @@
   .indicator {
     width: 8px;
     height: 8px;
+  }
+
+  .hero-scroll {
+    bottom: 20px;
+  }
+
+  .scroll-indicator {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero {
+    padding: 100px 0 50px;
+    min-height: 65vh;
+  }
+
+  .hero .container {
+    padding: 0 10px;
+    gap: 30px;
+  }
+
+  .hero-title {
+    font-size: 1.8rem;
+  }
+
+  .hero-title-logo {
+    width: 250px;
+    max-width: 90vw;
+  }
+
+  .hero-subtitle {
+    font-size: 0.95rem;
+    margin-bottom: 25px;
+  }
+
+  .hero-btn {
+    padding: 12px 25px;
+    font-size: 0.95rem;
+    max-width: 250px;
+  }
+
+  .hero-image-container,
+  .image-placeholder {
+    height: 240px;
+    max-width: 320px;
+  }
+
+  .placeholder-content h3 {
+    font-size: 1.4rem;
+  }
+
+  .beauty-icon {
+    font-size: 2.5rem;
+  }
+
+  .scroll-indicator {
+    display: none;
   }
 }

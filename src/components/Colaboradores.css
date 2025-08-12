@@ -5,7 +5,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 2rem 0;
+  padding: 8rem 0 6rem;
 }
 
 .login-wrapper {
@@ -170,7 +170,7 @@
 /* Responsividade */
 @media (max-width: 768px) {
   .colaboradores-login {
-    padding: 1rem;
+    padding: 3rem 1rem 1rem;
   }
 
   .login-wrapper {
@@ -188,6 +188,10 @@
 }
 
 @media (max-width: 480px) {
+  .colaboradores-login {
+    padding: 2.5rem 1rem 1rem;
+  }
+
   .login-wrapper {
     padding: 1.5rem;
   }

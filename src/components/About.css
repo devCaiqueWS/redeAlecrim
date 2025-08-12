@@ -286,6 +286,14 @@
 
 /* Mobile styles */
 @media (max-width: 768px) {
+  .about {
+    padding: 60px 0;
+  }
+
+  .about .container {
+    padding: 0 15px;
+  }
+
   .about-text {
     grid-template-columns: 1fr;
     gap: 40px;
@@ -303,55 +311,151 @@
 
   .values-grid {
     grid-template-columns: 1fr;
-    gap: 30px;
+    gap: 25px;
+  }
+
+  .value-item {
+    padding: 25px 20px;
+    text-align: center;
+  }
+
+  .value-icon {
+    margin: 0 auto 15px auto;
   }
 
   .about-stats {
     grid-template-columns: 1fr;
-    gap: 30px;
+    gap: 25px;
     padding: 30px 20px;
+    margin: 40px 15px 0;
   }
 
-  .about-image-container,
-  .about-image .image-placeholder {
-    height: 400px;
-    min-height: 400px;
-  }
-
-  .history-slide-overlay {
-    padding: 20px;
-  }
-
-  .history-slide-overlay h4 {
-    font-size: 1.2rem;
-  }
-
-  .history-slider-indicators {
-    bottom: 15px;
-  }
-
-  .history-indicator {
-    width: 10px;
-    height: 10px;
+  .stat-item {
+    text-align: center;
+    padding: 20px 15px;
   }
 
   .stat-number {
-    font-size: 2.5rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .about-stats {
-    padding: 20px;
-  }
-
-  .value-item {
-    padding: 25px 15px;
+    font-size: 2.2rem;
   }
 
   .about-image-container,
   .about-image .image-placeholder {
     height: 300px;
     min-height: 300px;
+    margin: 0 auto;
+    max-width: 350px;
+    width: 100%;
+  }
+
+  .history-slide-overlay {
+    padding: 15px;
+  }
+
+  .history-slide-overlay h4 {
+    font-size: 1.1rem;
+  }
+
+  .history-slide-overlay p {
+    font-size: 0.9rem;
+    line-height: 1.4;
+  }
+
+  .history-slider-indicators {
+    bottom: 10px;
+  }
+
+  .history-indicator {
+    width: 8px;
+    height: 8px;
+  }
+
+  .section-header {
+    margin-bottom: 40px;
+    padding: 0 15px;
+  }
+
+  .section-header h2 {
+    font-size: 2.2rem;
+  }
+
+  .section-header p {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .about {
+    padding: 50px 0;
+  }
+
+  .about .container {
+    padding: 0 10px;
+  }
+
+  .about-text {
+    gap: 30px;
+  }
+
+  .about-stats {
+    padding: 25px 15px;
+    margin: 30px 10px 0;
+    gap: 20px;
+  }
+
+  .stat-item {
+    padding: 15px 10px;
+  }
+
+  .stat-number {
+    font-size: 2rem;
+  }
+
+  .stat-label {
+    font-size: 0.9rem;
+  }
+
+  .value-item {
+    padding: 20px 15px;
+  }
+
+  .value-item h4 {
+    font-size: 1.1rem;
+  }
+
+  .value-item p {
+    font-size: 0.9rem;
+  }
+
+  .about-image-container,
+  .about-image .image-placeholder {
+    height: 250px;
+    min-height: 250px;
+    max-width: 300px;
+  }
+
+  .history-slide-overlay {
+    padding: 12px;
+  }
+
+  .history-slide-overlay h4 {
+    font-size: 1rem;
+  }
+
+  .history-slide-overlay p {
+    font-size: 0.85rem;
+  }
+
+  .section-header {
+    margin-bottom: 30px;
+    padding: 0 10px;
+  }
+
+  .section-header h2 {
+    font-size: 1.9rem;
+  }
+
+  .section-header p {
+    font-size: 0.95rem;
   }
 }
