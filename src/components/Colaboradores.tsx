@@ -1,46 +1,47 @@
 import React, { useState } from 'react';
+import { Eye, EyeOff, Lock, Mail } from 'lucide-react';
 import './Colaboradores.css';
-import { buildApiUrl } from '../config/api.js';
+import { useAuth } from '../contexts/AuthContext';
+import { useToast } from '../hooks/useToast';
+import ToastContainer from './ToastContainer';
+import LoadingSpinner from './LoadingSpinner';
+import ColaboradorDashboard from './ColaboradorDashboard';
 
 const Colaboradores: React.FC = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [colaborador, setColaborador] = useState<any>(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const { isAuthenticated, loading, login } = useAuth();
+  const { toasts, showSuccess, showError, removeToast } = useToast();
+  
   const [loginData, setLoginData] = useState({
     email: '',
     senha: ''
   });
+  const [showPassword, setShowPassword] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
-    setError('');
+    
+    if (!loginData.email || !loginData.senha) {
+      showError('Por favor, preencha todos os campos.');
+      return;
+    }
+    
+    setIsSubmitting(true);
     
     try {
-      const apiUrl = buildApiUrl('/colaboradores/login');
-      console.log('🔐 Fazendo login em:', apiUrl);
+      const result = await login(loginData);
       
-      const response = await fetch(apiUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(loginData)
-      });
-      
-      const data = await response.json();
-      
-      if (response.ok) {
-        setIsAuthenticated(true);
-        setColaborador(data.colaborador);
+      if (result.success) {
+        showSuccess('Login realizado com sucesso! Bem-vindo(a)!');
+        // Limpar formulário
+        setLoginData({ email: '', senha: '' });
       } else {
-        setError(data.error || 'Erro ao fazer login');
+        showError(result.error || 'Erro ao fazer login');
       }
-    } catch (err) {
-      setError('Erro de conexão. Tente novamente.');
+    } catch (error) {
+      showError('Erro inesperado. Tente novamente.');
     } finally {
-      setLoading(false);
+      setIsSubmitting(false);
     }
   };
 
@@ -52,15 +53,24 @@ const Colaboradores: React.FC = () => {
     }));
   };
 
-  const handleLogout = () => {
-    setIsAuthenticated(false);
-    setColaborador(null);
-    setLoginData({ email: '', senha: '' });
-    setError('');
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
   };
 
-  if (!isAuthenticated) {
-    return (
+  // Loading da verificação inicial de autenticação
+  if (loading) {
+    return <LoadingSpinner fullScreen message="Verificando autenticação..." />;
+  }
+
+  // Se já está autenticado, mostra o dashboard
+  if (isAuthenticated) {
+    return <ColaboradorDashboard />;
+  }
+
+  // Formulário de login
+  return (
+    <>
+      <ToastContainer toasts={toasts} onRemoveToast={removeToast} />
       <section className="colaboradores-login fade-in">
         <div className="container">
           <div className="login-wrapper">
@@ -73,21 +83,12 @@ const Colaboradores: React.FC = () => {
 
             <div className="login-form-container">
               <form className="login-form" onSubmit={handleLogin}>
-                {error && (
-                  <div className="error-message" style={{ 
-                    color: 'red', 
-                    marginBottom: '1rem',
-                    padding: '0.5rem',
-                    backgroundColor: '#ffe6e6',
-                    borderRadius: '4px',
-                    border: '1px solid #ff6b6b'
-                  }}>
-                    {error}
-                  </div>
-                )}
                 
                 <div className="form-group">
-                  <label htmlFor="email">E-mail</label>
+                  <label htmlFor="email">
+                    <Mail size={18} />
+                    E-mail
+                  </label>
                   <input
                     type="email"
                     id="email"
@@ -96,99 +97,65 @@ const Colaboradores: React.FC = () => {
                     onChange={handleInputChange}
                     placeholder="Digite seu e-mail corporativo"
                     required
-                    disabled={loading}
+                    disabled={isSubmitting}
+                    autoComplete="email"
                   />
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="senha">Senha</label>
-                  <input
-                    type="password"
-                    id="senha"
-                    name="senha"
-                    value={loginData.senha}
-                    onChange={handleInputChange}
-                    placeholder="Digite sua senha"
-                    required
-                    disabled={loading}
-                  />
+                  <label htmlFor="senha">
+                    <Lock size={18} />
+                    Senha
+                  </label>
+                  <div className="password-input-wrapper">
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      id="senha"
+                      name="senha"
+                      value={loginData.senha}
+                      onChange={handleInputChange}
+                      placeholder="Digite sua senha"
+                      required
+                      disabled={isSubmitting}
+                      autoComplete="current-password"
+                    />
+                    <button
+                      type="button"
+                      className="password-toggle"
+                      onClick={togglePasswordVisibility}
+                      disabled={isSubmitting}
+                    >
+                      {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                    </button>
+                  </div>
                 </div>
 
-                <button type="submit" className="btn btn-primary btn-login" disabled={loading}>
-                  {loading ? 'Entrando...' : 'Entrar'}
+                <button
+                  type="submit"
+                  className="btn btn-primary login-btn"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? (
+                    <>
+                      <LoadingSpinner size="small" message="" />
+                      Entrando...
+                    </>
+                  ) : (
+                    'Entrar'
+                  )}
                 </button>
-
-                <div className="login-help">
-                  <a href="#esqueci-senha" className="forgot-password">
-                    Esqueci minha senha
-                  </a>
-                  <p className="login-note">
-                    Não possui acesso? Entre em contato com o RH.
-                  </p>
-                  <p className="demo-credentials" style={{
-                    marginTop: '1rem',
-                    padding: '0.5rem',
-                    backgroundColor: '#e3f2fd',
-                    borderRadius: '4px',
-                    fontSize: '0.9rem'
-                  }}>
-                    <strong>Credenciais de teste:</strong><br/>
-                    E-mail: adm@redealecrim.com<br/>
-                    Senha: 123456
-                  </p>
-                </div>
               </form>
+            </div>
+
+            <div className="login-help">
+              <p>Problemas para acessar? Entre em contato com o suporte:</p>
+              <p><strong>E-mail:</strong> suporte.bi@redealecrim.com.br</p>
+              <p><strong>WhatsApp:</strong> (11) 99999-9999</p>
             </div>
           </div>
         </div>
       </section>
-    );
-  }
-
-  return (
-    <section className="colaboradores-dashboard fade-in">
-      <div className="container">
-        <div className="dashboard-header">
-          <h1 className="section-title">Bem-vindo(a), {colaborador?.nome || 'Colaborador'}!</h1>
-          <div className="user-info">
-            <p><strong>E-mail:</strong> {colaborador?.email}</p>
-            <p><strong>Cargo:</strong> {colaborador?.cargo}</p>
-            <p><strong>Departamento:</strong> {colaborador?.departamento}</p>
-          </div>
-          <button 
-            onClick={handleLogout}
-            className="btn btn-outline btn-logout"
-          >
-            Sair
-          </button>
-        </div>
-
-        <div className="dashboard-grid">
-          
-
-          <div className="dashboard-card">
-            <div className="card-icon">🎯</div>
-            <h3>Metas e Resultados</h3>
-            <p>Acompanhe suas metas e performance</p>
-            <a href="#metas" className="btn btn-primary btn-sm">Acessar</a>
-          </div>
-
-          <div className="dashboard-card">
-            <div className="card-icon">📚</div>
-            <h3>Treinamentos</h3>
-            <p>Cursos disponíveis e certificações</p>
-            <a href="#treinamentos" className="btn btn-primary btn-sm">Acessar</a>
-          </div>
-
-          <div className="dashboard-card">
-            <div className="card-icon">📞</div>
-            <h3>Contatos Internos</h3>
-            <p>Lista telefônica e e-mails da empresa</p>
-            <a href="#contatos" className="btn btn-primary btn-sm">Acessar</a>
-          </div>
-        </div>
-      </div>
-    </section>
+    </>
   );
 };
 
