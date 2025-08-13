@@ -28,15 +28,15 @@ async function deletarColaboradorPorEmail(email) {
   const colaborador = await Colaborador.findOne({ where: { email } });
   
   if (!colaborador) {
-    console.log(`❌ Colaborador com email "${email}" não encontrado.`);
+    console.log(`Colaborador com email "${email}" não encontrado.`);
     process.exit();
   }
   
-  console.log(`🔍 Encontrado: ${colaborador.nome} (${colaborador.email})`);
+  console.log(`Encontrado: ${colaborador.nome} (${colaborador.email})`);
   
   await colaborador.destroy();
   
-  console.log(`✅ Colaborador "${colaborador.nome}" foi deletado!`);
+  console.log(`Colaborador "${colaborador.nome}" foi deletado!`);
   process.exit();
 }
 
@@ -44,8 +44,8 @@ async function deletarColaboradorPorEmail(email) {
 const email = process.argv[2];
 
 if (!email) {
-  console.log('❌ Uso: node deletarColaboradorPorEmail.js <email>');
-  console.log('📝 Exemplo: node deletarColaboradorPorEmail.js fabiana.rossi@redealecrim.com');
+  console.log('Uso: node deletarColaboradorPorEmail.js <email>');
+  console.log('Exemplo: node deletarColaboradorPorEmail.js fabiana.rossi@redealecrim.com');
   process.exit();
 }
 

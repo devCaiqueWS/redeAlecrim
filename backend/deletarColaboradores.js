@@ -26,7 +26,6 @@ async function deletarTodosColaboradores() {
   await sequelize.sync();
   
   const colaboradores = await Colaborador.findAll();
-  console.log(`📊 Encontrados ${colaboradores.length} colaboradores para deletar:`);
   
   colaboradores.forEach(col => {
     console.log(`- ${col.nome} (${col.email})`);
@@ -34,7 +33,6 @@ async function deletarTodosColaboradores() {
   
   await Colaborador.destroy({ where: {} });
   
-  console.log('✅ Todos os colaboradores foram deletados!');
   process.exit();
 }
 

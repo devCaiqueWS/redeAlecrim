@@ -66,16 +66,10 @@ const Jobs: React.FC = () => {
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [submitMessage, setSubmitMessage] = useState('');
 
-  // Debug do estado do modal
-  useEffect(() => {
-    console.log('📋 Estado do modal mudou:', { showCurriculumModal });
-  }, [showCurriculumModal]);
-
   // Fechar modal com ESC
   useEffect(() => {
     const handleEscapeKey = (event: KeyboardEvent) => {
       if (event.key === 'Escape' && showCurriculumModal) {
-        console.log('⌨️ ESC pressionado - fechando modal');
         handleCloseCurriculumModal();
       }
     };

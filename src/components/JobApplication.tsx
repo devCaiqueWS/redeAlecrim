@@ -16,55 +16,8 @@ const JobApplication: React.FC<JobApplicationProps> = ({ jobId = 'general', jobT
   // Inicializar EmailJS com credenciais de produção
   React.useEffect(() => {
     emailjs.init('iwakafYjT8tuM6Tyv'); // Public Key
-    console.log('🚀 [EmailJS] JobApplication inicializado - Template: template_0zrs24h');
   }, []);
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const testJobApplicationTemplate = async () => {
-    
-    try {
-      const testParams = {
-        to_email: 'suporte.bi@redealecrim.com.br',
-        job_title: 'Operador de Caixa - TESTE',
-        job_id: 'teste-template-001',
-        candidate_name: 'João Silva Teste',
-        candidate_email: 'joao.teste@email.com',
-        candidate_phone: '(11) 99999-9999',
-        candidate_cpf: '123.456.789-00',
-        birth_date: '15/03/1990',
-        address: 'Rua Teste, 123',
-        city: 'São Paulo',
-        state: 'SP',
-        education: 'Ensino Médio Completo',
-        experience: 'Experiência em atendimento ao cliente',
-        availability: 'Integral',
-        salary_expectation: 'R$ 1.500,00',
-        message: 'Teste do novo template EmailJS para JobApplication',
-        resume_name: 'curriculo-teste.pdf',
-        resume_size: '2.1MB',
-        resume_base64: 'VGVzdGUgZGUgY3VycmN1bG8=',
-        photo_name: 'foto-teste.jpg',
-        photo_size: '1.2MB',
-        photo_base64: 'VGVzdGUgZGUgZm90bw==',
-        has_photo: 'SIM',
-        data_envio: new Date().toLocaleString('pt-BR'),
-        subject: 'TESTE - Nova Candidatura JobApplication'
-      };
-
-      const response = await emailjs.send(
-        'service_dkcbwgh',
-        'template_0zrs24h',
-        testParams
-      );
-
-      console.log('✅ [TESTE] Template JobApplication funcionando:', response);
-      showSuccess('✅ Teste do template JobApplication realizado com sucesso!');
-      
-    } catch (error) {
-      console.error('❌ [TESTE] Erro no template JobApplication:', error);
-      showError('❌ Erro no teste do template. Veja o console.');
-    }
-  };
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -152,14 +105,11 @@ Por favor, selecione um arquivo menor.`);
         ...files,
         [e.target.name]: file
       });
-      
-      console.log('📎 Arquivo selecionado:', file.name, 'Tamanho:', (file.size / 1024).toFixed(2) + 'KB');
     }
   };
 
   // Função para enviar candidatura via EmailJS
   const sendJobApplication = async (resumeFile: File, photoFile?: File) => {
-    console.log('📧 [EmailJS] Iniciando envio de candidatura...');
     
     try {
       // Verificar se arquivo ultrapassa 50KB
@@ -198,8 +148,6 @@ SOLUÇÕES:
 Por favor, tente com um arquivo menor.`
         };
       }
-
-      console.log('✅ [EmailJS] Arquivos dentro do limite - processando...');
 
       // Converter currículo para base64
       const resumeBase64 = await new Promise<string>((resolve) => {
@@ -250,15 +198,7 @@ Por favor, tente com um arquivo menor.`
           has_photo: photoFile ? 'SIM - Anexada' : 'NÃO - Opcional',
           data_envio: new Date().toLocaleString('pt-BR'),
           subject: `Nova Candidatura - ${formData.name} - ${jobTitle}`
-        };      console.log('📧 [EmailJS] Dados do template preparados:', {
-        candidate_name: templateParams.candidate_name,
-        job_title: templateParams.job_title,
-        resume_name: templateParams.resume_name,
-        resume_size: templateParams.resume_size,
-        has_photo: templateParams.has_photo
-      });
-
-      console.log('📤 [EmailJS] Enviando candidatura...');
+        };
 
       const response = await emailjs.send(
         'service_dkcbwgh',      // Service ID do Gmail
@@ -267,16 +207,12 @@ Por favor, tente com um arquivo menor.`
         'iwakafYjT8tuM6Tyv'    // Public Key
       );
 
-      console.log('✅ [EmailJS] Candidatura enviada com sucesso:', response);
-
       return {
         success: true,
         message: `Candidatura enviada com sucesso para ${jobTitle}! Recebemos seus documentos e informações. Nossa equipe de RH entrará em contato em breve.`
       };
 
     } catch (error) {
-      console.error('❌ [EmailJS] Erro no envio:', error);
-      
       // Tratamento de erros específicos
       if (error && typeof error === 'object' && 'status' in error) {
         const emailError = error as { status: number; text: string };
@@ -310,8 +246,6 @@ Por favor, tente com um arquivo menor.`
     setSubmitMessage('');
 
     try {
-      console.log('🚀 [JobApplication] Iniciando envio de candidatura...');
-      
       const result = await sendJobApplication(files.resume, files.photo || undefined);
       
       if (result.success) {
@@ -348,7 +282,6 @@ Por favor, tente com um arquivo menor.`
       }
       
     } catch (error) {
-      console.error('❌ Erro inesperado:', error);
       setSubmitStatus('error');
       setSubmitMessage('Erro inesperado no envio. Tente novamente.');
     } finally {

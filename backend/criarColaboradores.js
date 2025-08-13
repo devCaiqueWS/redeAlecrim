@@ -59,7 +59,6 @@ async function criarColaboradores() {
     await Colaborador.upsert(colaborador);
   }
   
-  console.log(`Colaboradores criados! ${colaboradores.length} registros inseridos.`);
   process.exit();
 }
 

@@ -78,7 +78,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         return false;
       }
     } catch (error) {
-      console.error('❌ Erro ao verificar autenticação:', error);
       setLoading(false);
       return false;
     }
@@ -109,8 +108,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         setIsAuthenticated(true);
         setLoading(false);
         
-        console.log('✅ Login realizado com sucesso:', data.colaborador.nome);
-        
         return { success: true };
       } else {
         setLoading(false);
@@ -120,7 +117,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         };
       }
     } catch (error) {
-      console.error('❌ Erro no login:', error);
       return { 
         success: false, 
         error: 'Erro de conexão. Verifique sua internet.' 
@@ -140,8 +136,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     // Resetar estado
     setIsAuthenticated(false);
     setColaborador(null);
-    
-    console.log('👋 Logout realizado');
   };
 
   // Função para atualizar perfil

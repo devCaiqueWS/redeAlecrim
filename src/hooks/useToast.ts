@@ -21,8 +21,6 @@ export const useToast = () => {
 
     setToasts(prev => [...prev, newToast]);
     
-    console.log(`🍞 [Toast] Mostrando ${type}:`, message);
-    
     return id;
   }, []);
 

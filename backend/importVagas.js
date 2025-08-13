@@ -42,7 +42,7 @@ async function importVagas() {
     vaga.status = vaga.status !== undefined ? vaga.status : true;
     await Vaga.create(vaga); // Usa create ao invés de upsert
   }
-  console.log(`Importação concluída! ${vagas.length} vagas importadas.`);
+  
   process.exit();
 }
 
