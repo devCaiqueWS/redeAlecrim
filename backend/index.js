@@ -6,11 +6,24 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Conexão com SQLite
-const sequelize = new Sequelize({
-  dialect: 'sqlite',
-  storage: './database.sqlite'
-});
+// Configuração do banco - PostgreSQL no Render, SQLite local
+const sequelize = process.env.DATABASE_URL 
+  ? new Sequelize(process.env.DATABASE_URL, {
+      dialect: 'postgres',
+      protocol: 'postgres',
+      logging: false,
+      dialectOptions: {
+        ssl: {
+          require: true,
+          rejectUnauthorized: false
+        }
+      }
+    })
+  : new Sequelize({
+      dialect: 'sqlite',
+      storage: './database.sqlite',
+      logging: false
+    });
 
 // Modelo Vaga
 const Vaga = sequelize.define('Vaga', {
@@ -51,8 +64,169 @@ const Colaborador = sequelize.define('Colaborador', {
   ativo: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: true }
 });
 
-// Sincroniza banco
-sequelize.sync();
+// Função para inicializar o banco com dados
+async function initializeDatabase() {
+  try {
+    await sequelize.authenticate();
+    console.log('✅ Conectado ao banco de dados');
+
+    await sequelize.sync();
+    console.log('✅ Tabelas sincronizadas');
+
+    // Verificar se já existem dados (evita duplicação)
+    const colaboradorCount = await Colaborador.count();
+    const plataformaCount = await Plataforma.count();
+    const vagaCount = await Vaga.count();
+
+    // Inserir colaboradores padrão se não existirem
+    if (colaboradorCount === 0) {
+      console.log('📝 Inserindo colaboradores padrão...');
+      await Colaborador.bulkCreate([
+        {
+          nome: 'Caíque Silva',
+          email: 'caique@redealecrim.com.br',
+          senha: '123456',
+          cargo: 'Analista TI Jr',
+          departamento: 'TI',
+          data_admissao: new Date('2024-01-15'),
+          ativo: true
+        },
+        {
+          nome: 'Roberto Santos',
+          email: 'roberto@redealecrim.com.br',
+          senha: '123456',
+          cargo: 'Compras',
+          departamento: 'Compras',
+          data_admissao: new Date('2023-06-10'),
+          ativo: true
+        },
+        {
+          nome: 'Fernanda Costa',
+          email: 'fernanda@redealecrim.com.br',
+          senha: '123456',
+          cargo: 'Diretora',
+          departamento: 'Diretoria',
+          data_admissao: new Date('2020-03-01'),
+          ativo: true
+        },
+        {
+          nome: 'Kelly Oliveira',
+          email: 'kelly@redealecrim.com.br',
+          senha: '123456',
+          cargo: 'Marketing',
+          departamento: 'Marketing',
+          data_admissao: new Date('2023-11-20'),
+          ativo: true
+        },
+        {
+          nome: 'Fabiana Rossi',
+          email: 'fabiana@redealecrim.com.br',
+          senha: '123456',
+          cargo: 'Coordenadora de RH',
+          departamento: 'Recursos Humanos',
+          data_admissao: new Date('2022-08-15'),
+          ativo: true
+        }
+      ]);
+    }
+
+    // Inserir plataformas padrão se não existirem
+    if (plataformaCount === 0) {
+      console.log('🔗 Inserindo plataformas padrão...');
+      await Plataforma.bulkCreate([
+        {
+          nome: 'VIBE',
+          url: 'https://cpalecrim.vibe.gp/',
+          categoria: 'Comunicação',
+          descricao: '💬 Plataforma de comunicação interna. Primeiro Acesso: Clicar em \'esqueceu a senha\'',
+          status: true
+        },
+        {
+          nome: 'UniBe - Cursos e Treinamentos',
+          url: 'https://unibe.grupoboticario.com.br/login',
+          categoria: 'Treinamento',
+          descricao: '📚 Plataforma de cursos e treinamentos do Grupo Boticário',
+          status: true
+        },
+        {
+          nome: 'Extranet Grupo Boticário',
+          url: 'https://extranet.grupoboticario.com.br/home',
+          categoria: 'Recursos Humanos',
+          descricao: '📚 Portal corporativo do Grupo Boticário',
+          status: true
+        },
+        {
+          nome: 'Easymob - Registro de Horários',
+          url: '#',
+          categoria: 'Recursos Humanos',
+          descricao: '⏰ App para registrar horários. CHAVE DE ACESSO: cpalecrim',
+          status: true
+        },
+        {
+          nome: 'Feedflex - Benefícios',
+          url: '#',
+          categoria: 'Benefícios',
+          descricao: '🍽️ App de benefícios alimentares',
+          status: true
+        },
+        {
+          nome: 'Varejo Fácil',
+          url: 'https://cp10012.retaguarda.grupoboticario.com.br/app/#/login',
+          categoria: 'PDV',
+          descricao: 'Sistema PDV da rede - Plataforma para gerenciamento de vendas',
+          status: true
+        }
+      ]);
+    }
+
+    // Inserir vagas padrão se não existirem
+    if (vagaCount === 0) {
+      console.log('💼 Inserindo vagas padrão...');
+      await Vaga.bulkCreate([
+        {
+          titulo: 'Vendedora Loja O Boticário',
+          local: 'Taboão da Serra, SP',
+          salario: 'R$ 2.000 – R$ 3.500 por mês',
+          responsavel: 'Fabiana Rossi',
+          empresa: 'Rede Alecrim',
+          categoria: 'vendas',
+          descricao: 'Auxiliar de Vendas para loja O Boticário. Atendimento ao cliente, demonstração de produtos.',
+          beneficios: ['Assistência médica', 'Assistência odontológica', 'Vale-alimentação', 'Convênios'],
+          responsabilidades: ['Atender clientes', 'Demonstrar produtos', 'Organização da loja', 'Metas de vendas'],
+          requisitos: ['Ensino médio completo', 'Experiência com vendas', 'Conhecimento em cosméticos'],
+          tipo: 'Efetivo CLT',
+          experiencias_preferenciais: ['Vendas', 'Loja', 'Atendimento ao Cliente'],
+          status: true
+        },
+        {
+          titulo: 'Vendedora Loja O Boticário - Butantã',
+          local: 'Butantã, SP',
+          salario: 'R$ 2.000 – R$ 3.500 por mês',
+          responsavel: 'Fabiana Rossi',
+          empresa: 'Rede Alecrim',
+          categoria: 'vendas',
+          descricao: 'Auxiliar de Vendas para loja O Boticário no Butantã.',
+          beneficios: ['Assistência médica', 'Assistência odontológica', 'Vale-alimentação'],
+          responsabilidades: ['Atendimento personalizado', 'Demonstração de produtos', 'Organização'],
+          requisitos: ['Ensino médio completo', 'Paixão por vendas e beleza'],
+          tipo: 'Efetivo CLT',
+          experiencias_preferenciais: ['Vendas'],
+          perguntas_selecao: ['Gosta de trabalhar com produtos de perfumaria?', 'Reside próximo ao Butantã?'],
+          status: true
+        }
+      ]);
+    }
+
+    console.log('🎉 Banco de dados inicializado com sucesso!');
+
+  } catch (error) {
+    console.error('❌ Erro ao inicializar banco:', error);
+    throw error;
+  }
+}
+
+// Inicializar banco na inicialização da aplicação
+initializeDatabase();
 
 // Rotas RESTful
 app.get('/vagas', async (req, res) => {

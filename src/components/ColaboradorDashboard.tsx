@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { LogOut, User, Calendar, FileText, Users, Briefcase, AlertCircle, UserPlus, Plus, Link, Settings, Shield, Edit, Save, X } from 'lucide-react';
+import { LogOut, User, Calendar, FileText, Users, Briefcase, AlertCircle, UserPlus, Plus, Link, Settings, Shield, Edit, Save, X, BarChart3 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
+import { buildApiUrl } from '../config/api';
 import CadastroColaborador from './CadastroColaborador';
 import './ColaboradorDashboard.css';
 
@@ -55,7 +56,7 @@ const ColaboradorDashboard: React.FC = () => {
   // Função para carregar plataformas
   const loadPlatforms = async () => {
     try {
-      const response = await fetch('http://localhost:3001/admin/plataformas');
+      const response = await fetch(buildApiUrl('/admin/plataformas'));
       if (response.ok) {
         const data = await response.json();
         setPlatforms(data);
@@ -88,7 +89,7 @@ const ColaboradorDashboard: React.FC = () => {
     e.preventDefault();
     
     try {
-      const response = await fetch('http://localhost:3001/admin/vagas', {
+      const response = await fetch(buildApiUrl('/admin/vagas'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -137,7 +138,7 @@ const ColaboradorDashboard: React.FC = () => {
     e.preventDefault();
     
     try {
-      const response = await fetch(`http://localhost:3001/colaboradores/${userData?.id}`, {
+      const response = await fetch(buildApiUrl(`/colaboradores/${userData?.id}`), {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -166,7 +167,7 @@ const ColaboradorDashboard: React.FC = () => {
     const carregarDadosIniciais = async () => {
       try {
         // Carregar plataformas
-        const plataformasResponse = await fetch('http://localhost:3001/admin/plataformas');
+        const plataformasResponse = await fetch(buildApiUrl('/admin/plataformas'));
         if (plataformasResponse.ok) {
           const plataformasData = await plataformasResponse.json();
           setPlatforms(plataformasData);
@@ -174,7 +175,7 @@ const ColaboradorDashboard: React.FC = () => {
 
         // Carregar equipe
         setLoadingTeam(true);
-        const equipeResponse = await fetch('http://localhost:3001/colaboradores');
+        const equipeResponse = await fetch(buildApiUrl('/colaboradores'));
         if (equipeResponse.ok) {
           const equipeData = await equipeResponse.json();
           setTeamMembers(equipeData);
@@ -196,7 +197,7 @@ const ColaboradorDashboard: React.FC = () => {
       
       setLoadingUserData(true);
       try {
-        const response = await fetch(`http://localhost:3001/colaboradores/${colaborador.id}`);
+        const response = await fetch(buildApiUrl(`/colaboradores/${colaborador.id}`));
         if (response.ok) {
           const dadosCompletos = await response.json();
           setUserData(dadosCompletos);
@@ -261,6 +262,13 @@ const ColaboradorDashboard: React.FC = () => {
             >
               <Plus size={18} />
               Vagas
+            </button>
+            <button 
+              className={`nav-btn ${activeSection === 'dashboards' ? 'active' : ''}`}
+              onClick={() => setActiveSection('dashboards')}
+            >
+              <BarChart3 size={18} />
+              Dashboards
             </button>
           </nav>
           
@@ -887,6 +895,76 @@ const ColaboradorDashboard: React.FC = () => {
                 Cadastrar Vaga
               </button>
             </form>
+          </section>
+        )}
+
+        {activeSection === 'dashboards' && (
+          <section className="admin-section">
+            <div className="section-header">
+              <h2>
+                <BarChart3 />
+                Dashboards Administrativos
+              </h2>
+              <p>Acesse relatórios e dashboards importantes para gestão</p>
+            </div>
+
+            <div className="dashboards-grid">
+              <div className="dashboard-card">
+                <div className="card-icon">
+                  <Users size={24} />
+                </div>
+                <div className="card-content">
+                  <h3>Relatório de Colaboradores</h3>
+                  <p>Visualize estatísticas e dados dos colaboradores ativos</p>
+                  <button className="dashboard-btn">
+                    <BarChart3 size={16} />
+                    Acessar Dashboard
+                  </button>
+                </div>
+              </div>
+
+              <div className="dashboard-card">
+                <div className="card-icon">
+                  <Briefcase size={24} />
+                </div>
+                <div className="card-content">
+                  <h3>Dashboard de Vagas</h3>
+                  <p>Acompanhe métricas de candidaturas e processos seletivos</p>
+                  <button className="dashboard-btn">
+                    <BarChart3 size={16} />
+                    Acessar Dashboard
+                  </button>
+                </div>
+              </div>
+
+              <div className="dashboard-card">
+                <div className="card-icon">
+                  <FileText size={24} />
+                </div>
+                <div className="card-content">
+                  <h3>Relatórios Financeiros</h3>
+                  <p>Visualize dados financeiros e métricas de performance</p>
+                  <button className="dashboard-btn">
+                    <BarChart3 size={16} />
+                    Acessar Dashboard
+                  </button>
+                </div>
+              </div>
+
+              <div className="dashboard-card">
+                <div className="card-icon">
+                  <Settings size={24} />
+                </div>
+                <div className="card-content">
+                  <h3>Analytics Operacional</h3>
+                  <p>Monitore KPIs e indicadores operacionais em tempo real</p>
+                  <button className="dashboard-btn">
+                    <BarChart3 size={16} />
+                    Acessar Dashboard
+                  </button>
+                </div>
+              </div>
+            </div>
           </section>
         )}
           </>

@@ -1205,6 +1205,89 @@
   transform: translateX(5px);
 }
 
+/* Seção de Dashboards */
+.dashboards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.dashboard-card {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e2e8f0;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  border-color: var(--primary-teal);
+}
+
+.dashboard-card .card-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, var(--primary-teal) 0%, var(--secondary-teal) 100%);
+  border-radius: 16px;
+  color: white;
+  margin-bottom: 1.5rem;
+  flex-shrink: 0;
+}
+
+.dashboard-card .card-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.dashboard-card h3 {
+  color: #1e293b;
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.dashboard-card p {
+  color: #64748b;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.dashboard-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: linear-gradient(135deg, var(--primary-teal) 0%, var(--light-teal) 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.dashboard-btn:hover {
+  background: linear-gradient(135deg, var(--secondary-teal) 0%, var(--primary-teal) 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(34, 156, 153, 0.3);
+}
+
 /* Responsive adjustments for new sections */
 @media (max-width: 768px) {
   .profile-content {
@@ -1256,7 +1339,8 @@
   .documents-grid,
   .team-grid,
   .platforms-grid,
-  .resources-grid {
+  .resources-grid,
+  .dashboards-grid {
     grid-template-columns: 1fr;
     gap: 1.5rem;
   }
