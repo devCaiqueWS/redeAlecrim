@@ -5,7 +5,7 @@ import './Jobs.css';
 import { useScrollAnimation, useStaggerAnimation, useCountAnimation } from '../hooks/useAnimations';
 import JobApplication from './JobApplication';
 import emailjs from '@emailjs/browser';
-import { API_ENDPOINTS, buildApiUrl } from '../config/api.js';
+import { API_ENDPOINTS } from '../config/api.js';
 import { useToast } from '../hooks/useToast';
 import ToastContainer from './ToastContainer';
 
@@ -749,7 +749,7 @@ Sistema Automatizado - Site Rede Alecrim
 
       // Tentar primeiro via API real (se disponível)
       try {
-        const response = await fetch(buildApiUrl('/api/submit-curriculum'), {
+        const response = await fetch('/api/submit-curriculum', {
           method: 'POST',
           body: formData,
           headers: {

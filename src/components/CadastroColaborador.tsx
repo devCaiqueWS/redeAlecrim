@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { User, Mail, Lock, Building, Calendar, Eye, EyeOff, Check, X, UserPlus } from 'lucide-react';
-import { buildApiUrl } from '../config/api';
 import './CadastroColaborador.css';
 
 interface CadastroColaboradorProps {
@@ -253,7 +252,7 @@ const CadastroColaborador: React.FC<CadastroColaboradorProps> = ({
     setIsSubmitting(true);
 
     try {
-      const response = await fetch(buildApiUrl('/colaboradores'), {
+      const response = await fetch('http://localhost:3001/colaboradores', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
