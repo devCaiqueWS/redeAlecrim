@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { LogOut, User, Calendar, FileText, Users, Briefcase, AlertCircle, UserPlus, Plus, Link, Settings, Shield, Edit, Save, X, BarChart3 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import CadastroColaborador from './CadastroColaborador';
+import { buildApiUrl } from '../config/api';
 import './ColaboradorDashboard.css';
 
 const ColaboradorDashboard: React.FC = () => {
@@ -55,7 +56,7 @@ const ColaboradorDashboard: React.FC = () => {
   // Função para carregar plataformas
   const loadPlatforms = async () => {
     try {
-      const response = await fetch('http://localhost:3001/admin/plataformas');
+      const response = await fetch(buildApiUrl('/admin/plataformas'));
       if (response.ok) {
         const data = await response.json();
         setPlatforms(data);
@@ -88,7 +89,7 @@ const ColaboradorDashboard: React.FC = () => {
     e.preventDefault();
     
     try {
-      const response = await fetch('http://localhost:3001/admin/vagas', {
+      const response = await fetch(buildApiUrl('/admin/vagas'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -137,7 +138,7 @@ const ColaboradorDashboard: React.FC = () => {
     e.preventDefault();
     
     try {
-      const response = await fetch(`http://localhost:3001/colaboradores/${userData?.id}`, {
+      const response = await fetch(buildApiUrl(`/colaboradores/${userData?.id}`), {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -166,7 +167,7 @@ const ColaboradorDashboard: React.FC = () => {
     const carregarDadosIniciais = async () => {
       try {
         // Carregar plataformas
-        const plataformasResponse = await fetch('http://localhost:3001/admin/plataformas');
+        const plataformasResponse = await fetch(buildApiUrl('/admin/plataformas'));
         if (plataformasResponse.ok) {
           const plataformasData = await plataformasResponse.json();
           setPlatforms(plataformasData);
@@ -174,7 +175,7 @@ const ColaboradorDashboard: React.FC = () => {
 
         // Carregar equipe
         setLoadingTeam(true);
-        const equipeResponse = await fetch('http://localhost:3001/colaboradores');
+        const equipeResponse = await fetch(buildApiUrl('/colaboradores'));
         if (equipeResponse.ok) {
           const equipeData = await equipeResponse.json();
           setTeamMembers(equipeData);
@@ -196,7 +197,7 @@ const ColaboradorDashboard: React.FC = () => {
       
       setLoadingUserData(true);
       try {
-        const response = await fetch(`http://localhost:3001/colaboradores/${colaborador.id}`);
+        const response = await fetch(buildApiUrl(`/colaboradores/${colaborador.id}`));
         if (response.ok) {
           const dadosCompletos = await response.json();
           setUserData(dadosCompletos);
