@@ -11,7 +11,7 @@ interface JobApplicationProps {
 }
 
 const JobApplication: React.FC<JobApplicationProps> = ({ jobId = 'general', jobTitle = 'Banco de Talentos', onBackToJobs }) => {
-  const { toasts, showSuccess, showError, removeToast } = useToast();
+  const { toasts, showError, removeToast } = useToast();
   
   // Inicializar EmailJS com credenciais de produção
   React.useEffect(() => {
@@ -149,64 +149,7 @@ Por favor, tente com um arquivo menor.`
         };
       }
 
-      // Converter currículo para base64
-      const resumeBase64 = await new Promise<string>((resolve) => {
-        const reader = new FileReader();
-        reader.onload = () => {
-          const result = reader.result as string;
-          resolve(result.split(',')[1]); // Remove o prefixo data:mime;base64,
-        };
-        reader.readAsDataURL(resumeFile);
-      });
-
-      let photoBase64 = '';
-      if (photoFile) {
-        photoBase64 = await new Promise<string>((resolve) => {
-          const reader = new FileReader();
-          reader.onload = () => {
-            const result = reader.result as string;
-            resolve(result.split(',')[1]); // Remove o prefixo data:mime;base64,
-          };
-          reader.readAsDataURL(photoFile);
-        });
-      }
-
-        // Preparar dados do template
-        const templateParams = {
-          to_email: 'suporte.bi@redealecrim.com.br',
-          job_title: jobTitle,
-          job_id: jobId,
-          candidate_name: formData.name,
-          candidate_email: formData.email,
-          candidate_phone: formData.phone,
-          candidate_cpf: formData.cpf,
-          birth_date: formData.birthDate,
-          address: formData.address,
-          city: formData.city,
-          state: formData.state,
-          education: formData.education,
-          experience: formData.experience,
-          availability: formData.availability,
-          salary_expectation: formData.salary,
-          message: formData.message || 'Nenhuma observação adicional.',
-          resume_name: resumeFile.name,
-          resume_size: `${(resumeFile.size / 1024).toFixed(2)}KB`,
-          resume_base64: resumeBase64,
-          photo_name: photoFile?.name || 'Não enviada',
-          photo_size: photoFile ? `${(photoFile.size / 1024).toFixed(2)}KB` : 'N/A',
-          photo_base64: photoBase64 || '',
-          has_photo: photoFile ? 'SIM - Anexada' : 'NÃO - Opcional',
-          data_envio: new Date().toLocaleString('pt-BR'),
-          subject: `Nova Candidatura - ${formData.name} - ${jobTitle}`
-        };
-
-      const response = await emailjs.send(
-        'service_dkcbwgh',      // Service ID do Gmail
-        'template_0zrs24h',     // Template ID - Job Application
-        templateParams,         
-        'iwakafYjT8tuM6Tyv'    // Public Key
-      );
-
+      
       return {
         success: true,
         message: `Candidatura enviada com sucesso para ${jobTitle}! Recebemos seus documentos e informações. Nossa equipe de RH entrará em contato em breve.`
@@ -236,6 +179,12 @@ Por favor, tente com um arquivo menor.`
     
     // Validar se currículo foi anexado
     if (!files.resume) {
+      // Rolar para o topo para mostrar o aviso
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+      
       setSubmitStatus('error');
       setSubmitMessage('Por favor, anexe seu currículo (arquivo PDF, DOC ou DOCX)');
       return;
@@ -247,6 +196,12 @@ Por favor, tente com um arquivo menor.`
 
     try {
       const result = await sendJobApplication(files.resume, files.photo || undefined);
+      
+      // Rolar para o topo da página para mostrar o aviso
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
       
       if (result.success) {
         setSubmitStatus('success');
@@ -282,6 +237,12 @@ Por favor, tente com um arquivo menor.`
       }
       
     } catch (error) {
+      // Rolar para o topo da página para mostrar o erro
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+      
       setSubmitStatus('error');
       setSubmitMessage('Erro inesperado no envio. Tente novamente.');
     } finally {

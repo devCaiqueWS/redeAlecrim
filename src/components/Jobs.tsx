@@ -531,7 +531,15 @@ Por favor, tente com um arquivo menor.`
           reader.readAsDataURL(file);
         });
 
-        // Preparar dados do template
+        // Preparar nome personalizado do arquivo
+        const currentDate = new Date().toLocaleDateString('pt-BR').replace(/\//g, '-');
+        const candidateName = (formData.get('nome') as string).replace(/[^a-zA-Z0-9\s]/g, '').replace(/\s+/g, '_');
+        
+        // Detectar extensão do arquivo
+        const fileExtension = file.name.split('.').pop()?.toLowerCase() || 'pdf';
+        const personalizedFileName = `Curriculo_${candidateName}_${currentDate}.${fileExtension}`;
+
+        // Preparar dados do template com nome personalizado
         const templateParams = {
           to_email: 'suporte.bi@redealecrim.com.br',
           from_name: formData.get('nome') as string,
@@ -539,12 +547,34 @@ Por favor, tente com um arquivo menor.`
           telefone: formData.get('telefone') as string,
           area_interesse: formData.get('areaInteresse') as string,
           experiencia: formData.get('experiencia') as string,
-          curriculo_nome: file.name,
+          curriculo_nome: personalizedFileName,
+          curriculo_nome_original: file.name,
           curriculo_tamanho: `${(file.size / 1024).toFixed(2)}KB`,
           curriculo_base64: fileBase64,
+          curriculo_download_link: `data:${file.type};base64,${fileBase64}`,
+          curriculo_info: `📄 CURRÍCULO: ${personalizedFileName} (${(file.size / 1024).toFixed(2)}KB)`,
+          application_date: currentDate,
           data_envio: new Date().toLocaleString('pt-BR'),
-          subject: `Novo Currículo - ${formData.get('nome')} - ${formData.get('areaInteresse')}`,
-          arquivo_status: `✅ Arquivo anexado com sucesso`
+          subject: `Novo Currículo - ${formData.get('nome')} - ${formData.get('areaInteresse')} - ${currentDate}`,
+          arquivo_status: `✅ Arquivo anexado com sucesso`,
+          download_instructions: `
+� CURRÍCULO PARA DOWNLOAD:
+
+📄 ARQUIVO: ${file.name} (${(file.size / 1024).toFixed(2)}KB)
+
+💡 COMO BAIXAR:
+1. Clique com botão direito no link abaixo
+2. Selecione "Salvar link como..." ou "Save link as..."
+3. Salve o arquivo no seu computador
+
+⬇️ LINK DE DOWNLOAD:
+[CLIQUE AQUI PARA BAIXAR O CURRÍCULO](data:${file.type};base64,${fileBase64})
+
+📧 ALTERNATIVA: Responda este email e o currículo será reenviado como anexo tradicional.
+
+🔒 DADOS BASE64 (backup):
+${fileBase64}
+          `
         };
 
         console.log('� [EmailJS] Parâmetros do template preparados:', {
@@ -689,6 +719,12 @@ Sistema Automatizado - Site Rede Alecrim
     
     // Validar se o arquivo foi selecionado
     if (!curriculumFile) {
+      // Rolar para o topo para mostrar o aviso
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+      
       setSubmitStatus('error');
       setSubmitMessage('Por favor, selecione seu currículo (arquivo PDF, DOC ou DOCX)');
       return;
@@ -749,6 +785,12 @@ Sistema Automatizado - Site Rede Alecrim
       setIsSubmitting(false);
       
       if (emailResult.success) {
+        // Rolar para o topo da página para mostrar o aviso
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+        
         setSubmitStatus('success');
         setSubmitMessage(emailResult.message);
         console.log('✅ Email enviado com sucesso');
@@ -758,6 +800,12 @@ Sistema Automatizado - Site Rede Alecrim
           handleCloseCurriculumModal();
         }, 4000);
       } else {
+        // Rolar para o topo da página para mostrar o erro
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+        
         setSubmitStatus('error');
         setSubmitMessage(emailResult.message);
         console.log('❌ Erro ao enviar email');
@@ -765,6 +813,13 @@ Sistema Automatizado - Site Rede Alecrim
 
     } catch (error) {
       console.error('❌ Erro geral ao enviar currículo:', error);
+      
+      // Rolar para o topo da página para mostrar o erro
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+      
       setIsSubmitting(false);
       setSubmitStatus('error');
       setSubmitMessage('Erro inesperado ao enviar currículo. Verifique sua conexão e tente novamente.');
