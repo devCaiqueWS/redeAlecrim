@@ -1,11 +1,10 @@
 /**
  * Configuração da API para desenvolvimento e produção
+ * SEMPRE usa a API de produção no Render
  */
 
-// URL base da API conforme o ambiente
-const API_BASE_URL = process.env.NODE_ENV === 'production' 
-  ? 'https://rede-alecrim-backend.onrender.com'
-  : 'http://localhost:3001';
+// URL base da API - FIXO para produção
+const API_BASE_URL = 'https://rede-alecrim-backend.onrender.com';
 
 /**
  * Função utilitária para construir URLs da API
