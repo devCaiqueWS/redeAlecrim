@@ -49,35 +49,40 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     try {
       const token = localStorage.getItem('auth_token');
       const colaboradorData = localStorage.getItem('colaborador_data');
+      const loginTimestamp = localStorage.getItem('login_timestamp');
       
       if (!token || !colaboradorData) {
         setLoading(false);
         return false;
       }
 
-      // Verificar se token ainda é válido
-      const response = await fetch(buildApiUrl('/colaboradores/verify'), {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        }
-      });
+      // Verificar se o token não expirou (24 horas)
+      const now = Date.now();
+      const loginTime = parseInt(loginTimestamp || '0');
+      const tokenAge = now - loginTime;
+      const TOKEN_EXPIRY = 24 * 60 * 60 * 1000; // 24 horas
 
-      if (response.ok) {
-        const data = await response.json();
-        setColaborador(data.colaborador);
-        setIsAuthenticated(true);
-        setLoading(false);
-        return true;
-      } else {
-        // Token inválido, limpar dados
+      if (tokenAge > TOKEN_EXPIRY) {
+        // Token expirado, limpar dados
         localStorage.removeItem('auth_token');
         localStorage.removeItem('colaborador_data');
+        localStorage.removeItem('login_timestamp');
         setLoading(false);
         return false;
       }
+
+      // Carregar dados do colaborador do localStorage
+      const colaboradorParsed = JSON.parse(colaboradorData);
+      setColaborador(colaboradorParsed);
+      setIsAuthenticated(true);
+      setLoading(false);
+      return true;
+      
     } catch (error) {
+      // Em caso de erro, limpar todos os dados
+      localStorage.removeItem('auth_token');
+      localStorage.removeItem('colaborador_data');
+      localStorage.removeItem('login_timestamp');
       setLoading(false);
       return false;
     }
@@ -128,14 +133,18 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   // Função de logout
   const logout = () => {
-    // Limpar dados locais
+    // Limpar todos os dados relacionados à autenticação
     localStorage.removeItem('auth_token');
     localStorage.removeItem('colaborador_data');
     localStorage.removeItem('login_timestamp');
     
+    // Limpar qualquer cache adicional
+    localStorage.clear();
+    
     // Resetar estado
     setIsAuthenticated(false);
     setColaborador(null);
+    setLoading(false);
   };
 
   // Função para atualizar perfil
