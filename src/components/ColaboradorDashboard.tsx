@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { LogOut, User, Calendar, FileText, Users, Briefcase, AlertCircle, UserPlus, Plus, Link, Settings, Shield, Edit, Save, X, BarChart3 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
-import { buildApiUrl } from '../config/api';
 import CadastroColaborador from './CadastroColaborador';
 import './ColaboradorDashboard.css';
 
@@ -56,7 +55,7 @@ const ColaboradorDashboard: React.FC = () => {
   // Função para carregar plataformas
   const loadPlatforms = async () => {
     try {
-      const response = await fetch(buildApiUrl('/admin/plataformas'));
+      const response = await fetch('http://localhost:3001/admin/plataformas');
       if (response.ok) {
         const data = await response.json();
         setPlatforms(data);
@@ -89,7 +88,7 @@ const ColaboradorDashboard: React.FC = () => {
     e.preventDefault();
     
     try {
-      const response = await fetch(buildApiUrl('/admin/vagas'), {
+      const response = await fetch('http://localhost:3001/admin/vagas', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -138,7 +137,7 @@ const ColaboradorDashboard: React.FC = () => {
     e.preventDefault();
     
     try {
-      const response = await fetch(buildApiUrl(`/colaboradores/${userData?.id}`), {
+      const response = await fetch(`http://localhost:3001/colaboradores/${userData?.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -167,7 +166,7 @@ const ColaboradorDashboard: React.FC = () => {
     const carregarDadosIniciais = async () => {
       try {
         // Carregar plataformas
-        const plataformasResponse = await fetch(buildApiUrl('/admin/plataformas'));
+        const plataformasResponse = await fetch('http://localhost:3001/admin/plataformas');
         if (plataformasResponse.ok) {
           const plataformasData = await plataformasResponse.json();
           setPlatforms(plataformasData);
@@ -175,7 +174,7 @@ const ColaboradorDashboard: React.FC = () => {
 
         // Carregar equipe
         setLoadingTeam(true);
-        const equipeResponse = await fetch(buildApiUrl('/colaboradores'));
+        const equipeResponse = await fetch('http://localhost:3001/colaboradores');
         if (equipeResponse.ok) {
           const equipeData = await equipeResponse.json();
           setTeamMembers(equipeData);
@@ -197,7 +196,7 @@ const ColaboradorDashboard: React.FC = () => {
       
       setLoadingUserData(true);
       try {
-        const response = await fetch(buildApiUrl(`/colaboradores/${colaborador.id}`));
+        const response = await fetch(`http://localhost:3001/colaboradores/${colaborador.id}`);
         if (response.ok) {
           const dadosCompletos = await response.json();
           setUserData(dadosCompletos);
@@ -394,6 +393,22 @@ const ColaboradorDashboard: React.FC = () => {
                   <button className="card-link" onClick={() => setActiveSection('platforms')}>
                     Ver plataformas
                     <Link size={16} />
+                  </button>
+                </div>
+              </div>
+
+              <div className="dashboard-card">
+                <div className="card-header">
+                  <div className="card-icon">
+                    <BarChart3 />
+                  </div>
+                  <h3>Dashboards</h3>
+                </div>
+                <div className="card-content">
+                  <p>Acesse relatórios, métricas e painéis de controle da empresa.</p>
+                  <button className="card-link" onClick={() => setActiveSection('dashboards')}>
+                    Ver dashboards
+                    <BarChart3 size={16} />
                   </button>
                 </div>
               </div>
@@ -739,6 +754,84 @@ const ColaboradorDashboard: React.FC = () => {
                   </div>
                 ))
               )}
+            </div>
+          </section>
+        )}
+
+        {activeSection === 'dashboards' && (
+          <section className="dashboards-section">
+            <div className="section-header">
+              <h2>
+                <BarChart3 />
+                Dashboards & Relatórios
+              </h2>
+              <p>Acesse painéis de controle, métricas e relatórios da empresa</p>
+            </div>
+
+            <div className="dashboards-grid">
+              <div className="dashboard-item-card">
+                <div className="dashboard-item-header">
+                  <div className="dashboard-item-icon">
+                    <BarChart3 />
+                  </div>
+                  <h3>Dashboard Vendas</h3>
+                </div>
+                <p className="dashboard-item-description">
+                  📊 Métricas de vendas, metas e performance das lojas
+                </p>
+                <button className="dashboard-item-link">
+                  <BarChart3 size={16} />
+                  Acessar Dashboard
+                </button>
+              </div>
+
+              <div className="dashboard-item-card">
+                <div className="dashboard-item-header">
+                  <div className="dashboard-item-icon">
+                    <Users />
+                  </div>
+                  <h3>Dashboard RH</h3>
+                </div>
+                <p className="dashboard-item-description">
+                  👥 Indicadores de recursos humanos, colaboradores e equipes
+                </p>
+                <button className="dashboard-item-link">
+                  <Users size={16} />
+                  Acessar Dashboard
+                </button>
+              </div>
+
+              <div className="dashboard-item-card">
+                <div className="dashboard-item-header">
+                  <div className="dashboard-item-icon">
+                    <FileText />
+                  </div>
+                  <h3>Relatórios Financeiros</h3>
+                </div>
+                <p className="dashboard-item-description">
+                  💰 Relatórios financeiros, fluxo de caixa e análises contábeis
+                </p>
+                <button className="dashboard-item-link">
+                  <FileText size={16} />
+                  Acessar Relatórios
+                </button>
+              </div>
+
+              <div className="dashboard-item-card">
+                <div className="dashboard-item-header">
+                  <div className="dashboard-item-icon">
+                    <Settings />
+                  </div>
+                  <h3>Dashboard Operacional</h3>
+                </div>
+                <p className="dashboard-item-description">
+                  ⚙️ Métricas operacionais, KPIs e indicadores de performance
+                </p>
+                <button className="dashboard-item-link">
+                  <Settings size={16} />
+                  Acessar Dashboard
+                </button>
+              </div>
             </div>
           </section>
         )}
