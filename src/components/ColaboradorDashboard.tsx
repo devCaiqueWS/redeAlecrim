@@ -262,13 +262,6 @@ const ColaboradorDashboard: React.FC = () => {
               <Plus size={18} />
               Vagas
             </button>
-            <button 
-              className={`nav-btn ${activeSection === 'dashboards' ? 'active' : ''}`}
-              onClick={() => setActiveSection('dashboards')}
-            >
-              <BarChart3 size={18} />
-              Dashboards
-            </button>
           </nav>
           
           <div className="user-info">
