@@ -14,9 +14,55 @@ import JobApplication from './components/JobApplication';
 import Colaboradores from './components/Colaboradores';
 import WhatsAppPopup from './components/WhatsAppPopup';
 
+
 function App() {
-  const [currentView] = useState('home');
-  const [jobData] = useState({ id: 'general', title: 'Banco de Talentos' });
+  const [currentView, setCurrentView] = useState('home');
+  const [jobData, setJobData] = useState({ id: 'general', title: 'Banco de Talentos' });
+
+  useEffect(() => {
+    function handleHashChange() {
+      const hash = window.location.hash;
+      if (hash.startsWith('#apply-')) {
+        const jobId = hash.replace('#apply-', '');
+        setCurrentView('apply');
+        const jobTitles: Record<string, string> = {
+          '1': 'Consultor(a) de Vendas - Boti',
+          '2': 'Consultor(a) de Vendas - QDB',
+          '3': 'Gerente de Loja',
+          '4': 'Supervisor(a) Comercial',
+          '5': 'Consultor(a) de Venda Direta',
+          '6': 'Líder de Venda Direta',
+          '7': 'Assistente Administrativo',
+          '8': 'Analista Financeiro',
+          '9': 'Consultor(a) de Vendas Sênior - Boti',
+          '10': 'Vendedor(a) Interno - QDB',
+          '11': 'Promotor(a) de Vendas',
+          '12': 'Coordenador(a) Regional',
+        };
+        const jobTitle = jobTitles[jobId] || 'Banco de Talentos';
+        setJobData({ id: jobId, title: jobTitle });
+        document.title = `${jobTitle} - Rede Alecrim`;
+      } else if (hash === '#jobs') {
+        setCurrentView('jobs');
+        document.title = 'Trabalhe Conosco - Rede Alecrim';
+      } else if (hash === '#colaboradores') {
+        setCurrentView('colaboradores');
+        document.title = 'Área dos Colaboradores - Rede Alecrim';
+      } else if (hash === '#canva') {
+        setCurrentView('canva');
+        document.title = 'Apresentação Rede Alecrim';
+      } else {
+        setCurrentView('home');
+        document.title = 'Rede Alecrim - Site Institucional';
+      }
+    }
+    // Sempre atualizar ao montar e ao mudar o hash
+    handleHashChange();
+    window.addEventListener('hashchange', handleHashChange);
+    return () => {
+      window.removeEventListener('hashchange', handleHashChange);
+    };
+  }, []);
 
 
 
