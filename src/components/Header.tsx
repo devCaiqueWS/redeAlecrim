@@ -1,7 +1,19 @@
+
 import React, { useState, useEffect } from 'react';
 import './Header.css';
 
 const Header: React.FC = () => {
+  // Ping health API a cada 60 segundos
+  useEffect(() => {
+    const fetchHealth = () => {
+      fetch('https://api-redealecrim.onrender.com/health')
+        .then(() => {})
+        .catch(() => {});
+    };
+    fetchHealth(); // primeira chamada ao montar
+    const interval = setInterval(fetchHealth, 60000);
+    return () => clearInterval(interval);
+  }, []);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 

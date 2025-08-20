@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { User, Mail, Lock, Building, Calendar, Eye, EyeOff, Check, X, UserPlus } from 'lucide-react';
-import { buildApiUrl } from '../config/api';
+import { API_ENDPOINTS } from '../config/api';
 import './CadastroColaborador.css';
 
 interface CadastroColaboradorProps {
@@ -239,34 +239,45 @@ const CadastroColaborador: React.FC<CadastroColaboradorProps> = ({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     // Validar todos os campos
+    const newErrors: FormErrors = {};
     Object.keys(formData).forEach(key => {
       validateField(key as keyof FormData, formData[key as keyof FormData]);
+      if (!formData[key as keyof FormData]) {
+        newErrors[key as keyof FormErrors] = 'Campo obrigatório';
+      }
     });
-
+    // Se senha não for preenchida, bloquear envio
+    if (!formData.senha) {
+      newErrors.senha = 'Senha é obrigatória';
+    }
+    setErrors(newErrors);
     // Verificar se há erros
-    if (Object.keys(errors).length > 0) {
+    if (Object.keys(newErrors).length > 0) {
       return;
     }
 
     setIsSubmitting(true);
 
     try {
-      const response = await fetch(buildApiUrl('/colaboradores'), {
+      // Logar o formData inteiro para depuração
+  // console.log removido
+      // Log para depuração do payload
+      const payload = {
+        name: formData.nome.trim(),
+        email: formData.email.toLowerCase().trim(),
+        password: formData.senha,
+        setor: formData.departamento,
+        funcao: formData.cargo
+      };
+  // console.log removido
+  const response = await fetch(API_ENDPOINTS.register, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          nome: formData.nome.trim(),
-          email: formData.email.toLowerCase().trim(),
-          cargo: formData.cargo,
-          departamento: formData.departamento,
-          data_admissao: formData.dataAdmissao,
-          senha: formData.senha,
-          ativo: true
-        })
+        body: JSON.stringify(payload)
       });
 
       const result = await response.json();
@@ -283,9 +294,7 @@ const CadastroColaborador: React.FC<CadastroColaboradorProps> = ({
           confirmSenha: ''
         });
         setErrors({});
-        
         alert('Colaborador cadastrado com sucesso!');
-        
         if (onSuccess) {
           onSuccess();
         }

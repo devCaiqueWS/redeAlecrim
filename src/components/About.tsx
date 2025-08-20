@@ -110,9 +110,6 @@ const About: React.FC = () => {
           </div>
           
           <div className="about-values">
-            <h3 className={`${statsVisible ? 'animate-fade-in-up delay-400' : ''}`}>
-              Nossos Valores
-            </h3>
             <div 
               ref={valuesRef as React.RefObject<HTMLDivElement>}
               className="values-grid"
@@ -121,22 +118,22 @@ const About: React.FC = () => {
                 <div className="value-icon animate-bounce-in">
                   <Leaf size={32} />
                 </div>
-                <h4>Qualidade</h4>
-                <p>Oferecemos apenas produtos de alta qualidade, selecionados criteriosamente para garantir os melhores resultados.</p>
-              </div>
-              <div className={`value-item modern-card hover-lift ${valuesAnimated > 1 ? 'animate-scale-in delay-200' : ''}`}>
-                <div className="value-icon animate-bounce-in delay-200">
-                  <Handshake size={32} />
-                </div>
-                <h4>Confiança</h4>
-                <p>Construímos relacionamentos duradouros baseados na transparência e no comprometimento com nossos clientes.</p>
+                <h4>Missão</h4>
+                <p>Transformar a vida de nossos colaboradores, clientes e parceiros através da inclusão no nosso ecossistema de beleza.</p>
               </div>
               <div className={`value-item modern-card hover-lift ${valuesAnimated > 2 ? 'animate-scale-in delay-400' : ''}`}>
                 <div className="value-icon animate-bounce-in delay-400">
                   <Lightbulb size={32} />
                 </div>
-                <h4>Inovação</h4>
-                <p>Estamos sempre em busca das últimas tendências e tecnologias do mercado de beleza e cosméticos.</p>
+                <h4>Valores</h4>
+                <p>Somos apaixonados pelo que fazemos, íntegros em nossas atitudes, respeitamos as pessoas e relacionamentos, somos transparentes em ações e decisões. Somos inquietos na busca pelo crescimento sustentável e pela alta performance.</p>
+              </div>
+              <div className={`value-item modern-card hover-lift ${valuesAnimated > 1 ? 'animate-scale-in delay-200' : ''}`}>
+                <div className="value-icon animate-bounce-in delay-200">
+                  <Handshake size={32} />
+                </div>
+                <h4>Visão</h4>
+                <p>Ser uma franquia de alta performance, gerando valor econômico, social e ambiental.</p>
               </div>
             </div>
           </div>

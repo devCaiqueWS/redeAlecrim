@@ -1,3 +1,15 @@
+/* Padronização dos títulos das seções */
+.section-header h2 {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 800;
+  margin-bottom: 20px;
+  background: linear-gradient(45deg, #229c99 0%, #8bc34a 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+  letter-spacing: 1px;
+}
 .contact {
   background: linear-gradient(135deg, var(--light-gray) 0%, rgba(139, 195, 74, 0.05) 100%);
 }
@@ -9,6 +21,11 @@
 
 .section-header h2 {
   margin-bottom: 20px;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  background: linear-gradient(45deg, #229c99 0%, #094d4c 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .section-header p {

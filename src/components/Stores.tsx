@@ -316,8 +316,7 @@ const Stores: React.FC = () => {
           >
             <h2>Nossas Lojas</h2>
             <p className={`${headerVisible ? 'animate-fade-in-up delay-200' : ''}`}>
-              Conheça nossa rede com {totalStores} pontos de venda espalhados por São Paulo,
-              oferecendo produtos de qualidade e atendimento especializado em beleza e cosméticos.
+              Visite uma de nossas {totalStores} lojas em São Paulo e Taboão da Serra, oferecendo um atendimento especializado para quem busca beleza e cuidado de qualidade.
             </p>
           </div>
 

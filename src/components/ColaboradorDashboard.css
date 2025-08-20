@@ -1,3 +1,10 @@
+/* Destaque para admin */
+.team-member.admin-member {
+  background: linear-gradient(90deg, #1abc9c 0%, #27ae60 100%) !important;
+  color: #fff;
+  border: 2px solid #27ae60;
+}
+
 /* ColaboradorDashboard Styles */
 .dashboard-container {
   min-height: 100vh;

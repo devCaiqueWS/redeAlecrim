@@ -2,33 +2,43 @@ import React, { useState, useEffect } from 'react';
 import { LogOut, User, Calendar, FileText, Users, Briefcase, AlertCircle, UserPlus, Plus, Link, Settings, Shield, Edit, Save, X, BarChart3 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import CadastroColaborador from './CadastroColaborador';
-import { buildApiUrl } from '../config/api';
+import { API_ENDPOINTS } from '../config/api';
 import './ColaboradorDashboard.css';
 
 const ColaboradorDashboard: React.FC = () => {
+  const [showCanvaFull, setShowCanvaFull] = useState(false);
   const { colaborador, logout } = useAuth();
   const [activeSection, setActiveSection] = useState('dashboard');
   const [userData, setUserData] = useState(colaborador);
   const [loadingUserData, setLoadingUserData] = useState(false);
   const [isInitialized, setIsInitialized] = useState(false);
 
-  // Estados para formulários
   const [newJobForm, setNewJobForm] = useState({
     titulo: '',
     descricao: '',
-    requisitos: '',
-    salario: '',
+    categoria: '',
     localizacao: '',
-    tipo: 'efetivo'
+    salario: '',
+    salario_tipo: 'monthly',
+    tipo: 'full-time',
+    job_type: 'full_time',
+    experiencia: 'entry',
+    requisitos: '',
+    beneficios: '',
+    empresa: '',
+    email_candidatura: '',
+    expira_em: ''
   });
 
   // Estado para plataformas
   const [platforms, setPlatforms] = useState<Array<{
-    id: number;
-    nome: string;
-    url: string;
-    categoria: string;
-    descricao: string;
+    id: string;
+    name: string;
+    category: string;
+    description: string;
+    website_url: string;
+    logo_url?: string | null;
+    is_active?: boolean;
   }>>([]);
 
   // Estado para equipe/colaboradores
@@ -56,10 +66,14 @@ const ColaboradorDashboard: React.FC = () => {
   // Função para carregar plataformas
   const loadPlatforms = async () => {
     try {
-      const response = await fetch(buildApiUrl('/admin/plataformas'));
+      const response = await fetch(API_ENDPOINTS.platforms);
       if (response.ok) {
         const data = await response.json();
-        setPlatforms(data);
+  // console.log removido
+  // console.log removido
+        setPlatforms(Array.isArray(data.data) ? data.data : []);
+      } else {
+        console.error('[PLATAFORMAS] Erro HTTP:', response.status, response.statusText);
       }
     } catch (error) {
       console.error('Erro ao carregar plataformas:', error);
@@ -76,34 +90,75 @@ const ColaboradorDashboard: React.FC = () => {
     logout();
   };
 
-  const getInitials = (nome: string) => {
-    return nome
+  function getInitials(name: string) {
+    if (!name || typeof name !== 'string') return '';
+    return name
       .split(' ')
-      .map(n => n[0])
+      .map((n) => n[0])
       .join('')
-      .toUpperCase()
-      .slice(0, 2);
-  };
+      .toUpperCase();
+  }
 
   const handleNewJobSubmit = async (e: React.FormEvent) => {
+    if (!newJobForm.empresa || newJobForm.empresa.trim() === '') {
+      alert('O campo Nome da Empresa é obrigatório.');
+      return;
+    }
     e.preventDefault();
-    
+    // Adapta o payload para o padrão mais comum de APIs brasileiras
+    // Se requisitos for string, transforma em array (separado por linha ou vírgula)
+    // Monta o payload conforme o modelo fornecido pelo backend
+    const payload = {
+  title: newJobForm.titulo,
+  description: newJobForm.descricao,
+  category: newJobForm.categoria,
+  location: newJobForm.localizacao,
+  salary: Number(newJobForm.salario) || 0,
+  salary_type: newJobForm.salario_tipo,
+  employment_type: newJobForm.tipo,
+  job_type: newJobForm.job_type,
+  experience_level: newJobForm.experiencia,
+  requirements: newJobForm.requisitos,
+  benefits: newJobForm.beneficios,
+  company: newJobForm.empresa,
+  application_email: newJobForm.email_candidatura,
+  expires_at: newJobForm.expira_em ? newJobForm.expira_em : new Date(Date.now() + 30*24*60*60*1000).toISOString().slice(0,10)
+    };
+  // console.log removido
+  // console.log removido
     try {
-      const response = await fetch(buildApiUrl('/admin/vagas'), {
+      const response = await fetch(API_ENDPOINTS.jobs, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(newJobForm)
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
       });
-
       const result = await response.json();
-
       if (response.ok) {
-        alert(result.message);
-        setNewJobForm({ titulo: '', descricao: '', requisitos: '', salario: '', localizacao: '', tipo: 'efetivo' });
+        alert(result.message || 'Vaga cadastrada com sucesso!');
+        setNewJobForm({
+          titulo: '',
+          descricao: '',
+          categoria: '',
+          localizacao: '',
+          salario: '',
+          salario_tipo: 'monthly',
+          tipo: 'full-time',
+          job_type: 'full_time',
+          experiencia: 'entry',
+          requisitos: '',
+          beneficios: '',
+          empresa: '',
+          email_candidatura: '',
+          expira_em: ''
+        });
       } else {
-        alert(result.error || 'Erro ao criar vaga');
+        // Mostra mensagem detalhada do backend para facilitar debug
+        let details = '';
+        if (result.details && Array.isArray(result.details)) {
+          details = '\n' + result.details.map((d: any) => `• ${d.message || JSON.stringify(d)}`).join('\n');
+        }
+        alert('Erro ao criar vaga: ' + (result.error || JSON.stringify(result)) + details);
+        console.error('Erro detalhado da API:', result);
       }
     } catch (error) {
       console.error('Erro ao criar vaga:', error);
@@ -136,73 +191,107 @@ const ColaboradorDashboard: React.FC = () => {
 
   const handleProfileSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+    setLoadingUserData(true);
     try {
-      const response = await fetch(buildApiUrl(`/colaboradores/${userData?.id}`), {
+      const response = await fetch(`${API_ENDPOINTS.users}/${userData?.id}`, {
         method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(profileForm)
       });
-
       const result = await response.json();
-
       if (response.ok) {
-        alert('Perfil atualizado com sucesso!');
+        // Atualizar os dados locais com o novo perfil mapeando os campos
+        const updated = {
+          id: result.id,
+          nome: result.nome || result.name || '',
+          email: result.email || '',
+          cargo: result.funcao || result.cargo || result.role || '',
+          departamento: result.setor || result.departamento || '',
+          dataAdmissao: result.dataAdmissao || result.data_admissao || result.createdAt || '',
+          permissoes: result.permissoes || []
+        };
+        setUserData(updated);
+        setProfileForm({
+          nome: updated.nome,
+          email: updated.email,
+          cargo: updated.cargo,
+          departamento: updated.departamento,
+          dataAdmissao: updated.dataAdmissao
+        });
         setIsEditingProfile(false);
-        // Atualizar os dados locais
-        setUserData(result);
+        alert('Perfil atualizado com sucesso!');
       } else {
         alert(result.error || 'Erro ao atualizar perfil');
       }
     } catch (error) {
       console.error('Erro ao atualizar perfil:', error);
       alert('Erro ao atualizar perfil. Verifique sua conexão e tente novamente.');
+    } finally {
+      setLoadingUserData(false);
     }
   };
 
-  // Carregar dados apenas uma vez quando o componente monta
-  React.useEffect(() => {
-    const carregarDadosIniciais = async () => {
-      try {
-        // Carregar plataformas
-        const plataformasResponse = await fetch(buildApiUrl('/admin/plataformas'));
-        if (plataformasResponse.ok) {
-          const plataformasData = await plataformasResponse.json();
-          setPlatforms(plataformasData);
-        }
+  // (Removido useEffect duplicado que sobrescrevia platforms)
 
-        // Carregar equipe
-        setLoadingTeam(true);
-        const equipeResponse = await fetch(buildApiUrl('/colaboradores'));
+  // Carregar equipe sempre que abrir a aba 'team'
+  React.useEffect(() => {
+    if (activeSection !== 'team') return;
+    const fetchEquipe = async () => {
+      setLoadingTeam(true);
+      try {
+        const equipeResponse = await fetch(API_ENDPOINTS.users);
         if (equipeResponse.ok) {
           const equipeData = await equipeResponse.json();
-          setTeamMembers(equipeData);
+          let users = Array.isArray(equipeData.data) ? equipeData.data : Array.isArray(equipeData) ? equipeData : [];
+          const mapped = users.map((user: any) => ({
+            id: user.id,
+            nome: user.nome || user.name || '',
+            email: user.email || '',
+            cargo: user.funcao || user.cargo || user.role || '',
+            departamento: user.setor || user.departamento || '',
+            dataAdmissao: user.dataAdmissao || user.data_admissao || user.createdAt || ''
+          }));
+          setTeamMembers(mapped);
         }
       } catch (error) {
-        console.error('Erro ao carregar dados:', error);
+        console.error('Erro ao carregar equipe:', error);
       } finally {
         setLoadingTeam(false);
       }
     };
-
-    carregarDadosIniciais();
-  }, []); // Executar apenas uma vez
+    fetchEquipe();
+  }, [activeSection]);
 
   // Carregar dados completos do usuário da API
   React.useEffect(() => {
     const carregarDadosUsuario = async () => {
-      if (!colaborador?.id) return;
-      
+      if (!colaborador?.id) {
+        console.warn('ID do colaborador não definido:', colaborador);
+        return;
+      }
       setLoadingUserData(true);
       try {
-        const response = await fetch(buildApiUrl(`/colaboradores/${colaborador.id}`));
-        if (response.ok) {
-          const dadosCompletos = await response.json();
-          setUserData(dadosCompletos);
+  // console.log removido
+        const response = await fetch(`${API_ENDPOINTS.users}/${colaborador.id}`);
+  // console.log removido
+        const dadosCompletos = await response.ok ? await response.json() : null;
+  // console.log removido
+        if (response.ok && dadosCompletos) {
+          // Extrai o usuário do padrão de resposta
+          const userRaw = dadosCompletos?.data?.user || dadosCompletos?.data || dadosCompletos.user || dadosCompletos.colaborador || dadosCompletos;
+          // Mapeia para o formato esperado pelo dashboard
+          const user = {
+            id: userRaw.id,
+            nome: userRaw.nome || userRaw.name || '',
+            email: userRaw.email || '',
+            cargo: userRaw.funcao || userRaw.cargo || userRaw.role || '',
+            departamento: userRaw.setor || userRaw.departamento || '',
+            dataAdmissao: userRaw.dataAdmissao || userRaw.data_admissao || userRaw.createdAt || '',
+            permissoes: userRaw.permissoes || []
+          };
+          setUserData(user);
         } else {
-          console.error('Erro ao carregar dados do usuário');
+          console.error('Erro ao carregar dados do usuário', response.status, dadosCompletos);
           // Usar dados do contexto como fallback
           setUserData(colaborador);
         }
@@ -217,19 +306,6 @@ const ColaboradorDashboard: React.FC = () => {
 
     carregarDadosUsuario();
   }, [colaborador]);
-
-  // Atualizar formulário quando userData mudar
-  React.useEffect(() => {
-    if (userData && !isEditingProfile) {
-      setProfileForm({
-        nome: userData.nome || '',
-        email: userData.email || '',
-        cargo: userData.cargo || '',
-        departamento: userData.departamento || '',
-        dataAdmissao: userData.dataAdmissao || ''
-      });
-    }
-  }, [userData, isEditingProfile]);
 
   if (!colaborador) return null;
 
@@ -267,11 +343,15 @@ const ColaboradorDashboard: React.FC = () => {
           
           <div className="user-info">
             <div className="user-avatar">
-              {getInitials(colaborador.nome)}
+              {getInitials(
+                colaborador?.nome
+                  ? colaborador.nome
+                  : (colaborador as any)?.name || ''
+              )}
             </div>
             <div className="user-details">
-              <h3>{colaborador.nome}</h3>
-              <p>{colaborador.cargo}</p>
+              <h3>{colaborador?.nome || (colaborador as any)?.name || ''}</h3>
+              <p>{colaborador?.cargo}</p>
             </div>
             <button className="logout-btn" onClick={handleLogout}>
               <LogOut size={18} />
@@ -293,7 +373,13 @@ const ColaboradorDashboard: React.FC = () => {
           <>
             {/* Seção de Boas-vindas */}
             <section className="welcome-section">
-              <h2>Bem-vindo, {userData?.nome ? userData.nome.split(' ')[0] : 'Usuário'}! 👋</h2>
+              <h2>Bem-vindo, {
+                userData?.nome
+                  ? userData.nome.split(' ')[0]
+                  : (userData && (userData as any).name)
+                    ? ((userData as any).name as string).split(' ')[0]
+                    : 'Usuário'
+              }! 👋</h2>
               <p>Esta é sua área pessoal na Rede Alecrim. Aqui você pode acessar informações importantes, recursos da empresa e se manter atualizado com os comunicados.</p>
             </section>
 
@@ -660,52 +746,61 @@ const ColaboradorDashboard: React.FC = () => {
               </div>
             ) : (
               <div className="team-by-department">
-                {Object.entries(
-                  teamMembers.reduce((grouped: { [key: string]: typeof teamMembers }, member) => {
-                    const department = member.departamento || 'Setor não informado';
-                    if (!grouped[department]) {
-                      grouped[department] = [];
-                    }
-                    grouped[department].push(member);
-                    return grouped;
-                  }, {})
-                )
-                .sort(([a], [b]) => {
-                  // Colocar "Setor não informado" por último
-                  if (a === 'Setor não informado') return 1;
-                  if (b === 'Setor não informado') return -1;
-                  return a.localeCompare(b);
-                })
-                .map(([department, members]) => (
-                  <div key={department} className="department-section">
-                    <div className="department-header">
-                      <h3>{department}</h3>
-                      <span className="member-count">{members.length} {members.length === 1 ? 'colaborador' : 'colaboradores'}</span>
-                    </div>
-                    
-                    <div className="team-grid">
-                      {members.map((member) => (
-                        <div key={member.id} className="team-member">
-                          <div className="member-avatar">
-                            {getInitials(member.nome)}
-                          </div>
-                          <div className="member-info">
-                            <h4>{member.nome}</h4>
-                            <p className="member-role">{member.cargo}</p>
-                            <span className="member-email">{member.email}</span>
-                            <div className="member-details">
-                              {(member.dataAdmissao || member.data_admissao) && (
-                                <small className="member-since">
-                                  Desde {new Date(member.dataAdmissao || member.data_admissao || '').toLocaleDateString('pt-BR')}
-                                </small>
-                              )}
-                            </div>
-                          </div>
+                {Array.isArray(teamMembers) && teamMembers.length > 0 ? (
+                  Object.entries(
+                    teamMembers.reduce((grouped: { [key: string]: typeof teamMembers }, member) => {
+                      const department = member.departamento || 'Setor não informado';
+                      if (!grouped[department]) {
+                        grouped[department] = [];
+                      }
+                      grouped[department].push(member);
+                      return grouped;
+                    }, {})
+                  )
+                    .sort(([a], [b]) => {
+                      // Colocar "Setor não informado" por último
+                      if (a === 'Setor não informado') return 1;
+                      if (b === 'Setor não informado') return -1;
+                      return a.localeCompare(b);
+                    })
+                    .map(([department, members]) => (
+                      <div key={department} className="department-section">
+                        <div className="department-header">
+                          <h3>{department}</h3>
+                          <span className="member-count">{members.length} {members.length === 1 ? 'colaborador' : 'colaboradores'}</span>
                         </div>
-                      ))}
-                    </div>
-                  </div>
-                ))}
+                        <div className="team-grid">
+                          {members.map((member) => {
+                            const isAdmin = (member.cargo?.toLowerCase() === 'admin' || member.cargo?.toLowerCase() === 'administrador' || member.cargo?.toLowerCase() === 'administradora');
+                            return (
+                              <div
+                                key={member.id}
+                                className={['team-member', isAdmin ? 'admin-member' : ''].join(' ').trim()}
+                              >
+                                <div className="member-avatar">
+                                  {getInitials(member.nome)}
+                                </div>
+                                <div className="member-info">
+                                  <h4>{member.nome}</h4>
+                                  <p className="member-role">{member.cargo}</p>
+                                  <span className="member-email">{member.email}</span>
+                                  <div className="member-details">
+                                    {(member.dataAdmissao || member.data_admissao) && (
+                                      <small className="member-since">
+                                        Desde {new Date(member.dataAdmissao || member.data_admissao || '').toLocaleDateString('pt-BR')}
+                                      </small>
+                                    )}
+                                  </div>
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    ))
+                ) : (
+                  <p>Nenhum colaborador encontrado.</p>
+                )}
               </div>
             )}
           </section>
@@ -722,22 +817,22 @@ const ColaboradorDashboard: React.FC = () => {
             </div>
 
             <div className="platforms-grid">
-              {platforms.length === 0 ? (
+              {(!Array.isArray(platforms) || platforms.length === 0) ? (
                 <div className="empty-state">
                   <Link size={48} />
                   <h3>Nenhuma plataforma cadastrada</h3>
                   <p>Entre em contato com o administrador para adicionar plataformas.</p>
                 </div>
               ) : (
-                platforms.map((platform) => (
+                (Array.isArray(platforms) ? platforms : []).map((platform) => (
                   <div key={platform.id} className="platform-card">
                     <div className="platform-header">
-                      <h4>{platform.nome}</h4>
-                      <span className="platform-category">{platform.categoria}</span>
+                      <h4>{platform.name}</h4>
+                      <span className="platform-category">{platform.category}</span>
                     </div>
-                    <p className="platform-description">{platform.descricao}</p>
+                    <p className="platform-description">{platform.description}</p>
                     <a 
-                      href={platform.url} 
+                      href={platform.website_url} 
                       target="_blank" 
                       rel="noopener noreferrer"
                       className="platform-link"
@@ -753,81 +848,88 @@ const ColaboradorDashboard: React.FC = () => {
         )}
 
         {activeSection === 'dashboards' && (
-          <section className="dashboards-section">
-            <div className="section-header">
-              <h2>
-                <BarChart3 />
-                Dashboards & Relatórios
-              </h2>
-              <p>Acesse painéis de controle, métricas e relatórios da empresa</p>
-            </div>
-
-            <div className="dashboards-grid">
-              <div className="dashboard-item-card">
-                <div className="dashboard-item-header">
-                  <div className="dashboard-item-icon">
+          <>
+            {showCanvaFull ? (
+              <section className="dashboards-section" style={{zIndex: 10, position: 'relative'}}>
+                <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '70vh'}}>
+                  <div style={{width: '100%', maxWidth: 900, margin: '0 auto'}}>
+                    <div style={{position: 'relative', width: '100%', height: 0, paddingTop: '56.25%', boxShadow: '0 2px 8px 0 rgba(63,69,81,0.16)', overflow: 'hidden', borderRadius: 8, willChange: 'transform'}}>
+                      <iframe
+                        loading="lazy"
+                        style={{position: 'absolute', width: '100%', height: '100%', top: 0, left: 0, border: 'none', padding: 0, margin: 0}}
+                        src="https://www.canva.com/design/DAGv4hV5C2g/IyDpdPAizb0ryMKBjThJUQ/view?embed"
+                        allowFullScreen
+                        allow="fullscreen"
+                        title="Apresentação Primeiro Semestre 2025 Rede Alecrim"
+                      ></iframe>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => setShowCanvaFull(false)}
+                    style={{marginTop: 24, padding: '10px 24px', borderRadius: 6, background: '#eee', color: '#007C7C', border: 'none', fontWeight: 600, fontSize: 16, cursor: 'pointer'}}
+                  >
+                    Voltar para Dashboards
+                  </button>
+                </div>
+              </section>
+            ) : (
+              <section className="dashboards-section">
+                <div className="section-header">
+                  <h2>
                     <BarChart3 />
-                  </div>
-                  <h3>Dashboard Vendas</h3>
+                    Dashboards & Relatórios
+                  </h2>
+                  <p>Acesse painéis de controle, métricas e relatórios da empresa</p>
                 </div>
-                <p className="dashboard-item-description">
-                  📊 Métricas de vendas, metas e performance das lojas
-                </p>
-                <button className="dashboard-item-link">
-                  <BarChart3 size={16} />
-                  Acessar Dashboard
-                </button>
-              </div>
-
-              <div className="dashboard-item-card">
-                <div className="dashboard-item-header">
-                  <div className="dashboard-item-icon">
-                    <Users />
-                  </div>
-                  <h3>Dashboard RH</h3>
+                <div style={{display: 'flex', justifyContent: 'center', marginBottom: 24}}>
                 </div>
-                <p className="dashboard-item-description">
-                  👥 Indicadores de recursos humanos, colaboradores e equipes
-                </p>
-                <button className="dashboard-item-link">
-                  <Users size={16} />
-                  Acessar Dashboard
-                </button>
-              </div>
-
-              <div className="dashboard-item-card">
-                <div className="dashboard-item-header">
-                  <div className="dashboard-item-icon">
-                    <FileText />
+                <div className="dashboards-grid">
+                  {/* Card para apresentação Canva */}
+                  <div className="dashboard-item-card">
+                    <div className="dashboard-item-header">
+                      <FileText />
+                    </div>
+                    <h3>Apresentação 1º Semestre 2025</h3>
+                    <p className="dashboard-item-description">
+                      📽️ Veja a apresentação institucional do semestre
+                    </p>
+                    <button
+                      className="dashboard-item-link"
+                      onClick={() => setShowCanvaFull(true)}
+                    >
+                      <FileText size={16} />
+                      Apresentação 1º Semestre 2025
+                    </button>
                   </div>
-                  <h3>Relatórios Financeiros</h3>
-                </div>
-                <p className="dashboard-item-description">
-                  💰 Relatórios financeiros, fluxo de caixa e análises contábeis
-                </p>
-                <button className="dashboard-item-link">
-                  <FileText size={16} />
-                  Acessar Relatórios
-                </button>
-              </div>
-
-              <div className="dashboard-item-card">
-                <div className="dashboard-item-header">
-                  <div className="dashboard-item-icon">
-                    <Settings />
+                  {/* ...outros cards... */}
+                  <div className="dashboard-item-card">
+                    <div className="dashboard-item-header">
+                      <BarChart3 />
+                    </div>
+                    <h3>Dashboard Vendas</h3>
                   </div>
-                  <h3>Dashboard Operacional</h3>
+                  <div className="dashboard-item-card">
+                    <div className="dashboard-item-header">
+                      <Users />
+                    </div>
+                    <h3>Dashboard RH</h3>
+                  </div>
+                  <div className="dashboard-item-card">
+                    <div className="dashboard-item-header">
+                      <FileText />
+                    </div>
+                    <h3>Relatórios Financeiros</h3>
+                  </div>
+                  <div className="dashboard-item-card">
+                    <div className="dashboard-item-header">
+                      <Settings />
+                    </div>
+                    <h3>Dashboard Operacional</h3>
+                  </div>
                 </div>
-                <p className="dashboard-item-description">
-                  ⚙️ Métricas operacionais, KPIs e indicadores de performance
-                </p>
-                <button className="dashboard-item-link">
-                  <Settings size={16} />
-                  Acessar Dashboard
-                </button>
-              </div>
-            </div>
-          </section>
+              </section>
+            )}
+          </>
         )}
 
         {activeSection === 'resources' && (
@@ -882,14 +984,10 @@ const ColaboradorDashboard: React.FC = () => {
 
         {activeSection === 'users' && (
           <section className="admin-section">
-            <div style={{padding: '20px', background: '#fff', border: '1px solid #ccc', borderRadius: '8px'}}>
-              <h2 style={{color: '#000', marginBottom: '20px'}}>Teste de Renderização</h2>
-              <p style={{color: '#333'}}>Se você está vendo este texto, o problema é no componente CadastroColaborador.</p>
-            </div>
             <CadastroColaborador 
               onSuccess={() => {
                 // Callback opcional após cadastro bem-sucedido
-                console.log('Colaborador cadastrado com sucesso!');
+                // console.log removido
               }}
             />
           </section>
@@ -917,6 +1015,16 @@ const ColaboradorDashboard: React.FC = () => {
                     placeholder="Ex: Vendedor(a) - Loja Shopping Butantã"
                   />
                 </div>
+                <div className="form-group">
+                  <label>Categoria *</label>
+                  <input
+                    type="text"
+                    value={newJobForm.categoria}
+                    onChange={(e) => setNewJobForm({...newJobForm, categoria: e.target.value})}
+                    required
+                    placeholder="Ex: Vendas, Atendimento, etc."
+                  />
+                </div>
 
                 <div className="form-group full-width">
                   <label>Descrição da Vaga *</label>
@@ -941,13 +1049,26 @@ const ColaboradorDashboard: React.FC = () => {
                 </div>
 
                 <div className="form-group">
-                  <label>Salário</label>
+                  <label>Salário *</label>
                   <input
-                    type="text"
+                    type="number"
                     value={newJobForm.salario}
                     onChange={(e) => setNewJobForm({...newJobForm, salario: e.target.value})}
-                    placeholder="Ex: R$ 1.500,00 + benefícios ou A combinar"
+                    required
+                    placeholder="Ex: 1500"
                   />
+                </div>
+                <div className="form-group">
+                  <label>Tipo de Salário *</label>
+                  <select
+                    value={newJobForm.salario_tipo}
+                    onChange={(e) => setNewJobForm({...newJobForm, salario_tipo: e.target.value})}
+                    required
+                  >
+                    <option value="hourly">Por hora</option>
+                    <option value="monthly">Mensal</option>
+                    <option value="yearly">Anual</option>
+                  </select>
                 </div>
 
                 <div className="form-group">
@@ -968,12 +1089,63 @@ const ColaboradorDashboard: React.FC = () => {
                     onChange={(e) => setNewJobForm({...newJobForm, tipo: e.target.value})}
                     required
                   >
-                    <option value="efetivo">Efetivo</option>
-                    <option value="temporario">Temporário</option>
-                    <option value="terceirizado">Terceirizado</option>
-                    <option value="estagio">Estágio</option>
+                    <option value="full-time">Efetivo</option>
+                    <option value="part-time">Meio Período</option>
+                    <option value="temporary">Temporário</option>
+                    <option value="internship">Estágio</option>
                     <option value="freelancer">Freelancer</option>
                   </select>
+                </div>
+                <div className="form-group">
+                  <label>Nível de Experiência *</label>
+                  <select
+                    value={newJobForm.experiencia}
+                    onChange={(e) => setNewJobForm({...newJobForm, experiencia: e.target.value})}
+                    required
+                  >
+                    <option value="entry">Júnior</option>
+                    <option value="mid">Pleno</option>
+                    <option value="senior">Sênior</option>
+                  </select>
+                </div>
+                <div className="form-group full-width">
+                  <label>Benefícios *</label>
+                  <input
+                    type="text"
+                    value={newJobForm.beneficios}
+                    onChange={(e) => setNewJobForm({...newJobForm, beneficios: e.target.value})}
+                    required
+                    placeholder="Ex: Vale transporte, VR, Plano de saúde"
+                  />
+                </div>
+                <div className="form-group full-width">
+                  <label>Nome da Empresa *</label>
+                  <input
+                    type="text"
+                    value={newJobForm.empresa}
+                    onChange={(e) => setNewJobForm({...newJobForm, empresa: e.target.value})}
+                    required
+                    placeholder="Ex: Rede Alecrim"
+                  />
+                </div>
+                <div className="form-group full-width">
+                  <label>Email para Candidatura *</label>
+                  <input
+                    type="email"
+                    value={newJobForm.email_candidatura}
+                    onChange={(e) => setNewJobForm({...newJobForm, email_candidatura: e.target.value})}
+                    required
+                    placeholder="Ex: rh@empresa.com"
+                  />
+                </div>
+                <div className="form-group full-width">
+                  <label>Data de Expiração *</label>
+                  <input
+                    type="date"
+                    value={newJobForm.expira_em}
+                    onChange={(e) => setNewJobForm({...newJobForm, expira_em: e.target.value})}
+                    required
+                  />
                 </div>
               </div>
 
@@ -1057,8 +1229,9 @@ const ColaboradorDashboard: React.FC = () => {
           </>
         )}
       </div>
+
     </div>
   );
-};
+}
 
 export default ColaboradorDashboard;

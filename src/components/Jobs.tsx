@@ -5,26 +5,33 @@ import './Jobs.css';
 import { useScrollAnimation, useStaggerAnimation, useCountAnimation } from '../hooks/useAnimations';
 import JobApplication from './JobApplication';
 import emailjs from '@emailjs/browser';
-import { API_ENDPOINTS } from '../config/api.js';
+import { API_ENDPOINTS } from '../config/api';
 import { useToast } from '../hooks/useToast';
 import ToastContainer from './ToastContainer';
 
 // Interface para as vagas vindas do JSON
+// Interface para as vagas vindas da API
 interface VagaJSON {
   id: string;
-  titulo: string;
-  local: string;
-  salario: string;
-  responsavel: string;
-  empresa: string;
-  categoria: string;
-  descricao?: string;
-  beneficios: string[];
-  responsabilidades: string[];
-  requisitos: string[];
-  tipo: string;
-  experiencias_preferenciais: string[];
-  perguntas_selecao?: string[];
+  title: string;
+  description: string;
+  requirements: string; // agora string
+  benefits: string; // agora string
+  company: string;
+  company_name?: string | null;
+  job_type: string;
+  category: string;
+  location: string;
+  salary: string;
+  salary_type: string;
+  employment_type: string;
+  experience_level: string;
+  active: boolean;
+  expires_at: string;
+  application_email: string;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt: string | null;
 }
 
 // Interface para o formato interno do componente
@@ -34,9 +41,15 @@ interface Job {
   location: string;
   type: string;
   description: string;
-  requirements: string[];
-  benefits: string[];
+  requirements: string;
+  benefits: string;
   salary: string;
+  company: string;
+  category: string;
+  experience_level: string;
+  employment_type: string;
+  expires_at: string;
+  application_email: string;
 }
 
 interface JobCategory {
@@ -89,15 +102,23 @@ const Jobs: React.FC = () => {
   useEffect(() => {
     const carregarVagas = async () => {
       try {
-        console.log('🔄 Iniciando carregamento das vagas...');
-        console.log('🌐 URL da API:', API_ENDPOINTS.vagas);
-        const response = await fetch(API_ENDPOINTS.vagas);
-        const data: VagaJSON[] = await response.json();
-        console.log('📦 Dados carregados:', data);
-        console.log('📊 Quantidade de vagas carregadas:', data.length);
-        setVagas(data);
+  // console.log removido
+  // console.log removido
+        const response = await fetch(API_ENDPOINTS.jobs);
+        const data = await response.json();
+        let vagasArray: VagaJSON[] = [];
+        if (Array.isArray(data)) {
+          vagasArray = data;
+        } else if (Array.isArray(data.data)) {
+          vagasArray = data.data;
+        } else {
+          vagasArray = [];
+        }
+  // console.log removido
+  // console.log removido
+        setVagas(vagasArray);
         setLoading(false);
-        console.log('✅ Loading finalizado');
+  // console.log removido
       } catch (error) {
         console.error('❌ Erro ao carregar vagas:', error);
         setLoading(false);
@@ -110,13 +131,19 @@ const Jobs: React.FC = () => {
   const converterVagasParaJobs = (vagas: VagaJSON[]): Job[] => {
     return vagas.map(vaga => ({
       id: vaga.id,
-      title: vaga.titulo,
-      location: vaga.local,
-      type: vaga.tipo,
-      description: vaga.descricao || vaga.responsabilidades.slice(0, 2).join('. ') + '.',
-      requirements: vaga.requisitos,
-      benefits: vaga.beneficios,
-      salary: vaga.salario
+      title: vaga.title,
+      location: vaga.location,
+      type: vaga.job_type || vaga.employment_type,
+      description: vaga.description,
+      requirements: vaga.requirements,
+      benefits: vaga.benefits,
+      salary: vaga.salary,
+      company: vaga.company,
+      category: vaga.category,
+      experience_level: vaga.experience_level,
+      employment_type: vaga.employment_type,
+      expires_at: vaga.expires_at,
+      application_email: vaga.application_email
     }));
   };
 
@@ -133,7 +160,7 @@ const Jobs: React.FC = () => {
     const vagasAgrupadas: { [key: string]: VagaJSON[] } = {};
     
     vagas.forEach(vaga => {
-      const categoria = vaga.categoria || 'vendas';
+      const categoria = vaga.category || 'vendas';
       if (!vagasAgrupadas[categoria]) {
         vagasAgrupadas[categoria] = [];
       }
@@ -159,13 +186,19 @@ const Jobs: React.FC = () => {
   // Vagas em destaque
   const featuredJobs = vagas.slice(0, 2).map(vaga => ({
     id: vaga.id,
-    title: vaga.titulo,
-    location: vaga.local,
-    type: vaga.tipo,
-    description: vaga.descricao || vaga.responsabilidades.slice(0, 2).join('. ') + '.',
-    requirements: vaga.requisitos,
-    benefits: vaga.beneficios,
-    salary: vaga.salario
+    title: vaga.title,
+    location: vaga.location,
+    type: vaga.job_type || vaga.employment_type,
+    description: vaga.description,
+    requirements: vaga.requirements,
+    benefits: vaga.benefits,
+    salary: vaga.salary,
+    company: vaga.company,
+    category: vaga.category,
+    experience_level: vaga.experience_level,
+    employment_type: vaga.employment_type,
+    expires_at: vaga.expires_at,
+    application_email: vaga.application_email
   }));
 
   // Hooks para animações
@@ -192,7 +225,7 @@ const Jobs: React.FC = () => {
   // Atualiza os contadores quando os dados mudarem
   useEffect(() => {
     if (!loading && totalJobs > 0) {
-      console.log('🎯 Iniciando animação manual dos contadores');
+  // console.log removido
       
       // Anima contador de vagas
       const animateJobCount = () => {
@@ -242,13 +275,13 @@ const Jobs: React.FC = () => {
 
   // Funções para controlar modais
   const handleApplyJob = (jobId: string) => {
-    console.log('🔥 handleApplyJob chamado para:', jobId);
+  // console.log removido
     const vaga = vagas.find(v => v.id === jobId);
-    console.log('🔍 Vaga encontrada:', vaga);
+  // console.log removido
     if (vaga) {
       setSelectedJob(vaga);
       setShowApplication(true);
-      console.log('✅ Página de aplicação deve abrir');
+  // console.log removido
     }
   };
 
@@ -749,7 +782,7 @@ Sistema Automatizado - Site Rede Alecrim
 
       // Tentar primeiro via API real (se disponível)
       try {
-        const response = await fetch('/api/submit-curriculum', {
+        const response = await fetch(API_ENDPOINTS.applications, {
           method: 'POST',
           body: formData,
           headers: {
@@ -853,7 +886,7 @@ Sistema Automatizado - Site Rede Alecrim
         </div>
         <JobApplication 
           jobId={selectedJob.id} 
-          jobTitle={selectedJob.titulo}
+          jobTitle={selectedJob.title}
           onBackToJobs={handleBackToJobs}
         />
       </div>
@@ -1448,9 +1481,12 @@ Sistema Automatizado - Site Rede Alecrim
                     <div className="requirements">
                       <strong>Requisitos:</strong>
                       <ul>
-                        {job.requirements.slice(0, 2).map((req, index) => (
-                          <li key={index}>{req}</li>
-                        ))}
+                        {job.requirements
+                          ? job.requirements.split(/\r?\n|,|;/).filter(Boolean).slice(0, 2).map((req, index) => (
+                              <li key={index}>{req.trim()}</li>
+                            ))
+                          : <li>Nenhum requisito informado</li>
+                        }
                       </ul>
                     </div>
                   </div>
@@ -1515,16 +1551,19 @@ Sistema Automatizado - Site Rede Alecrim
                       <div className="job-requirements">
                         <strong>Requisitos:</strong>
                         <ul>
-                          {expandedCards.has(job.id) 
-                            ? job.requirements.map((requirement, index) => (
-                                <li key={index}>{requirement}</li>
-                              ))
-                            : job.requirements.slice(0, 3).map((requirement, index) => (
-                                <li key={index}>{requirement}</li>
-                              ))
+                          {job.requirements
+                            ? (expandedCards.has(job.id)
+                                ? job.requirements.split(/\r?\n|,|;/).filter(Boolean).map((requirement, index) => (
+                                    <li key={index}>{requirement.trim()}</li>
+                                  ))
+                                : job.requirements.split(/\r?\n|,|;/).filter(Boolean).slice(0, 3).map((requirement, index) => (
+                                    <li key={index}>{requirement.trim()}</li>
+                                  ))
+                              )
+                            : <li>Nenhum requisito informado</li>
                           }
-                          {!expandedCards.has(job.id) && job.requirements.length > 3 && (
-                            <li className="more-requirements">+{job.requirements.length - 3} mais requisitos</li>
+                          {!expandedCards.has(job.id) && job.requirements && job.requirements.split(/\r?\n|,|;/).filter(Boolean).length > 3 && (
+                            <li className="more-requirements">+{job.requirements.split(/\r?\n|,|;/).filter(Boolean).length - 3} mais requisitos</li>
                           )}
                         </ul>
                       </div>
@@ -1532,16 +1571,19 @@ Sistema Automatizado - Site Rede Alecrim
                       <div className="job-benefits">
                         <strong>Benefícios:</strong>
                         <div className="benefits-tags">
-                          {expandedCards.has(job.id)
-                            ? job.benefits.map((benefit, index) => (
-                                <span key={index} className="benefit-tag">• {benefit}</span>
-                              ))
-                            : job.benefits.slice(0, 3).map((benefit, index) => (
-                                <span key={index} className="benefit-tag">• {benefit}</span>
-                              ))
+                          {job.benefits
+                            ? (expandedCards.has(job.id)
+                                ? job.benefits.split(/\r?\n|,|;/).filter(Boolean).map((benefit, index) => (
+                                    <span key={index} className="benefit-tag">• {benefit.trim()}</span>
+                                  ))
+                                : job.benefits.split(/\r?\n|,|;/).filter(Boolean).slice(0, 3).map((benefit, index) => (
+                                    <span key={index} className="benefit-tag">• {benefit.trim()}</span>
+                                  ))
+                              )
+                            : <span className="benefit-tag">Nenhum benefício informado</span>
                           }
-                          {!expandedCards.has(job.id) && job.benefits.length > 3 && (
-                            <span className="benefit-tag more"> +{job.benefits.length - 3} mais</span>
+                          {!expandedCards.has(job.id) && job.benefits && job.benefits.split(/\r?\n|,|;/).filter(Boolean).length > 3 && (
+                            <span className="benefit-tag more"> +{job.benefits.split(/\r?\n|,|;/).filter(Boolean).length - 3} mais</span>
                           )}
                         </div>
                       </div>
@@ -1555,44 +1597,30 @@ Sistema Automatizado - Site Rede Alecrim
                           const vagaOriginal = vagas.find(v => v.id === job.id);
                           return vagaOriginal && (
                             <>
-                              {vagaOriginal.responsabilidades && vagaOriginal.responsabilidades.length > 0 && (
-                                <div className="job-section">
-                                  <strong>Responsabilidades:</strong>
-                                  <ul>
-                                    {vagaOriginal.responsabilidades.map((resp, index) => (
-                                      <li key={index}>{resp}</li>
-                                    ))}
-                                  </ul>
-                                </div>
-                              )}
-
-                              {vagaOriginal.experiencias_preferenciais && vagaOriginal.experiencias_preferenciais.length > 0 && (
-                                <div className="job-section">
-                                  <strong>Experiências Preferenciais:</strong>
-                                  <ul>
-                                    {vagaOriginal.experiencias_preferenciais.map((exp, index) => (
-                                      <li key={index}>{exp}</li>
-                                    ))}
-                                  </ul>
-                                </div>
-                              )}
-
-                              {vagaOriginal.descricao && (
+                              {vagaOriginal.description && (
                                 <div className="job-section">
                                   <strong>Descrição Completa:</strong>
-                                  <p>{vagaOriginal.descricao}</p>
+                                  <p>{vagaOriginal.description}</p>
                                 </div>
                               )}
-
-                              <div className="job-section">
-                                <strong>Empresa:</strong>
-                                <p>{vagaOriginal.empresa}</p>
-                              </div>
-
-                              <div className="job-section">
-                                <strong>Responsável:</strong>
-                                <p>{vagaOriginal.responsavel}</p>
-                              </div>
+                              {vagaOriginal.company && (
+                                <div className="job-section">
+                                  <strong>Empresa:</strong>
+                                  <p>{vagaOriginal.company}</p>
+                                </div>
+                              )}
+                              {vagaOriginal.location && (
+                                <div className="job-section">
+                                  <strong>Localização:</strong>
+                                  <p>{vagaOriginal.location}</p>
+                                </div>
+                              )}
+                              {vagaOriginal.application_email && (
+                                <div className="job-section">
+                                  <strong>Email para candidatura:</strong>
+                                  <p>{vagaOriginal.application_email}</p>
+                                </div>
+                              )}
                             </>
                           );
                         })()}

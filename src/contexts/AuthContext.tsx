@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { buildApiUrl } from '../config/api.js';
+import { API_ENDPOINTS } from '../config/api';
 
 // Interface para dados do colaborador
 export interface Colaborador {
@@ -44,45 +44,21 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     checkAuth();
   }, []);
 
-  // Função para verificar autenticação
+  // Função para verificar autenticação (sem token)
   const checkAuth = async (): Promise<boolean> => {
     try {
-      const token = localStorage.getItem('auth_token');
       const colaboradorData = localStorage.getItem('colaborador_data');
-      const loginTimestamp = localStorage.getItem('login_timestamp');
-      
-      if (!token || !colaboradorData) {
+      if (!colaboradorData) {
         setLoading(false);
         return false;
       }
-
-      // Verificar se o token não expirou (24 horas)
-      const now = Date.now();
-      const loginTime = parseInt(loginTimestamp || '0');
-      const tokenAge = now - loginTime;
-      const TOKEN_EXPIRY = 24 * 60 * 60 * 1000; // 24 horas
-
-      if (tokenAge > TOKEN_EXPIRY) {
-        // Token expirado, limpar dados
-        localStorage.removeItem('auth_token');
-        localStorage.removeItem('colaborador_data');
-        localStorage.removeItem('login_timestamp');
-        setLoading(false);
-        return false;
-      }
-
-      // Carregar dados do colaborador do localStorage
       const colaboradorParsed = JSON.parse(colaboradorData);
       setColaborador(colaboradorParsed);
       setIsAuthenticated(true);
       setLoading(false);
       return true;
-      
     } catch (error) {
-      // Em caso de erro, limpar todos os dados
-      localStorage.removeItem('auth_token');
       localStorage.removeItem('colaborador_data');
-      localStorage.removeItem('login_timestamp');
       setLoading(false);
       return false;
     }
@@ -92,27 +68,26 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const login = async (credentials: LoginCredentials): Promise<{ success: boolean; error?: string }> => {
     try {
       setLoading(true);
-      
-      const response = await fetch(buildApiUrl('/colaboradores/login'), {
+      const response = await fetch(API_ENDPOINTS.login, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(credentials)
+        body: JSON.stringify({
+          email: credentials.email,
+          password: credentials.senha
+        })
       });
-
       const data = await response.json();
-
+  // console.log removido
       if (response.ok) {
-        // Salvar token e dados do colaborador
-        localStorage.setItem('auth_token', data.token);
-        localStorage.setItem('colaborador_data', JSON.stringify(data.colaborador));
-        localStorage.setItem('login_timestamp', Date.now().toString());
-        
-        setColaborador(data.colaborador);
+        // Novo padrão: data.data.user
+        const user = data?.data?.user || data.user || data.colaborador || data;
+  // console.log removido
+        localStorage.setItem('colaborador_data', JSON.stringify(user));
+        setColaborador(user);
         setIsAuthenticated(true);
         setLoading(false);
-        
         return { success: true };
       } else {
         setLoading(false);
@@ -122,26 +97,18 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         };
       }
     } catch (error) {
+      setLoading(false);
       return { 
         success: false, 
         error: 'Erro de conexão. Verifique sua internet.' 
       };
-    } finally {
-      setLoading(false);
     }
   };
 
   // Função de logout
   const logout = () => {
-    // Limpar todos os dados relacionados à autenticação
-    localStorage.removeItem('auth_token');
+    // Limpar apenas os dados do colaborador
     localStorage.removeItem('colaborador_data');
-    localStorage.removeItem('login_timestamp');
-    
-    // Limpar qualquer cache adicional
-    localStorage.clear();
-    
-    // Resetar estado
     setIsAuthenticated(false);
     setColaborador(null);
     setLoading(false);
