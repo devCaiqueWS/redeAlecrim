@@ -137,6 +137,31 @@ const About: React.FC = () => {
               </div>
             </div>
           </div>
+
+
+          <div className="about-cta-card animate-fade-in-up">
+            <h2 className="about-cta-title">Junte-se à Rede Alecrim!</h2>
+            <p className="about-cta-subtitle">Seja parte do nosso time ou empreenda com a gente!</p>
+            <div className="about-cta-content-split">
+              <div className="about-cta-col">
+                <h4 className="about-cta-col-title">Trabalhe Conosco</h4>
+                <p className="about-cta-desc">
+                  Deseja se candidatar a vagas de emprego na nossa equipe? <br />
+                  Envie seu currículo e venha trabalhar conosco!
+                </p>
+                <a href="#jobs" className="btn btn-primary">Trabalhe Conosco</a>
+              </div>
+              <div className="about-cta-col">
+                <h4 className="about-cta-col-title">Seja um Revendedor</h4>
+                <p className="about-cta-desc">
+                  Quer aprender a empreender e criar seu próprio negócio?<br />
+                  Temos um programa de revendedores que pode te ajudar a começar!
+                </p>
+                <a href="https://revenda.boticario.com.br" target="_blank" rel="noopener noreferrer" className="btn btn-outline">Seja um Revendedor</a>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
     </section>

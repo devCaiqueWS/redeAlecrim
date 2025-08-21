@@ -1,3 +1,158 @@
+/* Split columns for CTA card */
+.about-cta-content-split {
+  display: flex;
+  flex-direction: row;
+  gap: 48px;
+  justify-content: center;
+  align-items: flex-start;
+  margin-top: 32px;
+  margin-bottom: 0;
+}
+.about-cta-col {
+  flex: 1 1 0;
+  min-width: 240px;
+  max-width: 350px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: transparent;
+}
+.about-cta-col-title {
+  color: #18897a;
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+.about-cta-col .about-cta-desc {
+  font-size: 1.08rem;
+  color: #555;
+  margin-bottom: 24px;
+  text-align: center;
+}
+.about-cta-col .btn {
+  width: 100%;
+  min-width: 0;
+  font-size: 1.1rem;
+  margin-top: 8px;
+}
+
+@media (max-width: 900px) {
+  .about-cta-content-split {
+    flex-direction: column;
+    gap: 24px;
+    align-items: stretch;
+  }
+  .about-cta-col {
+    max-width: 100%;
+    min-width: 0;
+  }
+}
+/* Card de chamada Trabalhe Conosco/Revenda */
+.about-cta-card {
+  background: linear-gradient(120deg, #eafaf6 60%, #e0f4ee 100%);
+  border-radius: 32px;
+  box-shadow: 0 4px 32px 0 rgba(24, 137, 122, 0.10);
+  padding: 56px 48px 48px 48px;
+  margin: 56px auto 0 auto;
+  max-width: 2000px;
+  min-width: 0;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1.5px solid #d2ede6;
+}
+
+.about-cta-title {
+  color: #18897a;
+  font-size: 2.6rem;
+  font-weight: 800;
+  margin-bottom: 12px;
+}
+
+.about-cta-subtitle {
+  color: #3a4a4a;
+  font-size: 1.3rem;
+  margin-bottom: 24px;
+}
+
+.about-cta-desc {
+  color: #555;
+  font-size: 1.18rem;
+  margin-bottom: 36px;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.about-cta-btns {
+  display: flex;
+  gap: 24px;
+  justify-content: center;
+  margin-top: 8px;
+}
+
+.about-cta-btns .btn {
+  min-width: 160px;
+  max-width: 220px;
+  font-size: 1.08rem;
+  font-weight: 600;
+  padding: 12px 0;
+  border-radius: 24px;
+  box-shadow: 0 1px 4px rgba(24, 137, 122, 0.07);
+  transition: background 0.25s, color 0.25s, box-shadow 0.25s;
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+  letter-spacing: 0.01em;
+}
+
+.about-cta-btns .btn-primary {
+  background: linear-gradient(90deg, #18897a 0%, #176b6b 100%);
+  color: #fff;
+  border: none;
+  box-shadow: 0 2px 8px rgba(24, 137, 122, 0.10);
+}
+.about-cta-btns .btn-primary:hover {
+  background: linear-gradient(90deg, #176b6b 0%, #18897a 100%);
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(24, 137, 122, 0.13);
+  transform: translateY(-2px) scale(1.03);
+}
+.about-cta-btns .btn-outline {
+  background: #fff;
+  color: #18897a;
+  border: 2px solid #18897a;
+  box-shadow: 0 2px 8px rgba(24, 137, 122, 0.06);
+}
+.about-cta-btns .btn-outline:hover {
+  background: #eafaf6;
+  color: #176b6b;
+  border-color: #176b6b;
+  box-shadow: 0 4px 16px rgba(24, 137, 122, 0.10);
+  transform: translateY(-2px) scale(1.03);
+}
+
+@media (max-width: 600px) {
+  .about-cta-card {
+    padding: 24px 4px 18px 4px;
+    max-width: 99vw;
+  }
+  .about-cta-title {
+    font-size: 1.3rem;
+  }
+  .about-cta-desc {
+    font-size: 0.98rem;
+  }
+  .about-cta-btns {
+    flex-direction: column;
+    gap: 12px;
+  }
+  .about-cta-btns .btn {
+    min-width: 0;
+    width: 100%;
+    font-size: 0.98rem;
+    padding: 10px 0;
+  }
+}
 /* Padronização dos títulos das seções */
 .section-header h2 {
   font-size: clamp(2rem, 5vw, 3.5rem);

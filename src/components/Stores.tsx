@@ -262,7 +262,6 @@ const Stores: React.FC = () => {
 
   return (
     <>
-      {/* Seção de Marcas */}
       <section className="brands-section">
         <div className="container">
           <div
@@ -272,7 +271,6 @@ const Stores: React.FC = () => {
             <h2>Nossas Marcas</h2>
           </div>
           <div className="brands-carousel">
-            {/* Seta Esquerda */}
             <button
               className="brand-nav brand-nav-prev"
               onClick={scrollLeft}
@@ -307,7 +305,6 @@ const Stores: React.FC = () => {
         </div>
       </section>
 
-      {/* Seção de Lojas */}
       <section id="stores" className="stores section">
         <div className="container">
           <div
@@ -339,7 +336,6 @@ const Stores: React.FC = () => {
             </div>
           </div>
 
-          {/* Filtros de Categoria */}
           <div className={`store-filters ${headerVisible ? 'animate-fade-in-up delay-400' : ''}`}>
             <button
               onClick={() => setSelectedCategory('all')}
@@ -468,25 +464,6 @@ const Stores: React.FC = () => {
                 </div>
               ))
             )}
-          </div>
-
-          <div className={`stores-cta ${headerVisible ? 'animate-fade-in-up delay-800' : ''}`}>
-            <h3>Junte-se à Rede Alecrim!</h3>
-            <p>
-              Seja parte do nosso time ou empreenda com a gente!
-            </p>
-            <p>
-              deseja se candidatar a vagas de emprego na nossa equipe de vendas?  Envie seu currículo e venha trabalhar conosco!
-              Para quem quer empreender e lucrar. Comece seu próprio negócio agora. Seja um Revendedor!
-            </p>
-            <div className="cta-buttons">
-                <a href="#jobs" className="btn btn-primary hover-glow">
-                  Trabalhe Conosco
-                </a>
-                <a href="https://revenda.boticario.com.br" target='_blank' rel="noreferrer" className="btn btn-outline hover-glow">
-                  Seja um Revendedor
-                </a>
-              </div>
           </div>
         </div>
       </section>
