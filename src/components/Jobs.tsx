@@ -1473,9 +1473,11 @@ Sistema Automatizado - Site Rede Alecrim
                   <h4>{job.title}</h4>
                   <div className="job-info">
                     <span className="location"><MapPin size={16} /> {job.location}</span>
-                    <span className="type">{job.type}</span>
+                    <span className="type">{(job.type === 'full_time' || job.employment_type === 'full_time') ? 'Efetivo CLT' : (job.type !== 'full_time' && job.type ? job.type : job.employment_type)}</span>
                   </div>
-                  <div className="salary"><DollarSign size={16} /> {job.salary}</div>
+                  <div className="salary"><DollarSign size={16} />
+                    {job.salary}
+                  </div>
                   <p className="job-description">{job.description}</p>
                   <div className="job-details">
                     <div className="requirements">
@@ -1540,11 +1542,13 @@ Sistema Automatizado - Site Rede Alecrim
                       <h4>{job.title}</h4>
                       <div className="job-meta">
                         <span className="job-location"><MapPin size={16} /> {job.location}</span>
-                        <span className="job-type">{job.type}</span>
+                        <span className="job-type">{(job.type === 'full_time' || job.employment_type === 'full_time') ? 'Efetivo CLT' : (job.type !== 'full_time' && job.type ? job.type : job.employment_type)}</span>
                       </div>
                     </div>
                     
-                    <div className="salary"><DollarSign size={16} /> {job.salary}</div>
+                    <div className="salary"><DollarSign size={16} />
+                      {job.salary}
+                    </div>
                     <p className="job-description">{job.description}</p>
                     
                     <div className="job-details">
