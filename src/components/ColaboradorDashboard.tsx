@@ -35,7 +35,7 @@ const ColaboradorDashboard: React.FC = () => {
         date: dateString,
         body: newNotice.body
       };
-      const response = await fetch('http://localhost:3000/api/notices', {
+  const response = await fetch('https://api-redealecrim.onrender.com/api/notices', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
@@ -75,7 +75,7 @@ const ColaboradorDashboard: React.FC = () => {
     const fetchNotices = async () => {
       setLoadingNotices(true);
       try {
-        const response = await fetch('http://localhost:3000/api/notices');
+        const response = await fetch('https://api-redealecrim.onrender.com/api/notices');
         if (response.ok) {
           const result = await response.json();
           if (Array.isArray(result.data)) {
