@@ -21,10 +21,19 @@ const ColaboradorDashboard: React.FC = () => {
     e.preventDefault();
     setCreatingNotice(true);
     try {
+      // Garante formato ISO 8601 UTC (com 'Z')
+      let dateString = newNotice.date;
+      if (!dateString) {
+        dateString = new Date().toISOString();
+      } else if (!dateString.endsWith('Z')) {
+        // Se veio de input datetime-local, converter para UTC
+        const d = new Date(dateString);
+        dateString = d.toISOString();
+      }
       const payload = {
         title: newNotice.title,
-        body: newNotice.body,
-        date: newNotice.date || new Date().toISOString()
+        date: dateString,
+        body: newNotice.body
       };
       const response = await fetch('http://localhost:3000/api/notices', {
         method: 'POST',
