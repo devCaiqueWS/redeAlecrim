@@ -285,7 +285,7 @@ const ColaboradorDashboard: React.FC = () => {
           id: userRaw.id,
           nome: userRaw.nome || userRaw.name || '',
           email: userRaw.email || '',
-          cargo: userRaw.funcao || userRaw.cargo || userRaw.role || '',
+          cargo: userRaw.role || userRaw.funcao || userRaw.cargo || '',
           departamento: userRaw.setor || userRaw.departamento || '',
           dataAdmissao: userRaw.dataAdmissao || userRaw.data_admissao || userRaw.createdAt || '',
           permissoes: userRaw.permissoes || []
@@ -415,7 +415,7 @@ const ColaboradorDashboard: React.FC = () => {
             id: userRaw.id,
             nome: userRaw.nome || userRaw.name || '',
             email: userRaw.email || '',
-            cargo: userRaw.funcao || userRaw.cargo || userRaw.role || '',
+            cargo: userRaw.role || userRaw.funcao || userRaw.cargo || '',
             departamento: userRaw.setor || userRaw.departamento || '',
             dataAdmissao: userRaw.dataAdmissao || userRaw.data_admissao || userRaw.createdAt || '',
             permissoes: userRaw.permissoes || []
