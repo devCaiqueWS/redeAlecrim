@@ -456,27 +456,31 @@ const ColaboradorDashboard: React.FC = () => {
               <Briefcase size={18} />
               Dashboard
             </button>
-            <button
-              className={`nav-btn ${activeSection === 'users' ? 'active' : ''}`}
-              onClick={() => setActiveSection('users')}
-            >
-              <UserPlus size={18} />
-              Usuários
-            </button>
-            <button
-              className={`nav-btn ${activeSection === 'jobs' ? 'active' : ''}`}
-              onClick={() => setActiveSection('jobs')}
-            >
-              <Plus size={18} />
-              Vagas
-            </button>
-            <button
-              className={`nav-btn ${activeSection === 'createNotice' ? 'active' : ''}`}
-              onClick={() => setActiveSection('createNotice')}
-            >
-              <AlertCircle size={18} />
-              Criar Aviso
-            </button>
+      {(userData?.cargo?.toLowerCase() === 'admin' || userData?.cargo?.toLowerCase() === 'moderator') && (
+              <>
+                <button
+                  className={`nav-btn ${activeSection === 'users' ? 'active' : ''}`}
+                  onClick={() => setActiveSection('users')}
+                >
+                  <UserPlus size={18} />
+                  Usuários
+                </button>
+                <button
+                  className={`nav-btn ${activeSection === 'jobs' ? 'active' : ''}`}
+                  onClick={() => setActiveSection('jobs')}
+                >
+                  <Plus size={18} />
+                  Vagas
+                </button>
+                <button
+                  className={`nav-btn ${activeSection === 'createNotice' ? 'active' : ''}`}
+                  onClick={() => setActiveSection('createNotice')}
+                >
+                  <AlertCircle size={18} />
+                  Criar Aviso
+                </button>
+              </>
+            )}
           </nav>
 
             
