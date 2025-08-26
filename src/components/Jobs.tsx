@@ -1543,6 +1543,11 @@ Sistema Automatizado - Site Rede Alecrim
                       <div className="job-meta">
                         <span className="job-location"><MapPin size={16} /> {job.location}</span>
                         <span className="job-type">{(job.type === 'full_time' || job.employment_type === 'full_time') ? 'Efetivo CLT' : (job.type !== 'full_time' && job.type ? job.type : job.employment_type)}</span>
+                        {job.category && (
+                          <span className="job-category" style={{ marginLeft: 8, background: '#e6f7f7', color: '#007C7C', borderRadius: 6, padding: '2px 10px', fontSize: 13, fontWeight: 600 }}>
+                            {job.category}
+                          </span>
+                        )}
                       </div>
                     </div>
                     
