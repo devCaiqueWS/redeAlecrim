@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import { Briefcase, Star, BarChart3, Home, Settings, MapPin, DollarSign, CheckCircle, AlertCircle, Loader } from 'lucide-react';
+import { Briefcase, Star, MapPin, DollarSign, CheckCircle, AlertCircle, Loader } from 'lucide-react';
 import './Jobs.css';
 import { useScrollAnimation, useStaggerAnimation, useCountAnimation } from '../hooks/useAnimations';
 import JobApplication from './JobApplication';
@@ -150,34 +150,26 @@ const Jobs: React.FC = () => {
   // Agrupa as vagas por categoria
   const agruparVagasPorCategoria = (vagas: VagaJSON[]): JobCategory[] => {
     
-    const categorias: { [key: string]: { title: string; icon: React.ReactElement } } = {
-      vendas: { title: 'Vendas', icon: <Briefcase size={24} /> },
-      administrativo: { title: 'Administrativo', icon: <BarChart3 size={24} /> },
-      vendadireta: { title: 'Venda Direta', icon: <Home size={24} /> },
-      operacional: { title: 'Operacional', icon: <Settings size={24} /> }
-    };
-
+    // Agrupa por categoria original da API
     const vagasAgrupadas: { [key: string]: VagaJSON[] } = {};
-    
     vagas.forEach(vaga => {
-      const categoria = vaga.category || 'vendas';
+      const categoria = vaga.category || 'Outras';
       if (!vagasAgrupadas[categoria]) {
         vagasAgrupadas[categoria] = [];
       }
       vagasAgrupadas[categoria].push(vaga);
     });
-    
 
-    // Filtra apenas as categorias que realmente têm vagas
+    // Cada categoria terá o nome exatamente como vem da API
     const resultado = Object.keys(vagasAgrupadas)
       .filter(categoriaId => vagasAgrupadas[categoriaId].length > 0)
       .map(categoriaId => ({
         id: categoriaId,
-        title: categorias[categoriaId]?.title || 'Outras',
-        icon: categorias[categoriaId]?.icon || <Briefcase size={24} />,
+        title: categoriaId,
+        icon: <Briefcase size={24} />,
         jobs: converterVagasParaJobs(vagasAgrupadas[categoriaId])
       }));
-      
+
     return resultado;
   };
 
