@@ -151,7 +151,7 @@ const ColaboradorDashboard: React.FC = () => {
   // Função para carregar plataformas
   const loadPlatforms = async () => {
     try {
-      const response = await fetch(`http://localhost:3000${API_ENDPOINTS.platforms}`);
+  const response = await fetch('https://api-redealecrim.onrender.com/api/platforms');
       if (response.ok) {
         const data = await response.json();
         setPlatforms(Array.isArray(data.data) ? data.data : []);
@@ -277,7 +277,7 @@ const ColaboradorDashboard: React.FC = () => {
     if (!userData?.id) return;
     setLoadingUserData(true);
     try {
-  const response = await fetch(`http://localhost:3000${API_ENDPOINTS.users}/${userData.id}`);
+  const response = await fetch(`https://api-redealecrim.onrender.com/api/users/${userData.id}`);
       if (response.ok) {
         const dadosCompletos = await response.json();
         const userRaw = dadosCompletos?.data?.user || dadosCompletos?.data || dadosCompletos.user || dadosCompletos.colaborador || dadosCompletos;
@@ -323,7 +323,7 @@ const ColaboradorDashboard: React.FC = () => {
         dataAdmissao: profileForm.dataAdmissao
       };
       console.log('[PUT PERFIL] Payload enviado:', JSON.stringify(payload, null, 2));
-  const response = await fetch(`http://localhost:3000${API_ENDPOINTS.users}/${userData?.id}`, {
+  const response = await fetch(`https://api-redealecrim.onrender.com/api/users/${userData?.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
@@ -370,7 +370,7 @@ const ColaboradorDashboard: React.FC = () => {
     const fetchEquipe = async () => {
       setLoadingTeam(true);
       try {
-  const equipeResponse = await fetch(`http://localhost:3000${API_ENDPOINTS.users}`);
+  const equipeResponse = await fetch('https://api-redealecrim.onrender.com/api/users');
         if (equipeResponse.ok) {
           const equipeData = await equipeResponse.json();
           let users = Array.isArray(equipeData.data) ? equipeData.data : Array.isArray(equipeData) ? equipeData : [];
@@ -403,7 +403,7 @@ const ColaboradorDashboard: React.FC = () => {
       setLoadingUserData(true);
       try {
         // console.log removido
-  const response = await fetch(`http://localhost:3000${API_ENDPOINTS.users}/${colaborador.id}`);
+  const response = await fetch(`https://api-redealecrim.onrender.com/api/users/${colaborador.id}`);
         // console.log removido
         const dadosCompletos = await response.ok ? await response.json() : null;
         // console.log removido
