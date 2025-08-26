@@ -6,32 +6,85 @@ import CadastroColaborador from './CadastroColaborador';
 import { API_ENDPOINTS } from '../config/api';
 import './ColaboradorDashboard.css';
 
-  // Mock de avisos
-  const mockAvisos = [
-    {
-      id: 1,
-      titulo: '🎉 Bem-vindo à nova área dos colaboradores!',
-      conteudo: 'Estamos muito felizes em apresentar a nova plataforma digital da Rede Alecrim. Em breve, teremos ainda mais funcionalidades para tornar sua experiência ainda melhor.',
-      data: '2025-08-20'
-    },
-    {
-      id: 2,
-      titulo: '📱 Acesso mobile disponível',
-      conteudo: 'Agora você pode acessar a área dos colaboradores pelo seu smartphone ou tablet com total responsividade e facilidade de navegação.',
-      data: '2025-08-21'
-    },
-    {
-      id: 3,
-      titulo: '🕒 Novo horário de expediente',
-      conteudo: 'A partir de setembro, o horário de expediente será das 8h às 17h, de segunda a sexta-feira.',
-      data: '2025-08-22'
-    }
-  ];
+
 
 const ColaboradorDashboard: React.FC = () => {
+  // Estado para criação de aviso
+  const [newNotice, setNewNotice] = useState({
+    title: '',
+    body: '',
+    date: ''
+  });
+  const [creatingNotice, setCreatingNotice] = useState(false);
+
+  const handleCreateNotice = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setCreatingNotice(true);
+    try {
+      const payload = {
+        title: newNotice.title,
+        body: newNotice.body,
+        date: newNotice.date || new Date().toISOString()
+      };
+      const response = await fetch('http://localhost:3000/api/notices', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const result = await response.json();
+      if (response.ok) {
+        alert(result.message || 'Aviso criado com sucesso!');
+        setNewNotice({ title: '', body: '', date: '' });
+        setActiveSection('announcements');
+      } else {
+        alert('Erro ao criar aviso: ' + (result.error || JSON.stringify(result)));
+      }
+    } catch (error) {
+      alert('Erro ao criar aviso. Verifique sua conexão e tente novamente.');
+    } finally {
+      setCreatingNotice(false);
+    }
+  };
   const [showCanvaFull, setShowCanvaFull] = useState(false);
   const { colaborador, logout } = useAuth();
   const [activeSection, setActiveSection] = useState('dashboard');
+
+
+  // Avisos da API (deve ficar dentro da função do componente)
+  const [notices, setNotices] = useState<Array<{
+    id: string;
+    title: string;
+    date: string;
+    body: string;
+  }>>([]);
+  const [loadingNotices, setLoadingNotices] = useState(false);
+
+
+
+  React.useEffect(() => {
+    if (activeSection !== 'announcements') return;
+    const fetchNotices = async () => {
+      setLoadingNotices(true);
+      try {
+        const response = await fetch('http://localhost:3000/api/notices');
+        if (response.ok) {
+          const result = await response.json();
+          if (Array.isArray(result.data)) {
+            setNotices(result.data);
+          } else {
+            setNotices([]);
+          }
+        } else {
+          setNotices([]);
+        }
+      } catch (err) {
+        setNotices([]);
+      } finally {
+        setLoadingNotices(false);
+      }
+    };
+    fetchNotices();
+  }, [activeSection]);
   const [userData, setUserData] = useState(colaborador);
   const [loadingUserData, setLoadingUserData] = useState(false);
   const [isInitialized, setIsInitialized] = useState(false);
@@ -89,11 +142,9 @@ const ColaboradorDashboard: React.FC = () => {
   // Função para carregar plataformas
   const loadPlatforms = async () => {
     try {
-      const response = await fetch(API_ENDPOINTS.platforms);
+      const response = await fetch(`http://localhost:3000${API_ENDPOINTS.platforms}`);
       if (response.ok) {
         const data = await response.json();
-        // console.log removido
-        // console.log removido
         setPlatforms(Array.isArray(data.data) ? data.data : []);
       } else {
         console.error('[PLATAFORMAS] Erro HTTP:', response.status, response.statusText);
@@ -150,7 +201,7 @@ const ColaboradorDashboard: React.FC = () => {
     // console.log removido
     // console.log removido
     try {
-      const response = await fetch(API_ENDPOINTS.jobs, {
+  const response = await fetch(`http://localhost:3000${API_ENDPOINTS.jobs}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
@@ -217,7 +268,7 @@ const ColaboradorDashboard: React.FC = () => {
     if (!userData?.id) return;
     setLoadingUserData(true);
     try {
-      const response = await fetch(`${API_ENDPOINTS.users}/${userData.id}`);
+  const response = await fetch(`http://localhost:3000${API_ENDPOINTS.users}/${userData.id}`);
       if (response.ok) {
         const dadosCompletos = await response.json();
         const userRaw = dadosCompletos?.data?.user || dadosCompletos?.data || dadosCompletos.user || dadosCompletos.colaborador || dadosCompletos;
@@ -263,7 +314,7 @@ const ColaboradorDashboard: React.FC = () => {
         dataAdmissao: profileForm.dataAdmissao
       };
       console.log('[PUT PERFIL] Payload enviado:', JSON.stringify(payload, null, 2));
-      const response = await fetch(`${API_ENDPOINTS.users}/${userData?.id}`, {
+  const response = await fetch(`http://localhost:3000${API_ENDPOINTS.users}/${userData?.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
@@ -310,7 +361,7 @@ const ColaboradorDashboard: React.FC = () => {
     const fetchEquipe = async () => {
       setLoadingTeam(true);
       try {
-        const equipeResponse = await fetch(API_ENDPOINTS.users);
+  const equipeResponse = await fetch(`http://localhost:3000${API_ENDPOINTS.users}`);
         if (equipeResponse.ok) {
           const equipeData = await equipeResponse.json();
           let users = Array.isArray(equipeData.data) ? equipeData.data : Array.isArray(equipeData) ? equipeData : [];
@@ -343,7 +394,7 @@ const ColaboradorDashboard: React.FC = () => {
       setLoadingUserData(true);
       try {
         // console.log removido
-        const response = await fetch(`${API_ENDPOINTS.users}/${colaborador.id}`);
+  const response = await fetch(`http://localhost:3000${API_ENDPOINTS.users}/${colaborador.id}`);
         // console.log removido
         const dadosCompletos = await response.ok ? await response.json() : null;
         // console.log removido
@@ -410,7 +461,16 @@ const ColaboradorDashboard: React.FC = () => {
               <Plus size={18} />
               Vagas
             </button>
+            <button
+              className={`nav-btn ${activeSection === 'createNotice' ? 'active' : ''}`}
+              onClick={() => setActiveSection('createNotice')}
+            >
+              <AlertCircle size={18} />
+              Criar Aviso
+            </button>
           </nav>
+
+            
 
           <div className="user-info">
             <div className="user-avatar">
@@ -544,6 +604,57 @@ const ColaboradorDashboard: React.FC = () => {
 
 
               </>
+            )}
+
+            {activeSection === 'createNotice' && (
+              <section className="admin-section">
+                <div className="section-header">
+                  <h2>
+                    <AlertCircle />
+                    Criar Aviso
+                  </h2>
+                  <p>Cadastre um novo aviso/comunicado para todos os colaboradores</p>
+                  <button className="edit-profile-btn" onClick={() => setActiveSection('dashboard')}>
+                    Voltar
+                  </button>
+                </div>
+                <form onSubmit={handleCreateNotice} className="admin-form">
+                  <div className="form-grid">
+                    <div className="form-group full-width">
+                      <label>Título *</label>
+                      <input
+                        type="text"
+                        value={newNotice.title}
+                        onChange={e => setNewNotice({ ...newNotice, title: e.target.value })}
+                        required
+                        placeholder="Ex: Aviso importante"
+                      />
+                    </div>
+                    <div className="form-group full-width">
+                      <label>Conteúdo *</label>
+                      <textarea
+                        value={newNotice.body}
+                        onChange={e => setNewNotice({ ...newNotice, body: e.target.value })}
+                        required
+                        placeholder="Digite o conteúdo do aviso"
+                        rows={4}
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label>Data (opcional)</label>
+                      <input
+                        type="datetime-local"
+                        value={newNotice.date}
+                        onChange={e => setNewNotice({ ...newNotice, date: e.target.value })}
+                      />
+                    </div>
+                  </div>
+                  <button type="submit" className="submit-btn" disabled={creatingNotice}>
+                    <Plus size={18} />
+                    {creatingNotice ? 'Criando...' : 'Criar Aviso'}
+                  </button>
+                </form>
+              </section>
             )}
 
             {activeSection === 'profile' && (
@@ -1023,16 +1134,18 @@ const ColaboradorDashboard: React.FC = () => {
                     Voltar
                   </button>
                 </div>
-                {mockAvisos.length === 0 ? (
+                {loadingNotices ? (
+                  <p>Carregando avisos...</p>
+                ) : notices.length === 0 ? (
                   <p>Nenhum aviso disponível.</p>
                 ) : (
-                  mockAvisos.map(aviso => (
+                  notices.map(aviso => (
                     <div className="announcement-item" key={aviso.id}>
                       <div className="announcement-header">
-                        <h3 className="announcement-title">{aviso.titulo}</h3>
-                        <span className="announcement-date">{new Date(aviso.data).toLocaleDateString('pt-BR')}</span>
+                        <h3 className="announcement-title">{aviso.title}</h3>
+                        <span className="announcement-date">{new Date(aviso.date).toLocaleDateString('pt-BR')}</span>
                       </div>
-                      <p className="announcement-content">{aviso.conteudo}</p>
+                      <p className="announcement-content">{aviso.body}</p>
                     </div>
                   ))
                 )}
