@@ -36,8 +36,8 @@ emailjs.send("service_test", "template_test", {}).then(
   (result) => console.log("OK:", result),
   (error) => console.log("Error:", error)
 );
-```ense](https://img.shields.io/badge/License-Private-red)](LICENSE)
-
+ense](https://img.shields.io/badge/License-Private-red)](LICENSE)
+```
 Site institucional moderno e responsivo da Rede Alecrim, desenvolvido com React e TypeScript. O projeto apresenta um design clean com paleta verde institucional, focando na experiência do usuário e performance.
 
 ## 🌐 Demo
