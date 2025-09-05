@@ -5,9 +5,10 @@ import { useAuth } from '../contexts/AuthContext';
 import { useToast } from '../hooks/useToast';
 import LoadingSpinner from './LoadingSpinner';
 import ColaboradorDashboard from './ColaboradorDashboard';
+import AlterarSenhaObrigatoria from './AlterarSenhaObrigatoria';
 
 const Colaboradores: React.FC = () => {
-  const { isAuthenticated, loading, login } = useAuth();
+  const { isAuthenticated, loading, login, needsPasswordChange, colaborador, setPasswordChanged } = useAuth();
   const { showSuccess, showError } = useToast();
   
   const [loginData, setLoginData] = useState({
@@ -31,7 +32,11 @@ const Colaboradores: React.FC = () => {
       const result = await login(loginData);
       
       if (result.success) {
-        showSuccess('Login realizado com sucesso! Bem-vindo(a)!');
+        if (result.needsPasswordChange) {
+          showSuccess('Login realizado! Por favor, altere sua senha para continuar.');
+        } else {
+          showSuccess('Login realizado com sucesso! Bem-vindo(a)!');
+        }
         // Limpar formulário
         setLoginData({ email: '', senha: '' });
       } else {
@@ -42,6 +47,11 @@ const Colaboradores: React.FC = () => {
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  const handlePasswordChanged = () => {
+    setPasswordChanged();
+    showSuccess('Senha alterada com sucesso! Bem-vindo(a) ao sistema!');
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -59,6 +69,17 @@ const Colaboradores: React.FC = () => {
   // Loading da verificação inicial de autenticação
   if (loading) {
     return <LoadingSpinner fullScreen message="Verificando autenticação..." />;
+  }
+
+  // Se está autenticado mas precisa alterar senha
+  if (isAuthenticated && needsPasswordChange && colaborador) {
+    return (
+      <AlterarSenhaObrigatoria
+        colaboradorId={colaborador.id}
+        email={colaborador.email}
+        onSenhaAlterada={handlePasswordChanged}
+      />
+    );
   }
 
   // Se já está autenticado, mostra o dashboard

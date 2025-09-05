@@ -25,10 +25,12 @@ interface AuthContextData {
   isAuthenticated: boolean;
   colaborador: Colaborador | null;
   loading: boolean;
-  login: (credentials: LoginCredentials) => Promise<{ success: boolean; error?: string }>;
+  needsPasswordChange: boolean;
+  login: (credentials: LoginCredentials) => Promise<{ success: boolean; error?: string; needsPasswordChange?: boolean }>;
   logout: () => void;
   checkAuth: () => Promise<boolean>;
   updateProfile: (data: Partial<Colaborador>) => void;
+  setPasswordChanged: () => void;
 }
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
@@ -38,6 +40,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [colaborador, setColaborador] = useState<Colaborador | null>(null);
   const [loading, setLoading] = useState(true);
+  const [needsPasswordChange, setNeedsPasswordChange] = useState(false);
 
   // Função para mapear dados do usuário para o formato Colaborador
   function mapUserToColaborador(userRaw: any): Colaborador {
@@ -81,9 +84,13 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   }, [checkAuth]);
 
   // Função de login
-  const login = async (credentials: LoginCredentials): Promise<{ success: boolean; error?: string }> => {
+  const login = async (credentials: LoginCredentials): Promise<{ success: boolean; error?: string; needsPasswordChange?: boolean }> => {
     try {
       setLoading(true);
+      
+      // Verificar se está usando a senha padrão
+      const isDefaultPassword = credentials.senha === 'Alecrim@25';
+      
       const response = await fetch(API_ENDPOINTS.login, {
         method: 'POST',
         headers: {
@@ -102,6 +109,17 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         localStorage.setItem('colaborador_data', JSON.stringify(colaboradorMapped));
         setColaborador(colaboradorMapped);
         setIsAuthenticated(true);
+        
+        // Se está usando senha padrão, marcar para alteração obrigatória
+        if (isDefaultPassword) {
+          setNeedsPasswordChange(true);
+          setLoading(false);
+          return { 
+            success: true, 
+            needsPasswordChange: true 
+          };
+        }
+        
         setLoading(false);
         return { success: true };
       } else {
@@ -126,7 +144,13 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     localStorage.removeItem('colaborador_data');
     setIsAuthenticated(false);
     setColaborador(null);
+    setNeedsPasswordChange(false);
     setLoading(false);
+  };
+
+  // Função para marcar que a senha foi alterada
+  const setPasswordChanged = () => {
+    setNeedsPasswordChange(false);
   };
 
   // Função para atualizar perfil
@@ -143,10 +167,12 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     isAuthenticated,
     colaborador,
     loading,
+    needsPasswordChange,
     login,
     logout,
     checkAuth,
-    updateProfile
+    updateProfile,
+    setPasswordChanged
   };
 
   return (
