@@ -1,62 +1,36 @@
-import React, { useEffect, useState } from 'react';
-import { CheckCircle, AlertCircle, X } from 'lucide-react';
-import './Toast.css';
+import React from 'react';
+import { ToastContainer as RTToastContainer, toast as rtToast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-export interface ToastProps {
-  id: string;
-  message: string;
-  type: 'success' | 'error' | 'info';
-  duration?: number;
-  onClose: (id: string) => void;
-}
-
-const Toast: React.FC<ToastProps> = ({ id, message, type, duration = 8000, onClose }) => {
-  const [isVisible, setIsVisible] = useState(true);
-  const [isClosing, setIsClosing] = useState(false);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      handleClose();
-    }, duration);
-
-    return () => clearTimeout(timer);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [duration]);
-
-  const handleClose = () => {
-    setIsClosing(true);
-    setTimeout(() => {
-      setIsVisible(false);
-      onClose(id);
-    }, 300);
-  };
-
-  const getIcon = () => {
-    switch (type) {
-      case 'success':
-        return <CheckCircle size={20} />;
-      case 'error':
-        return <AlertCircle size={20} />;
-      default:
-        return <AlertCircle size={20} />;
-    }
-  };
-
-  if (!isVisible) return null;
-
-  return (
-    <div className={`toast toast-${type} ${isClosing ? 'toast-closing' : 'toast-entering'}`}>
-      <div className="toast-icon">
-        {getIcon()}
-      </div>
-      <div className="toast-message">
-        {message}
-      </div>
-      <button className="toast-close" onClick={handleClose}>
-        <X size={16} />
-      </button>
-    </div>
-  );
+export const showToast = (message: string, type: 'success' | 'error' | 'info' = 'info', options?: object) => {
+  switch (type) {
+    case 'success':
+      rtToast.success(message, options);
+      break;
+    case 'error':
+      rtToast.error(message, options);
+      break;
+    case 'info':
+    default:
+      rtToast.info(message, options);
+      break;
+  }
 };
 
-export default Toast;
+export const ToastContainer: React.FC = () => {
+  return (
+    <RTToastContainer
+      position="top-right"
+      autoClose={8000}
+      hideProgressBar={false}
+      newestOnTop={false}
+      closeOnClick
+      rtl={false}
+      pauseOnFocusLoss
+      draggable
+      pauseOnHover
+      theme="colored"
+      aria-label="Notificações"
+    />
+  );
+};

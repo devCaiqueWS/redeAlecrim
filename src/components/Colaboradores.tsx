@@ -3,13 +3,12 @@ import { Eye, EyeOff, Lock, Mail } from 'lucide-react';
 import './Colaboradores.css';
 import { useAuth } from '../contexts/AuthContext';
 import { useToast } from '../hooks/useToast';
-import ToastContainer from './ToastContainer';
 import LoadingSpinner from './LoadingSpinner';
 import ColaboradorDashboard from './ColaboradorDashboard';
 
 const Colaboradores: React.FC = () => {
   const { isAuthenticated, loading, login } = useAuth();
-  const { toasts, showSuccess, showError, removeToast } = useToast();
+  const { showSuccess, showError } = useToast();
   
   const [loginData, setLoginData] = useState({
     email: '',
@@ -70,7 +69,6 @@ const Colaboradores: React.FC = () => {
   // Formulário de login
   return (
     <>
-      <ToastContainer toasts={toasts} onRemoveToast={removeToast} />
       <section className="colaboradores-login fade-in">
         <div className="container">
           <div className="login-wrapper">

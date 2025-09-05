@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
 import { API_ENDPOINTS } from '../config/api';
 
 // Interface para dados do colaborador
@@ -39,13 +39,23 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [colaborador, setColaborador] = useState<Colaborador | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // Verificar se há token salvo no localStorage ao inicializar
-  useEffect(() => {
-    checkAuth();
-  }, []);
+  // Função para mapear dados do usuário para o formato Colaborador
+  function mapUserToColaborador(userRaw: any): Colaborador {
+    return {
+      id: userRaw.id || userRaw._id || 0,
+      nome: userRaw.nome || userRaw.name || '',
+      email: userRaw.email || '',
+      cargo: userRaw.role || userRaw.funcao || userRaw.cargo || '',
+      departamento: userRaw.setor || userRaw.departamento || '',
+      dataAdmissao: userRaw.dataAdmissao || userRaw.data_admissao || userRaw.createdAt || '',
+      telefone: userRaw.telefone || '',
+      avatar: userRaw.avatar || '',
+      permissoes: userRaw.permissoes || []
+    };
+  }
 
   // Função para verificar autenticação (sem token)
-  const checkAuth = async (): Promise<boolean> => {
+  const checkAuth = useCallback(async (): Promise<boolean> => {
     try {
       const colaboradorData = localStorage.getItem('colaborador_data');
       if (!colaboradorData) {
@@ -53,7 +63,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         return false;
       }
       const colaboradorParsed = JSON.parse(colaboradorData);
-      setColaborador(colaboradorParsed);
+      const colaboradorMapped = mapUserToColaborador(colaboradorParsed);
+      setColaborador(colaboradorMapped);
       setIsAuthenticated(true);
       setLoading(false);
       return true;
@@ -62,7 +73,12 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       setLoading(false);
       return false;
     }
-  };
+  }, []);
+
+  // Verificar se há token salvo no localStorage ao inicializar
+  useEffect(() => {
+    checkAuth();
+  }, [checkAuth]);
 
   // Função de login
   const login = async (credentials: LoginCredentials): Promise<{ success: boolean; error?: string }> => {
@@ -79,13 +95,12 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         })
       });
       const data = await response.json();
-  // console.log removido
       if (response.ok) {
         // Novo padrão: data.data.user
-        const user = data?.data?.user || data.user || data.colaborador || data;
-  // console.log removido
-        localStorage.setItem('colaborador_data', JSON.stringify(user));
-        setColaborador(user);
+        const userRaw = data?.data?.user || data.user || data.colaborador || data;
+        const colaboradorMapped = mapUserToColaborador(userRaw);
+        localStorage.setItem('colaborador_data', JSON.stringify(colaboradorMapped));
+        setColaborador(colaboradorMapped);
         setIsAuthenticated(true);
         setLoading(false);
         return { success: true };
@@ -118,8 +133,9 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const updateProfile = (data: Partial<Colaborador>) => {
     if (colaborador) {
       const updatedColaborador = { ...colaborador, ...data };
-      setColaborador(updatedColaborador);
-      localStorage.setItem('colaborador_data', JSON.stringify(updatedColaborador));
+      const mapped = mapUserToColaborador(updatedColaborador);
+      setColaborador(mapped);
+      localStorage.setItem('colaborador_data', JSON.stringify(mapped));
     }
   };
 

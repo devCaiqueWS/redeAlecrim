@@ -35,7 +35,7 @@ const ColaboradorDashboard: React.FC = () => {
         date: dateString,
         body: newNotice.body
       };
-  const response = await fetch('https://api-redealecrim.onrender.com/api/notices', {
+  const response = await fetch(API_ENDPOINTS.createNotice, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
@@ -75,7 +75,7 @@ const ColaboradorDashboard: React.FC = () => {
     const fetchNotices = async () => {
       setLoadingNotices(true);
       try {
-        const response = await fetch('https://api-redealecrim.onrender.com/api/notices');
+        const response = await fetch(API_ENDPOINTS.notices);
         if (response.ok) {
           const result = await response.json();
           if (Array.isArray(result.data)) {
@@ -752,10 +752,10 @@ const ColaboradorDashboard: React.FC = () => {
                       <form onSubmit={handleProfileSubmit}>
                         <div className="form-grid">
                           <div className="form-group">
-                            <label htmlFor="nome">Nome Completo</label>
+                            <label htmlFor="name">Nome Completo</label>
                             <input
                               type="text"
-                              id="nome"
+                              id="name"
                               value={profileForm.nome}
                               onChange={(e) => setProfileForm({ ...profileForm, nome: e.target.value })}
                               required
@@ -774,10 +774,10 @@ const ColaboradorDashboard: React.FC = () => {
                           </div>
 
                           <div className="form-group">
-                            <label htmlFor="cargo">Cargo</label>
+                            <label htmlFor="funcao">Função</label>
                             <input
                               type="text"
-                              id="cargo"
+                              id="funcao"
                               value={profileForm.cargo}
                               onChange={(e) => setProfileForm({ ...profileForm, cargo: e.target.value })}
                               required
@@ -791,16 +791,7 @@ const ColaboradorDashboard: React.FC = () => {
                               id="departamento"
                               value={profileForm.departamento}
                               onChange={(e) => setProfileForm({ ...profileForm, departamento: e.target.value })}
-                            />
-                          </div>
-
-                          <div className="form-group">
-                            <label>Data de Admissão</label>
-                            <input
-                              type="text"
-                              value={profileForm.dataAdmissao ? new Date(profileForm.dataAdmissao).toLocaleDateString('pt-BR') : ''}
-                              readOnly
-                              disabled
+                              required
                             />
                           </div>
                         </div>
@@ -1050,7 +1041,7 @@ const ColaboradorDashboard: React.FC = () => {
                         <button
                           style={{ margin: '8px 0' }}
                           className="dashboard-item-link"
-                        // onClick={() => }
+                          onClick={() => (window.location.href = "https://app.powerbi.com/view?r=eyJrIjoiZjFkOGZiN2ItMTRjOC00NDFhLWIyNDgtNTE2NGU3YTJlMjc1IiwidCI6IjgzMjBjNDY3LTAxMWQtNDUzMC1iY2U1LWE4YjY3Njg1Y2U0ZiJ9")}
                         >
                           <FileText size={16} />
                           BI Giro de Estoque
@@ -1058,7 +1049,7 @@ const ColaboradorDashboard: React.FC = () => {
                         <button
                           style={{ margin: '8px 0' }}
                           className="dashboard-item-link"
-                        // onClick={() => }
+                          onClick={() => (window.location.href = "https://app.powerbi.com/view?r=eyJrIjoiZjFkOGZiN2ItMTRjOC00NDFhLWIyNDgtNTE2NGU3YTJlMjc1IiwidCI6IjgzMjBjNDY3LTAxMWQtNDUzMC1iY2U1LWE4YjY3Njg1Y2U0ZiJ9")}
                         >
                           <FileText size={16} />
                           BI Valores em estoque
@@ -1066,7 +1057,7 @@ const ColaboradorDashboard: React.FC = () => {
                         <button
                           style={{ margin: '8px 0' }}
                           className="dashboard-item-link"
-                        // onClick={() => }
+                          onClick={() => (window.location.href = "https://app.powerbi.com/view?r=eyJrIjoiZjFkOGZiN2ItMTRjOC00NDFhLWIyNDgtNTE2NGU3YTJlMjc1IiwidCI6IjgzMjBjNDY3LTAxMWQtNDUzMC1iY2U1LWE4YjY3Njg1Y2U0ZiJ9")}
                         >
                           <FileText size={16} />
                           BI Atendimentos

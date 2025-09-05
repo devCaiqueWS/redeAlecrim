@@ -6,7 +6,7 @@ import axios from 'axios';
  */
 
 // URL base da API - FIXO para produção
-const API_BASE_URL = 'https://api-redealecrim.onrender.com/api';
+const API_BASE_URL = 'http://localhost:3000/api';
 
 /**
  * Função utilitária para construir URLs da API
@@ -67,7 +67,7 @@ export const getAuthHeaders = () => {
 };
 
 const api = axios.create({
-  baseURL: 'https://api-redealecrim.onrender.com/api',
+  baseURL: 'http://localhost:3000/api',
 });
 
 export default api;

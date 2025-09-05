@@ -70,6 +70,7 @@ const Footer: React.FC = () => {
           <div className="footer-bottom-content">
             <p>&copy; {currentYear} Rede Alecrim. Todos os direitos reservados.</p>
             <div className="footer-bottom-links">
+              <a href="#colaboradores">Área dos Colaboradores</a>
               <a href="/privacy" target="_blank" rel="noopener noreferrer" className="footer-bottom-link">Política de Privacidade</a>
               <a href="/terms" target="_blank" rel="noopener noreferrer" className="footer-bottom-link">Termos de Uso</a>
             </div>

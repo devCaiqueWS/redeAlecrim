@@ -6,7 +6,7 @@
  */
 
 // URL base da API - FIXO para produção
-const API_BASE_URL = 'https://api-redealecrim.onrender.com/api';
+const API_BASE_URL = 'http://localhost:3000/api';
 
 /**
  * Função utilitária para construir URLs da API
@@ -54,15 +54,12 @@ export const API_ENDPOINTS = {
   applicationById: (id: string|number) => `${API_BASE_URL}/applications/${id}`,
   applicationStatus: (id: string|number) => `${API_BASE_URL}/applications/${id}/status`,
 
-  // Admin
-  admin: {
-    dashboard: `${API_BASE_URL}/admin/dashboard`,
-    stats: `${API_BASE_URL}/admin/stats`,
-    jobs: `${API_BASE_URL}/admin/jobs`,
-    platforms: `${API_BASE_URL}/admin/platforms`,
-    applications: `${API_BASE_URL}/admin/applications`,
-    users: `${API_BASE_URL}/admin/users`,
-  },
+  // Avisos (Notices)
+  notices: `${API_BASE_URL}/notices`,
+  noticesById: (id: string|number) => `${API_BASE_URL}/notices/${id}`,
+  createNotice: `${API_BASE_URL}/notices`,
+  updateNotice: (id: string|number) => `${API_BASE_URL}/notices/${id}`,
+  deleteNotice: (id: string|number) => `${API_BASE_URL}/notices/${id}`,
 
   // Compatibilidade com código antigo
   vagas: `${API_BASE_URL}/jobs`,

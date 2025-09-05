@@ -1,56 +1,25 @@
-import { useState, useCallback } from 'react';
-
-export interface ToastData {
-  id: string;
-  message: string;
-  type: 'success' | 'error' | 'info';
-  duration?: number;
-}
+import { toast as rtToast } from 'react-toastify';
 
 export const useToast = () => {
-  const [toasts, setToasts] = useState<ToastData[]>([]);
-
-  const showToast = useCallback((message: string, type: 'success' | 'error' | 'info' = 'info', duration?: number) => {
-    const id = Math.random().toString(36).substr(2, 9);
-    const newToast: ToastData = {
-      id,
-      message,
-      type,
-      duration
-    };
-
-    setToasts(prev => [...prev, newToast]);
-    
-    return id;
-  }, []);
-
-  const removeToast = useCallback((id: string) => {
-    setToasts(prev => prev.filter(toast => toast.id !== id));
-  }, []);
-
-  const showSuccess = useCallback((message: string, duration?: number) => {
-    return showToast(message, 'success', duration);
-  }, [showToast]);
-
-  const showError = useCallback((message: string, duration?: number) => {
-    return showToast(message, 'error', duration);
-  }, [showToast]);
-
-  const showInfo = useCallback((message: string, duration?: number) => {
-    return showToast(message, 'info', duration);
-  }, [showToast]);
-
-  const clearAllToasts = useCallback(() => {
-    setToasts([]);
-  }, []);
+  const showToast = (message: string, type: 'success' | 'error' | 'info' = 'info', options?: object) => {
+    switch (type) {
+      case 'success':
+        rtToast.success(message, options);
+        break;
+      case 'error':
+        rtToast.error(message, options);
+        break;
+      case 'info':
+      default:
+        rtToast.info(message, options);
+        break;
+    }
+  };
 
   return {
-    toasts,
     showToast,
-    showSuccess,
-    showError,
-    showInfo,
-    removeToast,
-    clearAllToasts
+    showSuccess: (msg: string, options?: object) => showToast(msg, 'success', options),
+    showError: (msg: string, options?: object) => showToast(msg, 'error', options),
+    showInfo: (msg: string, options?: object) => showToast(msg, 'info', options),
   };
 };

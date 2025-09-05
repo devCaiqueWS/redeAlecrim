@@ -2,10 +2,9 @@ import React, { useState } from 'react';
 import { Phone, Mail, Clock } from 'lucide-react';
 import './Contact.css';
 import { useToast } from '../hooks/useToast';
-import ToastContainer from './ToastContainer';
 
 const Contact: React.FC = () => {
-  const { toasts, showSuccess, removeToast } = useToast();
+  const { showSuccess } = useToast();
   
   const [formData, setFormData] = useState({
     name: '',
@@ -29,7 +28,6 @@ const Contact: React.FC = () => {
 
   return (
     <>
-      <ToastContainer toasts={toasts} onRemoveToast={removeToast} />
       <section id="contact" className="contact section">
       <div className="container">
         <div className="section-header fade-in">

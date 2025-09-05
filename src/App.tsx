@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 
 import './App.css';
@@ -13,7 +12,7 @@ import Jobs from './components/Jobs';
 import JobApplication from './components/JobApplication';
 import Colaboradores from './components/Colaboradores';
 import WhatsAppPopup from './components/WhatsAppPopup';
-
+import { ToastContainer } from './components/Toast';
 
 function App() {
   const [currentView, setCurrentView] = useState('home');
@@ -100,6 +99,7 @@ function App() {
         <Header />
         <Jobs />
         <Footer />
+        <ToastContainer />
       </div>
     );
   }
@@ -110,6 +110,7 @@ function App() {
         <Header />
         <Colaboradores />
         <Footer />
+        <ToastContainer />
       </div>
     );
   }
@@ -120,21 +121,25 @@ function App() {
         <Header />
         <JobApplication jobId={jobData.id} jobTitle={jobData.title} />
         <Footer />
+        <ToastContainer />
       </div>
     );
   }
 
   return (
-    <div className="App">
-      <Header />
-      <Hero />
-      <About />
-      <Stores />
-      <Gallery />
-      <Contact />
-      <Footer />
-      <WhatsAppPopup />
-    </div>
+    <>
+      <div className="App">
+        <Header />
+        <Hero />
+        <About />
+        <Stores />
+        <Gallery />
+        <Contact />
+        <Footer />
+        <WhatsAppPopup />
+      </div>
+      <ToastContainer />
+    </>
   );
 }
 
