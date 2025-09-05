@@ -6,7 +6,7 @@ import axios from 'axios';
  */
 
 // URL base da API - FIXO para produção
-const API_BASE_URL = 'http://localhost:3000/api';
+const API_BASE_URL = 'https://api-redealecrim.onrender.com/api';
 
 /**
  * Função utilitária para construir URLs da API
